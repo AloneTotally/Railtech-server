@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-
+import json
 app = Flask(__name__)
 
 # Sample data to act as a database
@@ -24,10 +24,20 @@ def get_item(item_id):
 # POST a new item
 @app.route('/items', methods=['POST'])
 def create_item():
+    print(request.json)
     new_item = request.json
     new_item["id"] = len(items) + 1  # Simple ID assignment
     items.append(new_item)
     return jsonify(new_item), 201
+
+    #new_items = request.get_json
+    #new_item["id"] = len(items) + 1  # Simple ID assignment
+    # items.append({"id": 245, "name  ": "Item 3"})
+    #items.append(new_item)
+    # print("Request data is ", request.data)
+    # data = json.loads(request.data)
+    # print("data is ",data)
+    # return jsonify(items), 201
 
 # PUT to update an item
 @app.route('/items/<int:item_id>', methods=['PUT'])
