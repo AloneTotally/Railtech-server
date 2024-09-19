@@ -55,9 +55,11 @@ def index():
     </html>
     ''')
 
+wifi_scan_requests = []
+
 @app.route('/wifiscan')
 def wifiscan():
-    """Render the WiFi scan page."""
+    """Render the WiFi scan page with a black background and display all requests."""
     return render_template_string('''
     <!DOCTYPE html>
     <html lang="en">
@@ -65,22 +67,30 @@ def wifiscan():
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>WiFi Scan</title>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+                font-family: Arial, sans-serif;
+            }
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+        </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     </head>
     <body>
-        <h1>WiFi Scan Results</h1>
-        <div id="wifi-scans">Loading...</div>
-        <h1><a href="/">Go back to Coordinates</a></h1>
+        <h1>WiFi Scan Requests</h1>
+        <pre id="wifi-scans">Waiting for data...</pre>
 
         <script>
             const socket = io();
-
+            
+            // Listen for the 'update_wifi_scan' event and update the page
             socket.on('update_wifi_scan', function(data) {
                 const wifiDiv = document.getElementById('wifi-scans');
-                wifiDiv.innerHTML = ''; // Clear previous results
-                for (const [name, value] of Object.entries(data)) {
-                    wifiDiv.innerHTML += `<p>${name}: WiFi Scan Data: ${JSON.stringify(value)}</p>`;
-                }
+                wifiDiv.innerHTML = JSON.stringify(data, null, 4);  // Print JSON in formatted way
             });
         </script>
     </body>
@@ -120,15 +130,23 @@ def accelerator():
     ''')
 
 # Route to handle POST requests for WiFi scan data
+wifi_scan_requests = []
+
 @app.route('/update_wifi_scan', methods=['POST'])
 def update_wifi_scan():
-    data = request.json
-    for user_name, scan_data in data.items():
-        if user_name in users:
-            users[user_name].wifi_scan_data = scan_data  # Store the WiFi scan data for the user
-    # Emit the updated WiFi scan data to all connected clients
-    socketio.emit('update_wifi_scan', {user.name: user.wifi_scan_data for user in users.values()})
+    """Handle POST requests from Postman and store all data."""
+    global wifi_scan_requests
+    data = request.json  # Get the JSON data from the POST request
+    
+    # Add the new data to the list of all requests
+    wifi_scan_requests.append(data)
+    
+    # Emit the updated list to all clients
+    socketio.emit('update_wifi_scan', wifi_scan_requests)
+    
+    # Return a success response
     return jsonify({"status": "WiFi scan data updated successfully"}), 200
+
 
 # Route to handle POST requests for Accelerator data
 @app.route('/update_accelerator', methods=['POST'])
