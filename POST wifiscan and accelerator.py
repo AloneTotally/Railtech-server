@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template_string, request
+from flask import Flask, jsonify, render_template_string
 from flask_socketio import SocketIO
 import random
 import threading
@@ -13,8 +13,30 @@ class User:
         self.name = name
         self.current_coordinates = {"x": random.randint(0, 100), "y": random.randint(0, 100)}
         self.previous_coordinates = {"x": None, "y": None}
-        self.wifi_scan_data = None  # Store WiFi scan data
-        self.accelerator_data = None  # Store Accelerator data
+        self.random_value = random.randint(1, 100)  # New random value for each user
+
+def fetch_new_coordinates(user):
+    """Simulate fetching new coordinates for a user."""
+    return {
+        "x": random.randint(0, 100),
+        "y": random.randint(0, 100)
+    }
+
+def update_coordinates():
+    """Function to update the coordinates of each user every 5 seconds."""
+    global users
+    while True:
+        time.sleep(5)  # Wait for 5 seconds
+        all_coordinates = {}  # Dictionary to hold coordinates for all users
+        for user in users.values():
+            user.previous_coordinates = user.current_coordinates.copy()  # Store previous
+            new_coords = fetch_new_coordinates(user)  # Get new coordinates
+            user.current_coordinates = new_coords  # Update current coordinates
+            all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
+        
+        print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
+        # Emit the updated coordinates to all connected clients
+        socketio.emit('update_coordinates', all_coordinates)
 
 # Create a dictionary to hold all users
 users = {
@@ -75,11 +97,11 @@ def wifiscan():
         <script>
             const socket = io();
 
-            socket.on('update_wifi_scan', function(data) {
+            socket.on('update_random_values', function(data) {
                 const wifiDiv = document.getElementById('wifi-scans');
                 wifiDiv.innerHTML = ''; // Clear previous results
                 for (const [name, value] of Object.entries(data)) {
-                    wifiDiv.innerHTML += `<p>${name}: WiFi Scan Data: ${JSON.stringify(value)}</p>`;
+                    wifiDiv.innerHTML += `<p>${name}: Random Value: ${value}</p>`;
                 }
             });
         </script>
@@ -107,11 +129,11 @@ def accelerator():
         <script>
             const socket = io();
 
-            socket.on('update_accelerator', function(data) {
+            socket.on('update_accelerator_values', function(data) {
                 const acceleratorDiv = document.getElementById('accelerator-results');
                 acceleratorDiv.innerHTML = ''; // Clear previous results
                 for (const [name, value] of Object.entries(data)) {
-                    acceleratorDiv.innerHTML += `<p>${name}: Accelerator Data: ${JSON.stringify(value)}</p>`;
+                    acceleratorDiv.innerHTML += `<p>${name}: Random Value: ${value}</p>`;
                 }
             });
         </script>
@@ -119,50 +141,38 @@ def accelerator():
     </html>
     ''')
 
-# Route to handle POST requests for WiFi scan data
-@app.route('/update_wifi_scan', methods=['POST'])
-def update_wifi_scan():
-    data = request.json
-    for user_name, scan_data in data.items():
-        if user_name in users:
-            users[user_name].wifi_scan_data = scan_data  # Store the WiFi scan data for the user
-    # Emit the updated WiFi scan data to all connected clients
-    socketio.emit('update_wifi_scan', {user.name: user.wifi_scan_data for user in users.values()})
-    return jsonify({"status": "WiFi scan data updated successfully"}), 200
-
-# Route to handle POST requests for Accelerator data
-@app.route('/update_accelerator', methods=['POST'])
-def update_accelerator():
-    data = request.json
-    for user_name, acc_data in data.items():
-        if user_name in users:
-            users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
-    # Emit the updated Accelerator data to all connected clients
-    socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
-    return jsonify({"status": "Accelerator data updated successfully"}), 200
-
-# Start background thread to update coordinates (if still needed)
-def update_coordinates():
-    """Function to update the coordinates of each user every 5 seconds."""
+def update_random_values():
+    """Function to update random values for each user every 5 seconds."""
     global users
     while True:
         time.sleep(5)  # Wait for 5 seconds
-        all_coordinates = {}  # Dictionary to hold coordinates for all users
+        random_values = {}  # Dictionary to hold random values for all users
         for user in users.values():
-            user.previous_coordinates = user.current_coordinates.copy()  # Store previous
-            new_coords = {
-                "x": random.randint(0, 100),
-                "y": random.randint(0, 100)
-            }  # Get new coordinates
-            user.current_coordinates = new_coords  # Update current coordinates
-            all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
+            user.random_value = random.randint(1, 100)  # Update the random value
+            random_values[user.name] = user.random_value  # Store in dictionary
         
-        print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
-        # Emit the updated coordinates to all connected clients
-        socketio.emit('update_coordinates', all_coordinates)
+        print("Updated Random Values:", random_values)  # Print all random values at once
+        # Emit the updated random values to all connected clients
+        socketio.emit('update_random_values', random_values)
 
-# Start the background thread for updating coordinates
+def update_accelerator_values():
+    """Function to update accelerator values for each user every 5 seconds."""
+    global users
+    while True:
+        time.sleep(5)  # Wait for 5 seconds
+        accelerator_values = {}  # Dictionary to hold accelerator values for all users
+        for user in users.values():
+            accelerator_value = random.randint(1, 100)  # Generate a random value
+            accelerator_values[user.name] = accelerator_value  # Store in dictionary
+        
+        print("Updated Accelerator Values:", accelerator_values)  # Print all accelerator values at once
+        # Emit the updated accelerator values to all connected clients
+        socketio.emit('update_accelerator_values', accelerator_values)
+
+# Start background threads for updating coordinates, random values, and accelerator values
 threading.Thread(target=update_coordinates, daemon=True).start()
+threading.Thread(target=update_random_values, daemon=True).start()
+threading.Thread(target=update_accelerator_values, daemon=True).start()
 
 @socketio.on('connect')
 def handle_connect():
