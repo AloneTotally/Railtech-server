@@ -12,6 +12,8 @@ def events():
     
     return Response(generate_events(), mimetype='text/event-stream')
 
+
+
 @app.route('/')
 def index():
     return '''
