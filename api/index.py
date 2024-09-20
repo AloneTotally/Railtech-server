@@ -1,10 +1,12 @@
-from flask import Flask, jsonify, render_template_string, request
+from flask import Flask, jsonify, render_template_string, request, render_template
 from flask_socketio import SocketIO
 import random
-import threading
-import time
+import os
+# import threading
+# import time
 
-app = Flask(__name__)
+# The path name is because to change the path name
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates'))
 socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
@@ -26,108 +28,19 @@ users = {
 @app.route('/')
 def index():
     """Render the main page with real-time updates."""
-    return render_template_string('''
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Real-Time Coordinates</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    </head>
-    <body>
-        <h1>Real-Time User Coordinates</h1>
-        <div id="coordinates"></div>
-        <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
-        <h1><a href="/accelerator">Go to Accelerator</a></h1>
-        <script>
-            const socket = io();
-
-            socket.on('update_coordinates', function(data) {
-                const coordinatesDiv = document.getElementById('coordinates');
-                coordinatesDiv.innerHTML = ''; // Clear the previous content
-                for (const [name, coords] of Object.entries(data)) {
-                    coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
-                }
-            });
-        </script>
-    </body>
-    </html>
-    ''')
+    return render_template('index.html')
 
 wifi_scan_requests = []
 
 @app.route('/wifiscan')
 def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
-    return render_template_string('''
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>WiFi Scan</title>
-        <style>
-            body {
-                background-color: black;
-                color: white;
-                font-family: Arial, sans-serif;
-            }
-            pre {
-                white-space: pre-wrap;
-                word-wrap: break-word;
-            }
-        </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    </head>
-    <body>
-        <h1>WiFi Scan Requests</h1>
-        <pre id="wifi-scans">Waiting for data...</pre>
-
-        <script>
-            const socket = io();
-            
-            // Listen for the 'update_wifi_scan' event and update the page
-            socket.on('update_wifi_scan', function(data) {
-                const wifiDiv = document.getElementById('wifi-scans');
-                wifiDiv.innerHTML = JSON.stringify(data, null, 4);  // Print JSON in formatted way
-            });
-        </script>
-    </body>
-    </html>
-    ''')
+    return render_template('wifiscan.html')
 
 @app.route('/accelerator')
 def accelerator():
     """Render the accelerator page."""
-    return render_template_string('''
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Accelerator</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    </head>
-    <body>
-        <h1>Accelerator Results</h1>
-        <div id="accelerator-results">Loading...</div>
-        <h1><a href="/">Go back to Coordinates</a></h1>
-
-        <script>
-            const socket = io();
-
-            socket.on('update_accelerator', function(data) {
-                const acceleratorDiv = document.getElementById('accelerator-results');
-                acceleratorDiv.innerHTML = ''; // Clear previous results
-                for (const [name, value] of Object.entries(data)) {
-                    acceleratorDiv.innerHTML += `<p>${name}: Accelerator Data: ${JSON.stringify(value)}</p>`;
-                }
-            });
-        </script>
-    </body>
-    </html>
-    ''')
+    return render_template_string('accelerator.html')
 
 # Route to handle POST requests for WiFi scan data
 wifi_scan_requests = []

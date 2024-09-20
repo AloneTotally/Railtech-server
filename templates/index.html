@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Real-Time Coordinates</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    </head>
+    <body>
+        <h1>Real-Time User Coordinates</h1>
+        <div id="coordinates"></div>
+        <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
+        <h1><a href="/accelerator">Go to Accelerator</a></h1>
+        <script>
+            const socket = io();
+
+            socket.on('update_coordinates', function(data) {
+                const coordinatesDiv = document.getElementById('coordinates');
+                coordinatesDiv.innerHTML = ''; // Clear the previous content
+                for (const [name, coords] of Object.entries(data)) {
+                    coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
+                }
+            });
+        </script>
+    </body>
+    </html>
