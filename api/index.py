@@ -132,7 +132,7 @@ def accelerator():
 # Route to handle POST requests for WiFi scan data
 wifi_scan_requests = []
 
-@app.route('/update_wifi_scan', methods=['POST'])
+@app.route('/update-wifi-scan', methods=['POST'])
 def update_wifi_scan():
     """Handle POST requests from Postman and store all data."""
     global wifi_scan_requests
@@ -149,7 +149,7 @@ def update_wifi_scan():
 
 
 # Route to handle POST requests for Accelerator data
-@app.route('/update_accelerator', methods=['POST'])
+@app.route('/update-accelerator', methods=['POST'])
 def update_accelerator():
     data = request.json
     for user_name, acc_data in data.items():
@@ -159,28 +159,29 @@ def update_accelerator():
     socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
     return jsonify({"status": "Accelerator data updated successfully"}), 200
 
-# Start background thread to update coordinates (if still needed)
-def update_coordinates():
-    """Function to update the coordinates of each user every 5 seconds."""
-    global users
-    while True:
-        time.sleep(5)  # Wait for 5 seconds
-        all_coordinates = {}  # Dictionary to hold coordinates for all users
-        for user in users.values():
-            user.previous_coordinates = user.current_coordinates.copy()  # Store previous
-            new_coords = {
-                "x": random.randint(0, 100),
-                "y": random.randint(0, 100)
-            }  # Get new coordinates
-            user.current_coordinates = new_coords  # Update current coordinates
-            all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
-        
-        print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
-        # Emit the updated coordinates to all connected clients
-        socketio.emit('update_coordinates', all_coordinates)
 
-# Start the background thread for updating coordinates
-threading.Thread(target=update_coordinates, daemon=True).start()
+# # Start background thread to update coordinates (if still needed)
+# def update_coordinates():
+#     """Function to update the coordinates of each user every 5 seconds."""
+#     global users
+#     while True:
+#         time.sleep(5)  # Wait for 5 seconds
+#         all_coordinates = {}  # Dictionary to hold coordinates for all users
+#         for user in users.values():
+#             user.previous_coordinates = user.current_coordinates.copy()  # Store previous
+#             new_coords = {
+#                 "x": random.randint(0, 100),
+#                 "y": random.randint(0, 100)
+#             }  # Get new coordinates
+#             user.current_coordinates = new_coords  # Update current coordinates
+#             all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
+        
+#         print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
+#         # Emit the updated coordinates to all connected clients
+#         socketio.emit('update_coordinates', all_coordinates)
+
+# # Start the background thread for updating coordinates
+# threading.Thread(target=update_coordinates, daemon=True).start()
 
 @socketio.on('connect')
 def handle_connect():
@@ -199,3 +200,4 @@ def get_coordinates():
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+    
