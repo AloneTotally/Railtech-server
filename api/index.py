@@ -132,7 +132,7 @@ def accelerator():
 # Route to handle POST requests for WiFi scan data
 wifi_scan_requests = []
 
-@app.route('/update-wifi-scan', methods=['POST'])
+@app.route('/update_wifi_scan', methods=['POST'])
 def update_wifi_scan():
     """Handle POST requests from Postman and store all data."""
     global wifi_scan_requests
@@ -149,7 +149,7 @@ def update_wifi_scan():
 
 
 # Route to handle POST requests for Accelerator data
-@app.route('/update-accelerator', methods=['POST'])
+@app.route('/update_accelerator', methods=['POST'])
 def update_accelerator():
     data = request.json
     for user_name, acc_data in data.items():
