@@ -11,7 +11,7 @@ template_folder = template_folder=os.path.join(os.path.dirname(__file__)[:-3], '
 # The path name is because to change the path name
 app = Flask(__name__, template_folder=template_folder)
 # Enable CORS for all routes
-# CORS(app)
+CORS(app)
 # socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
@@ -42,10 +42,10 @@ def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
     return render_template('wifiscan.html')
 
-@app.route('/testsse')
+@app.route('/testing-sse')
 def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
-    return render_template('testsse.html')
+    return render_template('testingsse.html')
 
 @app.route('/api/pass-to-edge')
 def pass_to_edge():
