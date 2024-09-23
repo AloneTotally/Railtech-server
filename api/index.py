@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, render_template_string, request, render_template, Response
+from flask_cors import CORS
 from flask_socketio import SocketIO
 import random
 import os
@@ -9,6 +10,8 @@ import requests
 template_folder = template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates')
 # The path name is because to change the path name
 app = Flask(__name__, template_folder=template_folder)
+# Enable CORS for all routes
+CORS(app)
 # socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
@@ -39,10 +42,10 @@ def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
     return render_template('wifiscan.html')
 
-# @app.route('/testsse')
-# def wifiscan():
-#     """Render the WiFi scan page with a black background and display all requests."""
-#     return Response(event_stream(), mimetype='text/event-stream')
+@app.route('/testsse')
+def wifiscan():
+    """Render the WiFi scan page with a black background and display all requests."""
+    return render_template('testsse.html')
 
 @app.route('/api/pass-to-edge')
 def pass_to_edge():

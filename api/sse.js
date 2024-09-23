@@ -19,6 +19,8 @@ export default async function handler(req) {
         // Notify all active clients
         activeClients.forEach(client => {
             client.controller.enqueue(encoder.encode(`data: ${latestMessage}\n\n`));
+            console.log(`data: ${latestMessage}`);
+            
             // client.controller.close();  // Close after sending the message
         });
 
@@ -34,6 +36,9 @@ export default async function handler(req) {
     if (req.method === "GET") {
         const stream = new ReadableStream({
             start(controller) {
+                // Send the latest message immediately on connection
+                controller.enqueue(encoder.encode(`data: ${latestMessage}\n\n`));
+
                 // Store the controller for future use (when a POST request arrives)
                 activeClients.push({ controller });
 
@@ -50,6 +55,8 @@ export default async function handler(req) {
                 'Content-Type': 'text/event-stream',
                 'Cache-Control': 'no-cache',
                 Connection: 'keep-alive',
+                'Access-Control-Allow-Origin': '*', // Allow all origins, change as needed
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
             }
         });
     }
