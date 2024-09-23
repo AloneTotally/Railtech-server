@@ -42,10 +42,10 @@ def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
     return render_template('wifiscan.html')
 
-# @app.route('/testing-sse')
-# def wifiscan():
-#     """Render the WiFi scan page with a black background and display all requests."""
-#     return render_template('testingsse.html')
+@app.route('/testing-sse')
+def testing_sse():
+    """Render the WiFi scan page with a black background and display all requests."""
+    return render_template('testingsse.html')
 
 @app.route('/api/pass-to-edge')
 def pass_to_edge():
