@@ -114,5 +114,6 @@ def get_coordinates():
     })
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True, port=port)
     
