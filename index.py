@@ -4,7 +4,7 @@ import random
 import os
 import time
 
-template_folder = template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates')
+template_folder = template_folder=os.path.join(os.path.dirname(__file__), 'templates')
 # The path name is because to change the path name
 app = Flask(__name__, template_folder=template_folder)
 # Enable CORS for all routes
