@@ -1,18 +1,14 @@
-from flask import Flask, jsonify, render_template_string, request, render_template, Response
-from flask_cors import CORS
+from flask import Flask, jsonify, render_template_string, request, render_template
 from flask_socketio import SocketIO
 import random
 import os
-import requests
-# import threading
-# import time
+import time
 
 template_folder = template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates')
 # The path name is because to change the path name
 app = Flask(__name__, template_folder=template_folder)
 # Enable CORS for all routes
-CORS(app)
-# socketio = SocketIO(app)
+socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
 class User:
@@ -33,7 +29,7 @@ users = {
 @app.route('/')
 def index():
     """Render the main page with real-time updates."""
-    return render_template('index.html')
+    return render_template("index.html")
 
 wifi_scan_requests = []
 
@@ -42,44 +38,14 @@ def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
     return render_template('wifiscan.html')
 
-@app.route('/testing-sse')
-def testing_sse():
-    """Render the WiFi scan page with a black background and display all requests."""
-    return render_template('testingsse.html')
-
-@app.route('/api/pass-to-edge')
-def pass_to_edge():
-    # Data that Flask will send to the Edge Function
-    data = {
-        "message": "Hello from Flask",
-        "userID": 12345
-    }
-
-    # Edge Function URL (replace with your actual URL)
-    edge_function_url = "https://railtech-server.vercel.app/api/sse"
-
-    # Make POST request to the Edge Function
-    try:
-        response = requests.post(edge_function_url, json=data)
-        response_data = response.json()
-
-        # Return the response from the Edge Function to the client
-        return jsonify({
-            "status": "success",
-            "edge_function_response": response_data
-        })
-    except requests.exceptions.RequestException as e:
-        # Handle connection errors, timeouts, etc.
-        return jsonify({"status": "error", "message": str(e)}), 500
-
 @app.route('/accelerator')
 def accelerator():
     """Render the accelerator page."""
-    return render_template_string('accelerator.html')
+    return render_template('accelerator.html')
 
 
 # Route to handle POST requests for WiFi scan data
-# wifi_scan_requests = []
+wifi_scan_requests = []
 
 @app.route('/update_wifi_scan', methods=['POST'])
 def update_wifi_scan():
@@ -91,9 +57,10 @@ def update_wifi_scan():
     wifi_scan_requests.append(data)
     
     # Emit the updated list to all clients
-    # socketio.emit('update_wifi_scan', wifi_scan_requests)    
+    socketio.emit('update_wifi_scan', wifi_scan_requests)
+    
     # Return a success response
-    # return jsonify({"status": "WiFi scan data updated successfully"}), 200
+    return jsonify({"status": "WiFi scan data updated successfully"}), 200
 
 
 # Route to handle POST requests for Accelerator data
@@ -104,7 +71,7 @@ def update_accelerator():
         if user_name in users:
             users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
     # Emit the updated Accelerator data to all connected clients
-    # socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
+    socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
     return jsonify({"status": "Accelerator data updated successfully"}), 200
 
 
@@ -131,10 +98,10 @@ def update_accelerator():
 # # Start the background thread for updating coordinates
 # threading.Thread(target=update_coordinates, daemon=True).start()
 
-# @socketio.on('connect')
-# def handle_connect():
-#     """Handle a new client connection."""
-#     print("Client connected")
+@socketio.on('connect')
+def handle_connect():
+    """Handle a new client connection."""
+    print("Client connected")
 
 @app.route('/coordinates', methods=['GET'])
 def get_coordinates():
@@ -147,5 +114,5 @@ def get_coordinates():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    socketio.run(app, debug=True)
     
