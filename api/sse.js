@@ -15,7 +15,7 @@ export default async function handler(req) {
     if (req.method === "POST") {
         const body = await req.json();
         latestMessage = body.message || "No message provided"; // Update the latest message
-
+        console.log(body)
         // Notify all active clients
         activeClients.forEach(client => {
             client.controller.enqueue(encoder.encode(`data: ${latestMessage}\n\n`));
