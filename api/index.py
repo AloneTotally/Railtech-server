@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template_string, request, render_templa
 from flask_socketio import SocketIO
 import random
 import os
-import time
+import requests
 # import threading
 # import time
 
@@ -37,20 +37,43 @@ wifi_scan_requests = []
 @app.route('/wifiscan')
 def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
-    # return render_template('wifiscan.html')
-    return Response(event_stream(), mimetype='text/event-stream')
+    return render_template('wifiscan.html')
 
+# @app.route('/testsse')
+# def wifiscan():
+#     """Render the WiFi scan page with a black background and display all requests."""
+#     return Response(event_stream(), mimetype='text/event-stream')
+
+@app.route('/api/pass-to-edge')
+def pass_to_edge():
+    # Data that Flask will send to the Edge Function
+    data = {
+        "message": "Hello from Flask",
+        "userID": 12345
+    }
+
+    # Edge Function URL (replace with your actual URL)
+    edge_function_url = "https://railtech-server.vercel.app/api/edge-function"
+
+    # Make POST request to the Edge Function
+    try:
+        response = requests.post(edge_function_url, json=data)
+        response_data = response.json()
+
+        # Return the response from the Edge Function to the client
+        return jsonify({
+            "status": "success",
+            "edge_function_response": response_data
+        })
+    except requests.exceptions.RequestException as e:
+        # Handle connection errors, timeouts, etc.
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/accelerator')
 def accelerator():
     """Render the accelerator page."""
     return render_template_string('accelerator.html')
 
-# Function to generate events for SSE
-def event_stream():
-    while True:
-        time.sleep(2)  # Simulate an event happening every 2 seconds
-        yield f"data: Current server time is {time.ctime()}\n\n"
 
 # Route to handle POST requests for WiFi scan data
 # wifi_scan_requests = []
