@@ -11,7 +11,7 @@ template_folder = template_folder=os.path.join(os.path.dirname(__file__)[:-3], '
 # The path name is because to change the path name
 app = Flask(__name__, template_folder=template_folder)
 # Enable CORS for all routes
-CORS(app)
+# CORS(app)
 # socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
