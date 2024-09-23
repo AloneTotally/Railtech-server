@@ -1,13 +1,15 @@
-from flask import Flask, jsonify, render_template_string, request, render_template
+from flask import Flask, jsonify, render_template_string, request, render_template, Response
 from flask_socketio import SocketIO
 import random
 import os
+import time
 # import threading
 # import time
 
+template_folder = template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates')
 # The path name is because to change the path name
-app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates'))
-socketio = SocketIO(app)
+app = Flask(__name__, template_folder=template_folder)
+# socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
 class User:
@@ -35,15 +37,23 @@ wifi_scan_requests = []
 @app.route('/wifiscan')
 def wifiscan():
     """Render the WiFi scan page with a black background and display all requests."""
-    return render_template('wifiscan.html')
+    # return render_template('wifiscan.html')
+    return Response(event_stream(), mimetype='text/event-stream')
+
 
 @app.route('/accelerator')
 def accelerator():
     """Render the accelerator page."""
     return render_template_string('accelerator.html')
 
+# Function to generate events for SSE
+def event_stream():
+    while True:
+        time.sleep(2)  # Simulate an event happening every 2 seconds
+        yield f"data: Current server time is {time.ctime()}\n\n"
+
 # Route to handle POST requests for WiFi scan data
-wifi_scan_requests = []
+# wifi_scan_requests = []
 
 @app.route('/update_wifi_scan', methods=['POST'])
 def update_wifi_scan():
@@ -55,10 +65,9 @@ def update_wifi_scan():
     wifi_scan_requests.append(data)
     
     # Emit the updated list to all clients
-    socketio.emit('update_wifi_scan', wifi_scan_requests)
-    
+    # socketio.emit('update_wifi_scan', wifi_scan_requests)    
     # Return a success response
-    return jsonify({"status": "WiFi scan data updated successfully"}), 200
+    # return jsonify({"status": "WiFi scan data updated successfully"}), 200
 
 
 # Route to handle POST requests for Accelerator data
@@ -69,7 +78,7 @@ def update_accelerator():
         if user_name in users:
             users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
     # Emit the updated Accelerator data to all connected clients
-    socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
+    # socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
     return jsonify({"status": "Accelerator data updated successfully"}), 200
 
 
@@ -96,10 +105,10 @@ def update_accelerator():
 # # Start the background thread for updating coordinates
 # threading.Thread(target=update_coordinates, daemon=True).start()
 
-@socketio.on('connect')
-def handle_connect():
-    """Handle a new client connection."""
-    print("Client connected")
+# @socketio.on('connect')
+# def handle_connect():
+#     """Handle a new client connection."""
+#     print("Client connected")
 
 @app.route('/coordinates', methods=['GET'])
 def get_coordinates():
@@ -112,5 +121,5 @@ def get_coordinates():
     })
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
     
