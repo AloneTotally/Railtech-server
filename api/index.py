@@ -53,7 +53,7 @@ def pass_to_edge():
     }
 
     # Edge Function URL (replace with your actual URL)
-    edge_function_url = "https://railtech-server.vercel.app/api/edge-function"
+    edge_function_url = "https://railtech-server.vercel.app/api/sse"
 
     # Make POST request to the Edge Function
     try:
