@@ -141,9 +141,21 @@
         ctx.fill();
 
         // Label the marker with the user's name
-        ctx.fillStyle = 'black';
+        // ctx.fillStyle = 'black';
+        // ctx.font = '12px Arial';
+        // ctx.fillText(name, plotX + 10, plotY - 10);
         ctx.font = '12px Arial';
-        ctx.fillText(name, plotX + 10, plotY - 10);
+    const text = name;
+    const textWidth = ctx.measureText(text).width;
+    const padding = 4; // Padding around the text
+
+    // Draw white rectangle behind the text
+    ctx.fillStyle = 'white';
+    ctx.fillRect(plotX + 10 - padding, plotY - 20 - padding, textWidth + 2 * padding, 14 + 2 * padding);
+
+    // Draw the text
+    ctx.fillStyle = 'black';
+    ctx.fillText(text, plotX + 10, plotY - 10);
     }
 
     // Handle real-time coordinate updates
