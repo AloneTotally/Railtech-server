@@ -75,27 +75,27 @@ def update_accelerator():
     return jsonify({"status": "Accelerator data updated successfully"}), 200
 
 
-# # Start background thread to update coordinates (if still needed)
-# def update_coordinates():
-#     """Function to update the coordinates of each user every 5 seconds."""
-#     global users
-#     while True:
-#         time.sleep(5)  # Wait for 5 seconds
-#         all_coordinates = {}  # Dictionary to hold coordinates for all users
-#         for user in users.values():
-#             user.previous_coordinates = user.current_coordinates.copy()  # Store previous
-#             new_coords = {
-#                 "x": random.randint(0, 100),
-#                 "y": random.randint(0, 100)
-#             }  # Get new coordinates
-#             user.current_coordinates = new_coords  # Update current coordinates
-#             all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
+@app.route('/update-coordinates', methods=['POST'])
+def post_coordinates():
+    """Function to update the coordinates of each user every 5 seconds."""
+    global users
+    for _ in range(5):
+        time.sleep(5)
+        all_coordinates = {}  # Dictionary to hold coordinates for all users
+        for user in users.values():
+            user.previous_coordinates = user.current_coordinates.copy()  # Store previous
+            new_coords = {
+                "x": random.randint(0, 100),
+                "y": random.randint(0, 100)
+            }  # Get new coordinates
+            user.current_coordinates = new_coords  # Update current coordinates
+            all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
         
-#         print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
-#         # Emit the updated coordinates to all connected clients
-#         socketio.emit('update_coordinates', all_coordinates)
+        print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
+        # Emit the updated coordinates to all connected clients
+        socketio.emit('update_coordinates', all_coordinates)
 
-# # Start the background thread for updating coordinates
+# Start the background thread for updating coordinates
 # threading.Thread(target=update_coordinates, daemon=True).start()
 
 @socketio.on('connect')
@@ -116,4 +116,3 @@ def get_coordinates():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))  # Use the PORT environment variable
     socketio.run(app, host='0.0.0.0', port=port, debug=True, allow_unsafe_werkzeug=True)
-    

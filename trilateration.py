@@ -1,4 +1,4 @@
-
+import time
 from easy_trilateration.model import *  
 from easy_trilateration.least_squares import easy_least_squares, solve_history 
 from easy_trilateration.graph import *  
@@ -38,15 +38,17 @@ FSPL = 27.55 # For now it is an approximation that mainly works with routers and
 n = 3  # Path loss exponent for indoor environments (FOR TESTING PURPOSES, this constant will differ for the tunnel)
 
 def signal_to_distance(mhz, dbm):
-    # import time
-    # start = time.time()
+    start = time.perf_counter()
+    print("start",start)
     # Free-Space Path Loss adapted avarage constant for home WiFI routers and following units
 
     # A source like does abs(dbm) to get I
     m = 10 ** (( FSPL - (20 * log10(mhz)) + abs(dbm)) / (10 * n) )
     # m=round(m,2)
-    # end = time.time()
-    return m #, end- start
+    end = time.perf_counter()
+    print("end",end)
+    print(f"Elapsed time: {end - start} seconds")    
+    return m
 
 # arr = [
 #     Circle(Point(100, 100), 50),  
@@ -72,5 +74,5 @@ ghz = 5
 
 dBm = (quality / 2) - 100
 mhz = ghz*1000
-# print(signal_to_distance(mhz, dBm))
-trilaterate(arr)
+print(signal_to_distance(mhz, dBm))
+# trilaterate(arr)
