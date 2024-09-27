@@ -3,14 +3,14 @@
 ### 1. Create virtual environment
 To config this, you have to create the virtual env first using
 ```Powershell
-python -m venv .env
+python -m venv venv
 ```
 
 ### 2. Run the virtual environment
 ```Powershell
-.\.env\Scripts\Activate.ps1 
+.\venv\Scripts\Activate.ps1 
 ```
-If you see a `(.env)` at the start of your powershell terminal then it means this works
+If you see a `(venv)` at the start of your powershell terminal then it means this works
 
 #### If step 2 fails:
 If the error message says "execution of scripts is disabled on this system", make another terminal window, run the following:

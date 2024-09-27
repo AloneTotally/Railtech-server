@@ -2,11 +2,12 @@ from flask import Flask, jsonify, render_template_string, request, render_templa
 from flask_socketio import SocketIO
 import random
 import os
-# import threading
-# import time
+import time
 
+template_folder = template_folder=os.path.join(os.path.dirname(__file__), 'templates')
 # The path name is because to change the path name
-app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__)[:-3], 'templates'))
+app = Flask(__name__, template_folder=template_folder)
+# Enable CORS for all routes
 socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
@@ -28,7 +29,7 @@ users = {
 @app.route('/')
 def index():
     """Render the main page with real-time updates."""
-    return render_template('index.html')
+    return render_template("index.html")
 
 wifi_scan_requests = []
 
@@ -40,7 +41,8 @@ def wifiscan():
 @app.route('/accelerator')
 def accelerator():
     """Render the accelerator page."""
-    return render_template_string('accelerator.html')
+    return render_template('accelerator.html')
+
 
 # Route to handle POST requests for WiFi scan data
 wifi_scan_requests = []
@@ -112,5 +114,6 @@ def get_coordinates():
     })
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Use the PORT environment variable
+    socketio.run(app, host='0.0.0.0', port=port, debug=True, allow_unsafe_werkzeug=True)
     
