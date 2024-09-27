@@ -11,16 +11,169 @@
         <div id="coordinates"></div>
         <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
         <h1><a href="/accelerator">Go to Accelerator</a></h1>
-        <script>
-            const socket = io();
 
-            socket.on('update_coordinates', function(data) {
-                const coordinatesDiv = document.getElementById('coordinates');
-                coordinatesDiv.innerHTML = ''; // Clear the previous content
-                for (const [name, coords] of Object.entries(data)) {
-                    coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
-                }
-            });
+        <canvas id = "Rectangle" width = "600" height = "150" style = "border: 1px solid #000000;"></canvas> 
+        <script>
+        //     const socket = io();
+
+        //     socket.on('update_coordinates', function(data) {
+        //         const coordinatesDiv = document.getElementById('coordinates');
+        //         coordinatesDiv.innerHTML = ''; // Clear the previous content
+        //         for (const [name, coords] of Object.entries(data)) {
+        //             coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
+        //         }
+        //     });
+        // //for map   
+        // // Get canvas and context
+        // const canvas = document.getElementById("Rectangle");
+        // const ctx = canvas.getContext('2d');
+        // const Width = canvas.width;
+        // const height = canvas.height;
+        // const StartX = 0;
+        // const StartY = height / 2;
+
+        // // Load image
+        // const img = new Image();
+        // img.src = 'https://c8.alamy.com/comp/2F74XBG/railway-tracks-top-view-close-up-2F74XBG.jpg';
+
+        // // Default map with image once it's loaded
+        // img.onload = function() {
+        //     DefaultMap();
+        // };
+
+        // // Draws the default map with background image
+        // function DefaultMap() {
+        //     ctx.clearRect(0, 0, Width, height); // Clear canvas
+        //     ctx.fillStyle = "lightgray"; // Fill background
+        //     ctx.fillRect(0, 0, Width, height);
+
+        //     // Draw the image onto the canvas
+        //     ctx.drawImage(img, 0, 0, Width, height);
+
+        //     // Mark the starting point
+        //     ctx.beginPath();
+        //     ctx.arc(StartX, StartY, 5, 0, 2 * Math.PI);
+        //     ctx.fillStyle = "blue";
+        //     ctx.fill();
+        // }
+
+        // // Scale and plot coordinates on the map
+        // function plot(name, x, y, color = "red") {
+        //     // Ensure the x, y coordinates scale to canvas dimensions
+        //     const plotX = Math.max(0, Math.min(Width, StartX + (x * Width / 100))); // Scale X to canvas width
+        //     const plotY = Math.max(0, Math.min(height, height - (y * height / 100))); // Scale Y and invert for canvas coordinates
+
+        //     // Plot circle at user coordinates
+        //     ctx.beginPath();
+        //     ctx.arc(plotX, plotY, 5, 0, 2 * Math.PI);
+        //     ctx.fillStyle = color;
+        //     ctx.fill();
+
+        //     // Label the marker with the user's name
+        //     ctx.fillStyle = 'black';
+        //     ctx.font = '12px Arial';
+        //     ctx.fillText(name, plotX + 10, plotY - 10);
+        // }
+
+        // // Initialize the default map
+        // DefaultMap();
+
+        // // Test plotting with different user data
+        // const users = [
+        //     { name: "John", x: 50, y: 50, color: "green" },
+        //     { name: "Alice", x: 75, y: 25, color: "red" },
+        //     { name: "Bob", x: 25, y: 75, color: "blue" }
+        // ];
+
+        // // Plot multiple users with different colors
+        // users.forEach((user, index) => {
+        //     const userColor = ['red', 'green', 'blue', 'orange', 'purple'][index % 5]; // Cycle through colors
+        //     plot(user.name, user.x, user.y, userColor); // Plot each user's position
+        // });
+
+
+        //Chatgpt working ver of everything
+        const socket = io();
+
+    // Get canvas and context
+    const canvas = document.getElementById("Rectangle");
+    const ctx = canvas.getContext('2d');
+    const Width = canvas.width;
+    const height = canvas.height;
+    const StartX = 0;
+    const StartY = height / 2;
+
+    // Load image
+    const img = new Image();
+    img.src = 'https://c8.alamy.com/comp/2F74XBG/railway-tracks-top-view-close-up-2F74XBG.jpg';
+
+    // Default map with image once it's loaded
+    img.onload = function() {
+        DefaultMap();
+    };
+
+    // Draws the default map with background image
+    function DefaultMap() {
+        ctx.clearRect(0, 0, Width, height); // Clear canvas
+        ctx.fillStyle = "lightgray"; // Fill background
+        ctx.fillRect(0, 0, Width, height);
+
+        // Draw the image onto the canvas
+        ctx.drawImage(img, 0, 0, Width, height);
+
+        // Mark the starting point
+        ctx.beginPath();
+        ctx.arc(StartX, StartY, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = "blue";
+        ctx.fill();
+    }
+
+    // Scale and plot coordinates on the map
+    function plot(name, x, y, color = "red") {
+        // Ensure the x, y coordinates scale to canvas dimensions
+        const plotX = Math.max(0, Math.min(Width, StartX + (x * Width / 100))); // Scale X to canvas width
+        const plotY = Math.max(0, Math.min(height, height - (y * height / 100))); // Scale Y and invert for canvas coordinates
+
+        // Plot circle at user coordinates
+        ctx.beginPath();
+        ctx.arc(plotX, plotY, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        // Label the marker with the user's name
+        ctx.fillStyle = 'black';
+        ctx.font = '12px Arial';
+        ctx.fillText(name, plotX + 10, plotY - 10);
+    }
+
+    // Handle real-time coordinate updates
+    socket.on('update_coordinates', function(data) {
+        const coordinatesDiv = document.getElementById('coordinates');
+        coordinatesDiv.innerHTML = ''; // Clear previous coordinates
+
+        // Clear canvas and redraw default map
+        DefaultMap();
+
+        // Plot each user's coordinates
+        Object.entries(data).forEach(([name, coords], index) => {
+            coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
+
+            // Choose a different color for each user
+            const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+            const userColor = colors[index % colors.length]; // Cycle through colors
+
+            plot(name, coords.x, coords.y, userColor); // Plot user's position
+        });
+    });
+
+    // For testing, you can manually plot coordinates
+    // Example: Plot a user named "John" at (50, 50)
+    setTimeout(() => {
+        plot("John", 50, 50, "green");
+    }, 1000); // Delay added to ensure the map is drawn first
+
         </script>
     </body>
     </html>
+
+    
