@@ -63,16 +63,64 @@ arr = [
     Circle(50, 50, 50),  
     Circle(50, 100, 50)
 ]  
-def trilaterate(arr):
+def trilaterate_test(arr):
     result, meta = easy_least_squares(arr)  
     create_circle(result, target=True)
     print(result)
     draw(arr)
 
-quality = 6
-ghz = 5
 
-dBm = (quality / 2) - 100
-mhz = ghz*1000
-print(signal_to_distance(mhz, dBm))
-#trilaterate(arr)
+def trilaterate_actual(data):
+    ref_APs = [
+        {"coords": (4, 0), "bssid": 'bssid1'},
+        {"coords": (10, 9), "bssid": 'bssid2'},
+        {"coords": (1, 10), "bssid": 'bssid3'}
+    ]
+
+    ref_BSSIDs = [
+        ref_APs[0]["bssid"], ref_APs[1]["bssid"], ref_APs[2]["bssid"], 
+    ]
+
+    arr = []
+
+    for accessPoint in data["accessPoints"]:
+        if accessPoint['bssid'] in ref_BSSIDs:
+            # Finding the index of the BSSID
+            index = ref_BSSIDs.index(accessPoint['bssid'])
+            currentAP = ref_APs[index]
+
+            distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
+            arr.append(Circle(currentAP["coords"][0], currentAP["coords"][1], distance))
+
+    trilaterate_test(arr)
+    
+
+# quality = 43
+# ghz = 5
+
+# dBm = (quality / 2) - 100
+# mhz = ghz*1000
+# print(signal_to_distance(mhz, dBm))
+# #trilaterate(arr)
+
+
+data = {
+    "accessPoints": [
+        {
+            "bssid": 'bssid1',
+            "signalStrength": -20,
+            "frequency": 5040
+        },
+        {
+            "bssid": 'bssid2',
+            "signalStrength": -60,
+            "frequency": 5040
+        },
+        {
+            "bssid": 'bssid3',
+            "signalStrength": -60,
+            "frequency": 5040
+        },
+    ]
+}
+trilaterate_actual(data)

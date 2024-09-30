@@ -52,7 +52,7 @@ def update_wifi_scan():
     """Handle POST requests from Postman and store all data."""
     global wifi_scan_requests
     data = request.json  # Get the JSON data from the POST request
-    
+
     # Add the new data to the list of all requests
     wifi_scan_requests.append(data)
     
