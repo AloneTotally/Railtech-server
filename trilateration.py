@@ -75,4 +75,4 @@ ghz = 5
 dBm = (quality / 2) - 100
 mhz = ghz*1000
 print(signal_to_distance(mhz, dBm))
-# trilaterate(arr)
+#trilaterate(arr)

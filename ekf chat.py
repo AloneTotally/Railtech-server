@@ -1,4 +1,49 @@
+from ast import arg
 import numpy as np
+import matplotlib.pyplot as plt
+import time
+from easy_trilateration.model import *  
+from easy_trilateration.least_squares import easy_least_squares, solve_history 
+from easy_trilateration.graph import *  
+from math import log10
+
+
+# # Free-Space Path Loss
+FSPL = 27.55 # For now it is an approximation that mainly works with routers and access points
+
+# def signal_to_distance(mhz, dbm):
+#     start = time.perf_counter()
+#     print("start",start)
+#     # Free-Space Path Loss adapted avarage constant for home WiFI routers and following units
+
+#     # A source like does abs(dbm) to get I
+#     m = 10 ** (( FSPL - (20 * log10(mhz)) + abs(dbm)) / (10 * n) )
+
+# # arr = [
+# #     Circle(Point(100, 100), 50),  
+# #     Circle(Point(100, 50), 50),  
+# #     Circle(Point(50, 50), 50),  
+# #     Circle(Point(50, 100), 50)
+# # ]
+
+# arr = [
+#     Circle(100, 100, 50),  
+#     Circle(100, 50, 50),  
+#     Circle(50, 50, 50),  
+#     Circle(50, 100, 50)
+# ]  
+# def trilaterate(arr):
+#     result, meta = easy_least_squares(arr)  
+#     create_circle(result, target=True)
+#     print(result)
+#     draw(arr)
+
+# quality = 6
+# ghz = 5
+
+# dBm = (quality / 2) - 100
+# mhz = ghz*1000
+# print(signal_to_distance(mhz, dBm))
 
 class EKF:
     def __init__(self, dt, state_dim, meas_dim, F, H, Q, R, x0, P0):
@@ -67,24 +112,40 @@ P0 = np.eye(state_dim)
 ekf = EKF(dt, state_dim, meas_dim, F, None, Q, R, x0, P0)
 
 # Parameters for the RSSI model
-P_t = -40  # Transmission power in dBm
+dBm = -40  # Transmission power in dBm
 n = 2.0    # Path loss exponent
 
-def rssi_to_distance(rssi, P_t, n):
-    return 10 ** ((P_t - rssi) / (10 * n))
+def signal_to_distance(mhz, dbm):
+    return 10 ** (( FSPL - (20 * log10(mhz)) + abs(dbm))) / (10 * n)
 
 # Access Point position
 AP_pos = np.array([10, 10])
 
 # Simulate some RSSI measurements
-rssis = [-60, -62, -61, -63, -64]  # Example RSSI values
+rssis = [-60, -62, -61, -63, -64, -50, -10, -5, -2, -100]  # Example RSSI values
+
+#trilateration visualisation and formulas
+def trilaterate(arr):
+    result, meta = easy_least_squares(arr)  
+    create_circle(result, target=True)
+    print(result)
+    draw(arr)
+
+arr = [
+    Circle(100, 100, 50),  
+    Circle(100, 50, 50),  
+    Circle(50, 50, 50),  
+    Circle(50, 100, 50)
+]  
 
 # Print header
 print("Estimated positions over time:")
 
-for rssi in rssis:
+for dBm in rssis:
     # Convert RSSI to distance
-    distance = rssi_to_distance(rssi, P_t, n)
+    ghz = 5
+    mhz = ghz*1000
+    distance = signal_to_distance(mhz, dBm)
     
     # Perform prediction step
     ekf.predict()
@@ -97,3 +158,14 @@ for rssi in rssis:
     # Get the estimated state
     estimated_state = ekf.get_state()
     print(f"Estimated Position: x={estimated_state[0]:.2f}, y={estimated_state[1]:.2f}")
+
+    plt.rcParams["figure.figsize"] = [7.50, 3.50]
+    plt.rcParams["figure.autolayout"] = True
+
+    x = estimated_state[0]
+    y = estimated_state[1]
+
+    plt.plot(x, y, 'r*')
+
+plt.show()
+trilaterate(arr)
