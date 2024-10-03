@@ -47,20 +47,19 @@ def getfield(collection,document,field):
 # cant get this to work??????
 def query(collection,check,val):
     try:
-        x = db.collection(collection).where(check,">",val).select("position").stream()
-        results = []
-        for doc in x:
-            results.append(doc.to_dict())
+        x = db.collection(collection).where(check,">",val).stream()
+        results = [doc.to_dict().get("position") for doc in x]
+
         return results
     except Exception as e:
         return e
 
 '''-------------------------------------------------Code-----------------------------------'''
-data = {"position":[1,0],"tracking": False,"age":10}
-people = ["Alonzo","Isaac","Nash","Venti"]
-for i in people:
-    add("Users",i,data)
-print(query("Users","age","9"))
+# data = {"position":[1,0],"tracking": False,"age":10}
+# people = ["Alonzo","Isaac","Nash","Venti"]
+# for i in people:
+#     add("Users",i,data)
+print(query(collections[0],"age",9))
 # update(collections[0],"Alonzo",data)
 # print(getall("Users","Alonzo"))
 # print(getfield(collections[0],"Alonzo","Position"))
