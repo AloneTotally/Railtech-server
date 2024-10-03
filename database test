@@ -1,0 +1,24 @@
+import firebase_admin
+from firebase_admin import credentials, firestore
+collections = ["Users","Access Points"]
+try:
+    cred = credentials.Certificate("railtech-database-firebase-adminsdk-62eza-29a228774f.json")
+    firebase_admin.initialize_app(cred)
+except Exception as e:
+    print(e)
+
+
+db = firestore.client()
+def add_data(collection, document, data):
+    #will replace doccument if it exists
+    try:
+        x = db.collection(collection).document(document)
+        x.set(data)
+        return 1
+    except Exception as e:
+        return e
+    #dont know if try except is truely necessary but why not
+data = {"Position":[1,1],"Tracking": True}
+x = add_data(collections[0],"Darius",data)
+print(x)
+    
