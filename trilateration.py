@@ -102,8 +102,8 @@ trilaterate_test([
 ])
 """
 
-# TODO: incorporate this function into the main server
 # TODO: Discover AP location
+# TODO: incorporate this function into the main server
 
 def trilaterate_actual(data):
     ref_APs = [
@@ -131,7 +131,7 @@ def trilaterate_actual(data):
 
 memo = {
     # ((x, y), radius)
-    # "bssid1": (Circle(3, 3, 5), 3.4542)
+    # "bssid1": (Circle(3, 3, 5), {memo})
 }
 insufficient_circles = {}
 
@@ -142,18 +142,24 @@ def find_new_APs(data_variant, user_loc):
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
         # the circles that we have calculated for the current AP
-        circleInfo = insufficient_circles.get(accessPoint["bssid"], -1)
-        if circleInfo == -1:
+        circleInfo = insufficient_circles.get(accessPoint["bssid"], [])
+        if circleInfo == []:
             # create AP in circles_insufficient
             insufficient_circles[accessPoint["bssid"]] = [Circle(user_loc[0], user_loc[1], distance)]
         else:
             insufficient_circles[accessPoint["bssid"]].append(Circle(user_loc[0], user_loc[1], distance))
-            # Sufficient info to trilaterate
-            if len(circleInfo) > 2:
-                memo[accessPoint["bssid"]] = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
-                create_circle(memo[accessPoint["bssid"]][0], target=True)
-                draw(insufficient_circles[accessPoint["bssid"]])
-                
+            
+            # This is done in a way where this will always trilaterate as long as there is 
+            # 3 or more, it will not delete the element from the circleInfo array
+            if len(circleInfo) >= 3:
+
+                try:
+                    memo[accessPoint["bssid"]] = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
+                    create_circle(memo[accessPoint["bssid"]][0], target=True)
+                    draw(insufficient_circles[accessPoint["bssid"]])
+
+                except Exception as e:
+                    print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
 
 from dummydata import data_variant_1, data_variant_2, data_variant_3
 find_new_APs(data_variant_1, (12, 5))
