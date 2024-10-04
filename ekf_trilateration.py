@@ -2,8 +2,9 @@
 import numpy as np  # For numerical operations with arrays and matrices
 import matplotlib.pyplot as plt  # For plotting graphs
 from easy_trilateration.model import Circle  # For defining circles and points for trilateration
-from easy_trilateration.least_squares import easy_least_squares  # For trilateration calculation using least squares
-from math import log10  # For logarithmic operations
+from easy_trilateration.least_squares import easy_least_squares, solve_history  # For trilateration calculation using least squares
+from math import log10  # For logarithmic operations 
+from easy_trilateration.graph import *  
 
 # Free-Space Path Loss constant (used for signal-to-distance conversion)
 FSPL = 27.55  # Approximate constant for home routers and access points in dBm
@@ -90,9 +91,9 @@ AP_positions = [
 
 # Simulate some RSSI (Received Signal Strength Indicator) measurements for each AP
 rssis_per_ap = [
-    [-60, -62, -61, -63, -64, -50, -10, -5, -2, -100],  # AP 1 RSSIs
-    [-55, -57, -59, -61, -60, -45, -15, -8, -3, -90],   # AP 2 RSSIs
-    [-70, -65, -63, -67, -66, -55, -30, -25, -15, -95]  # AP 3 RSSIs
+    [-60, -62, -61, -63, -64, -50, -10, -20, -2, -100],  # AP 1 RSSIs
+    [-55, -57, -59, -61, -60, -45, -15, -34, -3, -90],   # AP 2 RSSIs
+    [-70, -65, -63, -67, -66, -55, -30, -50, -15, -95]  # AP 3 RSSIs
 ]
 
 # Print header for output
@@ -102,19 +103,35 @@ print("Estimated positions over time:")
 for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all AP RSSIs
     ekf.predict()  # Predict next state
 
+    distances = []
     # For each AP, use its RSSI at the current time step
-    for i, AP_pos in enumerate(AP_positions):
+    for i, AP_pos in enumerate(AP_positions):   
         dBm = rssis_per_ap[i][time_step]  # Get RSSI value from the i-th AP at current time step
         ghz = 5
         mhz = ghz * 1000
         distance = signal_to_distance(mhz, dBm)  # Convert RSSI to distance
+        distances.append(distance)
+       
+        # Perform trilateration using the calculated distances and AP positions
+    circles = [Circle(AP_positions[0][0], AP_positions[0][1],  distances[0]),
+               Circle(AP_positions[1][0], AP_positions[1][1],  distances[1]),
+               Circle(AP_positions[2][0], AP_positions[2][1],  distances[2])]
+    trilaterated_position = easy_least_squares(circles)
 
-        H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
-        ekf.update(np.array([distance]), H)  # Update EKF with distance measurement and Jacobian
+    # Kalman Filter Update Step
+    # Measurement vector (trilaterated position)
+    z = np.array([trilaterated_position[0], trilaterated_position[1]])
 
+    H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
+    ekf.update(np.array([distance]), H)  # Update EKF with distance measurement and Jacobian
+    distances.append(distance)
+    
     # Get the estimated state (position and velocity)
     estimated_state = ekf.get_state()
     print(f"Time step {time_step}: Estimated Position: x={estimated_state[0]:.2f}, y={estimated_state[1]:.2f}")
+    # result, meta = easy_least_squares(circles) 
+    # create_circle(result, target=True)
+    # draw(circles)
 
     # Plotting the estimated positions over time
     plt.plot(estimated_state[0], estimated_state[1], 'r*')
