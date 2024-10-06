@@ -3,20 +3,20 @@ data = [
     {
         "accessPoints": [
             {
-                "ssid": 'ssid1',
-                "bssid": 'bssid1',
+                "ssid": "ssid1",
+                "bssid": "bssid1",
                 "signalStrength": -20,
                 "frequency": 5040
             },
             {
-                "ssid": 'ssid1',
-                "bssid": 'bssid2',
+                "ssid": "ssid1",
+                "bssid": "bssid2",
                 "signalStrength": -60,
                 "frequency": 5040
             },
             {
-                "ssid": 'ssid1',
-                "bssid": 'bssid3',
+                "ssid": "ssid1",
+                "bssid": "bssid3",
                 "signalStrength": -60,
                 "frequency": 5040
             },
@@ -26,20 +26,20 @@ data = [
     {
         "accessPoints": [
             {
-                "ssid": 'ssid2',
-                "bssid": 'bssid4',
+                "ssid": "ssid2",
+                "bssid": "bssid4",
                 "signalStrength": -30,
                 "frequency": 2412
             },
             {
-                "ssid": 'ssid2',
-                "bssid": 'bssid5',
+                "ssid": "ssid2",
+                "bssid": "bssid5",
                 "signalStrength": -50,
                 "frequency": 2412
             },
             {
-                "ssid": 'ssid2',
-                "bssid": 'bssid6',
+                "ssid": "ssid2",
+                "bssid": "bssid6",
                 "signalStrength": -70,
                 "frequency": 2412
             },
@@ -49,20 +49,20 @@ data = [
     {
         "accessPoints": [
             {
-                "ssid": 'ssid3',
-                "bssid": 'bssid7',
+                "ssid": "ssid3",
+                "bssid": "bssid7",
                 "signalStrength": -40,
                 "frequency": 5180
             },
             {
-                "ssid": 'ssid3',
-                "bssid": 'bssid8',
+                "ssid": "ssid3",
+                "bssid": "bssid8",
                 "signalStrength": -80,
                 "frequency": 5180
             },
             {
-                "ssid": 'ssid3',
-                "bssid": 'bssid9',
+                "ssid": "ssid3",
+                "bssid": "bssid9",
                 "signalStrength": -90,
                 "frequency": 5180
             },
@@ -76,20 +76,20 @@ data = [
 data_variant_1 = {
     "accessPoints": [
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid1',
+            "ssid": "ssid1",
+            "bssid": "bssid1",
             "signalStrength": -20,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid2',
+            "ssid": "ssid1",
+            "bssid": "bssid2",
             "signalStrength": -60,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid3',
+            "ssid": "ssid1",
+            "bssid": "bssid3",
             "signalStrength": -60,
             "frequency": 5040
         },
@@ -101,20 +101,20 @@ data_variant_1 = {
 data_variant_2 = {
     "accessPoints": [
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid1',
+            "ssid": "ssid1",
+            "bssid": "bssid1",
             "signalStrength": -25,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid2',
+            "ssid": "ssid1",
+            "bssid": "bssid2",
             "signalStrength": -55,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid3',
+            "ssid": "ssid1",
+            "bssid": "bssid3",
             "signalStrength": -65,
             "frequency": 5040
         },
@@ -126,20 +126,20 @@ data_variant_2 = {
 data_variant_3 = {
     "accessPoints": [
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid1',
+            "ssid": "ssid1",
+            "bssid": "bssid1",
             "signalStrength": -30,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid2',
+            "ssid": "ssid1",
+            "bssid": "bssid2",
             "signalStrength": -50,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid3',
+            "ssid": "ssid1",
+            "bssid": "bssid3",
             "signalStrength": -70,
             "frequency": 5040
         },

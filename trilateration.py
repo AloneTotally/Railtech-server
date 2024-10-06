@@ -102,36 +102,38 @@ trilaterate_test([
 ])
 """
 
-# TODO: Discover AP location
 # TODO: incorporate this function into the main server
 
 def trilaterate_actual(data):
-    ref_APs = [
-        {"coords": (4, 0), "bssid": 'bssid1'},
-        {"coords": (10, 9), "bssid": 'bssid2'},
-        {"coords": (1, 10), "bssid": 'bssid3'}
-    ]
-
-    ref_BSSIDs = [
-        ref_APs[0]["bssid"], ref_APs[1]["bssid"], ref_APs[2]["bssid"], 
-    ]
+    # ref_APs = [
+    #     {"coords": (4, 0), "bssid": 'bssid1'},
+    #     {"coords": (10, 9), "bssid": 'bssid2'},
+    #     {"coords": (1, 10), "bssid": 'bssid3'}
+    # ]
+    ref_APs = {
+        'bssid1': (4, 0),
+        'bssid2': (10, 9),    
+        'bssid3': (1, 10)
+    }
 
     arr = []
 
     for accessPoint in data["accessPoints"]:
-        if accessPoint['bssid'] in ref_BSSIDs:
+        if accessPoint['bssid'] in list(ref_APs.keys()):
             # Finding the index of the BSSID
-            index = ref_BSSIDs.index(accessPoint['bssid'])
-            currentAP = ref_APs[index]
+            # index = ref_BSSIDs.index(accessPoint['bssid'])
+            # currentAP = ref_APs[index]
+            bssid = accessPoint['bssid']
+            coords = ref_APs[bssid]
+            
 
             distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
-            arr.append(Circle(currentAP["coords"][0], currentAP["coords"][1], distance))
+            arr.append(Circle(coords[0], coords[1], distance))
 
-    trilaterate_test(arr)
+    # trilaterate_test(arr)
 
 memo = {
-    # ((x, y), radius)
-    # "bssid1": (Circle(3, 3, 5), {memo})
+    # "bssid1": (Circle(3, 3, 5), {some long ass info abt the thing})
 }
 insufficient_circles = {}
 
@@ -144,7 +146,7 @@ def find_new_APs(data_variant, user_loc):
         # the circles that we have calculated for the current AP
         circleInfo = insufficient_circles.get(accessPoint["bssid"], [])
         if circleInfo == []:
-            # create AP in circles_insufficient
+            # create AP in insufficient_circles
             insufficient_circles[accessPoint["bssid"]] = [Circle(user_loc[0], user_loc[1], distance)]
         else:
             insufficient_circles[accessPoint["bssid"]].append(Circle(user_loc[0], user_loc[1], distance))
@@ -161,11 +163,14 @@ def find_new_APs(data_variant, user_loc):
                 except Exception as e:
                     print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
 
-from dummydata import data_variant_1, data_variant_2, data_variant_3
-find_new_APs(data_variant_1, (12, 5))
-find_new_APs(data_variant_2, (8, 19))
-find_new_APs(data_variant_3, (3, 14))
-print(memo)
+
+
+
+# from dummydata import data_variant_1, data_variant_2, data_variant_3
+# find_new_APs(data_variant_1, (12, 5))
+# find_new_APs(data_variant_2, (8, 19))
+# find_new_APs(data_variant_3, (3, 14))
+# print(memo)
 
 
 
@@ -192,4 +197,4 @@ data = {
     ],
     "user": "alonzo",
 }
-# trilaterate_actual(data)
+trilaterate_actual(data)
