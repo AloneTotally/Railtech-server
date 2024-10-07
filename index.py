@@ -3,6 +3,8 @@ from flask_socketio import SocketIO
 import random
 import os
 import time
+import matplotlib
+matplotlib.use('Agg') 
 
 template_folder = template_folder=os.path.join(os.path.dirname(__file__), 'templates')
 # The path name is because to change the path name
@@ -99,12 +101,47 @@ def update_accelerator():
 @app.route('/update-coordinate', methods=['POST'])
 def post_coordinates():
     """Function to update the coordinate of the user specified by the api."""
+    global users
+
     data = request.json
+
+    ref_APs = {
+        'bssid1': (4, 0),
+        'bssid2': (10, 9),    
+        'bssid3': (1, 10)
+    } # TODO: ref_APs variable shld be in a database
     # TODO: Put trilateration portion here
+
+    from trilateration import trilaterate_actual
+    result, meta = trilaterate_actual(data, ref_APs)
+
+    # TODO: Implement ekf here plsplsplspls
+    new_coords = (result.center.x, result.center.y)
+
+    user_name = data.get('user')
+    access_points = data.get('accessPoints')
     
-    all_coordinates = {}  # Dictionary to hold coordinates for all users
-    
-    print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
+    if not user_name or not access_points:
+        return jsonify({"error": "Invalid request data"}), 400
+
+    # TODO: this whole part is replaced by the database request
+    # Update the user's coordinates in the global `users` dictionary
+    if user_name in users:
+        user = users[user_name]
+        user.previous_coordinates = user.current_coordinates.copy()  # Store previous
+        user.current_coordinates = new_coords  # Update current coordinates
+    else:
+        # Create a new user if they don't exist
+        # TODO: error lies in the data formatting of the User object :skull:
+        users[user_name] = User(name=user_name, current_coordinates=new_coords, previous_coordinates=None)
+            # "name": user_name,
+            # "current_coordinates": new_coords,
+            # "previous_coordinates": None,
+        
+
+    all_coordinates = {u.name: u.current_coordinates for u in users.values()}
+    print("Updated Coordinates:", all_coordinates)  # Print all coordinates
+        
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
     return jsonify({"status": "Trilateration data updated successfully"}), 200
