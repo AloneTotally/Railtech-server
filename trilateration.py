@@ -2,26 +2,6 @@ import time
 from easy_trilateration.model import *  
 from easy_trilateration.least_squares import easy_least_squares, solve_history 
 from easy_trilateration.graph import *  
-
-example_json = {
-    "accessPoints": [
-        {
-            "bssid": "11FYUKGF21324",
-            "distance": 10
-        },
-        {
-            "bssid": "22CFYUGFYRHTR6",
-            "distance": 30
-        },
-        {
-            "bssid": "3389765GHJKMHG",
-            "distance": 50
-        }
-    ],
-    "user": "alonzo"
-},
-
-
 from math import log10
 
 '''
@@ -32,30 +12,29 @@ However it is not recommended to do what is being done here and ideally the foll
     in free-space models. Link to example n values: https://medium.com/@isallam/back-to-basics-1-1aa688aa53c0
 '''
 
+# This is a function that calculates distance based on a certain signal strength, 
+# can be used in testing towards the later stages
+def calculate_distance(signal_strength, frequency):
+    """Convert signal strength to distance."""
+    # This is a simplified version, where stronger signal -> smaller distance
+    # Formula: d = 10^((P_tx - P_rx) / (10 * n))
+    # We'll assume a path loss exponent (n) of 2 (free space)
+    path_loss_exponent = 2
+    reference_signal = -30  # Assume -30 dBm at 1 meter
+    distance = 10 ** ((reference_signal - signal_strength) / (10 * path_loss_exponent))
+    return distance
+
 
 # Free-Space Path Loss
 FSPL = 27.55 # For now it is an approximation that mainly works with routers and access points
 n = 3  # Path loss exponent for indoor environments (FOR TESTING PURPOSES, this constant will differ for the tunnel)
 
 def signal_to_distance(mhz, dbm):
-    # start = time.perf_counter()
-    # print("start",start)
     # Free-Space Path Loss adapted avarage constant for home WiFI routers and following units
-
     # A source like does abs(dbm) to get I
     m = 10 ** (( FSPL - (20 * log10(mhz)) + abs(dbm)) / (10 * n) )
-    # m=round(m,2)
-    # end = time.perf_counter()
-    # print("end",end)
-    # print(f"Elapsed time: {end - start} seconds")    
+   
     return m
-
-# arr = [
-#     Circle(Point(100, 100), 50),  
-#     Circle(Point(100, 50), 50),  
-#     Circle(Point(50, 50), 50),  
-#     Circle(Point(50, 100), 50)
-# ]
 
 arr = [
     Circle(100, 100, 50),  
@@ -63,13 +42,16 @@ arr = [
     Circle(50, 50, 50),  
     Circle(50, 100, 50)
 ]  
-def trilaterate_test(arr):
-    result, meta = easy_least_squares(arr)  
-    create_circle(result, target=True)
-    print(result)
-    draw(arr)
+
+# This is just a testing function that trilaterates and prints things from an array
+# def trilaterate_test(arr):
+#     result, meta = easy_least_squares(arr)  
+#     create_circle(result, target=True)
+#     print(result)
+#     draw(arr)
 
 """
+# This is code that is made for that one room in the library with 3 reference APs that trilaterate
 
 arr = [
     (80, 2.4),
@@ -104,18 +86,13 @@ trilaterate_test([
 
 # TODO: incorporate this function into the main server
 
-def trilaterate_actual(data):
-    # ref_APs = [
-    #     {"coords": (4, 0), "bssid": 'bssid1'},
-    #     {"coords": (10, 9), "bssid": 'bssid2'},
-    #     {"coords": (1, 10), "bssid": 'bssid3'}
-    # ]
-    ref_APs = {
-        'bssid1': (4, 0),
-        'bssid2': (10, 9),    
-        'bssid3': (1, 10)
-    }
-
+# This is made for the actual data that comes from the android device
+# ref_APs = {
+#     'bssid1': (4, 0),
+#     'bssid2': (10, 9),    
+#     'bssid3': (1, 10)
+# }
+def trilaterate_actual(data, ref_APs):
     arr = []
 
     for accessPoint in data["accessPoints"]:
@@ -131,10 +108,20 @@ def trilaterate_actual(data):
             arr.append(Circle(coords[0], coords[1], distance))
 
     # trilaterate_test(arr)
+    try:
+        return easy_least_squares(arr)  
+        create_circle(result, target=True)
+        print(result)
+        # draw(arr)
+    except Exception as e:
+        print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
+        return []
 
+# TODO: also can technically be in the database? but this data shld be used in the ekf
 memo = {
     # "bssid1": (Circle(3, 3, 5), {some long ass info abt the thing})
 }
+# TODO: to be replaced by database
 insufficient_circles = {}
 
 # This is a function that will be called multiple times, and it will update the memo as required
@@ -158,7 +145,8 @@ def find_new_APs(data_variant, user_loc):
                 try:
                     memo[accessPoint["bssid"]] = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
                     create_circle(memo[accessPoint["bssid"]][0], target=True)
-                    draw(insufficient_circles[accessPoint["bssid"]])
+                    # TODO: UNCOMMENT ME FOR TESTING
+                    # draw(insufficient_circles[accessPoint["bssid"]])
 
                 except Exception as e:
                     print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
@@ -197,4 +185,4 @@ data = {
     ],
     "user": "alonzo",
 }
-trilaterate_actual(data)
+# trilaterate_actual(data)
