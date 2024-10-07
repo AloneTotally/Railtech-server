@@ -33,6 +33,11 @@ def index():
     """Render the main page with real-time updates."""
     return render_template("index.html")
 
+@app.route('/no-food-for-dayan')
+def no_food_for_dayan():
+    """Render an example page."""
+    return render_template("railtech-web.html")
+
 wifi_scan_requests = []
 
 @app.route('/wifiscan')
@@ -126,6 +131,8 @@ def post_coordinates():
         return jsonify({"error": "Invalid request data"}), 400
 
     # TODO: this whole part is to be replaced by the database request
+    # not sure about the significance of the previous coordinates attribute tho... can be used in ekf maybe???
+    # but imma just leave it there for now
     # Update the user's coordinates in the global `users` dictionary
     if user_name in users:
         user = users[user_name]
@@ -138,7 +145,9 @@ def post_coordinates():
             # "current_coordinates": new_coords,
             # "previous_coordinates": None,
         
-
+    # TODO: incorporate find new APs function here
+    # TODO: get the location of the new APs using the trilateration.memo global var
+    # TODO: update the APs on the map or smt
     all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
         
