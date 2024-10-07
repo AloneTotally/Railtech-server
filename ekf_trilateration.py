@@ -30,7 +30,7 @@ class EKF:
     def update(self, z, H, R):
         self.R = R
         # Update the state based on the measurement (RSSI)
-        y = z - np.dot(H, self.x)  # Innovation: difference between measurement and predicted state
+        y = z - np.dot(H, self.x)[:2]  # Innovation: difference between measurement and predicted state
         S = np.dot(np.dot(H, self.P), H.T) + self.R  # Innovation covariance
         K = np.dot(np.dot(self.P, H.T), np.linalg.inv(S))  # Kalman gain (how much to trust the measurement)
         self.x = self.x + np.dot(K, y)  # Update the state estimate
@@ -59,7 +59,8 @@ def H_jacobian(x, AP_pos):
     distance = np.sqrt(dx**2 + dy**2)  # Euclidean distance
     if distance == 0:
         distance = 1e-6  # Avoid division by zero by setting a small epsilon value
-    H = np.array([[dx / distance, dy / distance, 0, 0]])  # Jacobian matrix for distance measurement
+    H = np.array([[dx / distance, dy / distance, 0, 0],
+                    [0, 0, 1, 0]])  # Jacobian matrix for distance measurement
     return H
 
 # Process noise covariance matrix (how much uncertainty in the model)
@@ -121,10 +122,10 @@ for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all A
 
     # Kalman Filter Update Step
     # Measurement vector (trilaterated position)
-    z = np.array([trilaterated_position[0], trilaterated_position[1]])
+    z = np.array([trilaterated_position[0].center.x, trilaterated_position[0].center.y])
 
     H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
-    ekf.update(np.array([distance]), H, R = np.array([[z[0].radius]]) )  # Update EKF with distance measurement and Jacobian
+    ekf.update(z, H, R = np.array([[trilaterated_position[0].radius]]) )  # Update EKF with distance measurement and Jacobian
     distances.append(distance)
     
     # Get the estimated state (position and velocity)

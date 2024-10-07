@@ -66,15 +66,15 @@ def update_wifi_scan():
 
 
 # Route to handle POST requests for Accelerator data
-@app.route('/update_accelerator', methods=['POST'])
-def update_accelerator():
-    data = request.json
-    for user_name, acc_data in data.items():
-        if user_name in users:
-            users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
-    # Emit the updated Accelerator data to all connected clients
-    socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
-    return jsonify({"status": "Accelerator data updated successfully"}), 200
+# @app.route('/update_accelerator', methods=['POST'])
+# def update_accelerator():
+#     data = request.json
+#     for user_name, acc_data in data.items():
+#         if user_name in users:
+#             users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
+#     # Emit the updated Accelerator data to all connected clients
+#     socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
+#     return jsonify({"status": "Accelerator data updated successfully"}), 200
 
 
 # @app.route('/update-coordinates', methods=['POST'])
@@ -125,7 +125,7 @@ def post_coordinates():
     if not user_name or not access_points:
         return jsonify({"error": "Invalid request data"}), 400
 
-    # TODO: this whole part is replaced by the database request
+    # TODO: this whole part is to be replaced by the database request
     # Update the user's coordinates in the global `users` dictionary
     if user_name in users:
         user = users[user_name]
@@ -133,7 +133,6 @@ def post_coordinates():
         user.current_coordinates = new_coords  # Update current coordinates
     else:
         # Create a new user if they don't exist
-        # TODO: error lies in the data formatting of the User object :skull:
         users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
             # "current_coordinates": new_coords,
