@@ -60,18 +60,26 @@ def H_jacobian(x, AP_pos):
     if distance == 0:
         distance = 1e-6  # Avoid division by zero by setting a small epsilon value
     H = np.array([[dx / distance, dy / distance, 0, 0],
-                    [0, 0, 1, 0]])  # Jacobian matrix for distance measurement
+                    [0, 0, 0, 1]])  # Jacobian matrix for distance measurement
+    # H = np.array([[dx / distance, dy / distance, 0, 0],
+    #                 [0, 0, 1, 0]])  # Jacobian matrix for distance measurement
     return H
 
 # Process noise covariance matrix (how much uncertainty in the model)
-Q = np.eye(state_dim) * 0.01
+# Q = np.eye(state_dim) * 0.1
+Q = np.array([[0.01, 0, 0, 0],
+              [0, 0.01, 0, 0],
+              [0, 0, 0.001, 0],
+              [0, 0, 0, 0.001]])
 
 # Measurement noise covariance (uncertainty in RSSI measurement)
-R = np.array([[1.0]])
+# R = np.array([[5.0]])
+R = np.array([[1.0, 0], 
+              [0, 1.0]])
 
 # Initial state estimate and covariance
 x0 = np.array([0, 0, 0, 0])  # Initial position and velocity (at origin with zero velocity)
-P0 = np.eye(state_dim)  # Initial uncertainty (identity matrix)
+P0 = np.eye(state_dim) * 100  # Initial uncertainty (identity matrix)
 
 # Create EKF object with initial parameters
 ekf = EKF(dt, state_dim, meas_dim, F, Q, R, x0, P0)
@@ -101,6 +109,9 @@ rssis_per_ap = [
 # Print header for output
 print("Estimated positions over time:")
 
+
+figure, axis = plt.subplots(2, 2)
+
 # Loop through the simulated RSSI values for all APs
 for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all AP RSSIs
     ekf.predict()  # Predict next state
@@ -125,6 +136,7 @@ for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all A
     z = np.array([trilaterated_position[0].center.x, trilaterated_position[0].center.y])
 
     H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
+    # ekf.update(z, H, R = np.array([[5.0]]) )  # Update EKF with distance measurement and Jacobian
     ekf.update(z, H, R = np.array([[trilaterated_position[0].radius]]) )  # Update EKF with distance measurement and Jacobian
     distances.append(distance)
 
@@ -135,11 +147,25 @@ for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all A
     # create_circle(result, target=True)
     # draw(circles)
 
+
     # Plotting the estimated positions over time
-    plt.plot(estimated_state[0], estimated_state[1], 'r*')
+    axis[0, 0].plot(estimated_state[0], estimated_state[1], 'r*')
+    axis[0, 1].plot(z[0], z[1], 'g*')
+    # axis[1, 0].plot(estimated_state[0], time_step, 'r*')
+    # axis[1, 0].plot(z[0], time_step, 'g*')
+    # axis[1, 1].plot(estimated_state[1], time_step, 'r*')
+    # axis[1, 1].plot(z[1], time_step, 'g*')
+    axis[1, 0].plot(time_step, estimated_state[0], 'r*')
+    axis[1, 0].plot(time_step, z[0], 'g*')
+    axis[1, 1].plot(time_step,estimated_state[1], 'r*')
+    axis[1, 1].plot(time_step, z[1], 'g*')
+
 
 # Show the trajectory of the estimated positions over time
-plt.xlabel('X Position')
-plt.ylabel('Y Position')
-plt.title('Estimated Position Over Time')
+# axis[0, 0]._label('X Position')
+# axis[0, 0].ylabel('Y Position')
+# axis[0, 0].set_title('Estimated Position Over Time (trilaterated with ekf)')
+# axis[0, 1]._label('X Position')
+# axis[0, 1].ylabel('Y Position')
+# axis[0, 1].set_title('Estimated Position Over Time (trilaterated)')
 plt.show()
