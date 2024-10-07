@@ -27,7 +27,8 @@ class EKF:
         self.x = np.dot(self.F, self.x)  # State prediction using F matrix
         self.P = np.dot(np.dot(self.F, self.P), self.F.T) + self.Q  # Covariance prediction
 
-    def update(self, z, H):
+    def update(self, z, H, R):
+        self.R = R
         # Update the state based on the measurement (RSSI)
         y = z - np.dot(H, self.x)  # Innovation: difference between measurement and predicted state
         S = np.dot(np.dot(H, self.P), H.T) + self.R  # Innovation covariance
@@ -91,9 +92,9 @@ AP_positions = [
 
 # Simulate some RSSI (Received Signal Strength Indicator) measurements for each AP
 rssis_per_ap = [
-    [-60, -62, -61, -63, -64, -50, -10, -20, -2, -100],  # AP 1 RSSIs
-    [-55, -57, -59, -61, -60, -45, -15, -34, -3, -90],   # AP 2 RSSIs
-    [-70, -65, -63, -67, -66, -55, -30, -50, -15, -95]  # AP 3 RSSIs
+    [-60, -62, -61, -63, -64, -50, -10, -5, -2, -100],  # AP 1 RSSIs
+    [-55, -57, -59, -61, -60, -45, -15, -8, -3, -90],   # AP 2 RSSIs
+    [-70, -65, -63, -67, -66, -55, -30, -25, -15, -95]  # AP 3 RSSIs
 ]
 
 # Print header for output
@@ -123,7 +124,7 @@ for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all A
     z = np.array([trilaterated_position[0], trilaterated_position[1]])
 
     H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
-    ekf.update(np.array([distance]), H)  # Update EKF with distance measurement and Jacobian
+    ekf.update(np.array([distance]), H, R = np.array([[z[0].radius]]) )  # Update EKF with distance measurement and Jacobian
     distances.append(distance)
     
     # Get the estimated state (position and velocity)
