@@ -127,7 +127,7 @@ for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all A
     H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
     ekf.update(z, H, R = np.array([[trilaterated_position[0].radius]]) )  # Update EKF with distance measurement and Jacobian
     distances.append(distance)
-    
+
     # Get the estimated state (position and velocity)
     estimated_state = ekf.get_state()
     print(f"Time step {time_step}: Estimated Position: x={estimated_state[0]:.2f}, y={estimated_state[1]:.2f}")
