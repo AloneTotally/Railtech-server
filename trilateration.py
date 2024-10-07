@@ -165,24 +165,24 @@ def find_new_APs(data_variant, user_loc):
 data = {
     "accessPoints": [
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid1',
+            "ssid": "ssid1",
+            "bssid": "bssid1",
             "signalStrength": -20,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid2',
+            "ssid": "ssid1",
+            "bssid": "bssid2",
             "signalStrength": -60,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid3',
+            "ssid": "ssid1",
+            "bssid": "bssid3",
             "signalStrength": -60,
             "frequency": 5040
-        },
+        }
     ],
-    "user": "alonzo",
+    "user": "alonzo"
 }
 # trilaterate_actual(data)

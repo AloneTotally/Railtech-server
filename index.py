@@ -14,9 +14,9 @@ socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
 class User:
-    def __init__(self, name):
+    def __init__(self, name, current_coordinates={"x": random.randint(0, 100), "y": random.randint(0, 100)}):
         self.name = name
-        self.current_coordinates = {"x": random.randint(0, 100), "y": random.randint(0, 100)}
+        self.current_coordinates = current_coordinates
         self.previous_coordinates = {"x": None, "y": None}
         self.wifi_scan_data = None  # Store WiFi scan data
         self.accelerator_data = None  # Store Accelerator data
@@ -116,8 +116,9 @@ def post_coordinates():
     result, meta = trilaterate_actual(data, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
-    new_coords = (result.center.x, result.center.y)
+    new_coords = {'x': result.center.x, 'y': result.center.y}
 
+    # note that `data` is a dictionary and not the database reference
     user_name = data.get('user')
     access_points = data.get('accessPoints')
     
@@ -133,7 +134,7 @@ def post_coordinates():
     else:
         # Create a new user if they don't exist
         # TODO: error lies in the data formatting of the User object :skull:
-        users[user_name] = User(name=user_name, current_coordinates=new_coords, previous_coordinates=None)
+        users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
             # "current_coordinates": new_coords,
             # "previous_coordinates": None,
