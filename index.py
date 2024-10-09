@@ -58,8 +58,10 @@ def update_wifi_scan():
     data = request.json  # Get the JSON data from the POST request
 
     # Add the new data to the list of all requests
+    
+    x = daytum.add("Users","alonzo",{"name": 1})
     wifi_scan_requests.append(data)
-    daytum.add("Users","alonzo",{"name": 1})
+    wifi_scan_requests.append(x)
     # Emit the updated list to all clients
     socketio.emit('update_wifi_scan', wifi_scan_requests)
     
