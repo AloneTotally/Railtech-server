@@ -127,6 +127,8 @@ insufficient_circles = {}
 # This is a function that will be called multiple times, and it will update the memo as required
 # user_loc is a tuple (x, y)
 def find_new_APs(data_variant, user_loc):
+    global memo
+    global insufficient_circles
     for accessPoint in data_variant["accessPoints"]:
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
@@ -165,24 +167,24 @@ def find_new_APs(data_variant, user_loc):
 data = {
     "accessPoints": [
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid1',
+            "ssid": "ssid1",
+            "bssid": "bssid1",
             "signalStrength": -20,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid2',
+            "ssid": "ssid1",
+            "bssid": "bssid2",
             "signalStrength": -60,
             "frequency": 5040
         },
         {
-            "ssid": 'ssid1',
-            "bssid": 'bssid3',
+            "ssid": "ssid1",
+            "bssid": "bssid3",
             "signalStrength": -60,
             "frequency": 5040
-        },
+        }
     ],
-    "user": "alonzo",
+    "user": "alonzo"
 }
 # trilaterate_actual(data)

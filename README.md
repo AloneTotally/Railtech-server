@@ -37,9 +37,31 @@ It is complete :D now you can try to run **step 2**.
 ```Powershell
 pip install -r requirements.txt
 ```
-You are done with installation!
+You are done with installation! (For python)
+
 ---
 Note: If you want to remove execution policy for this scope (reversing what you did earlier)
 ```
 Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
 ```
+
+### 1. Installing things for js
+
+This just installs the dependencies required for the html side of things
+```Powershell
+npm install
+```
+If it says that html doesnt work go install nodejs [here](https://nodejs.org/en/download/prebuilt-installer).
+
+### 2. Start the Tailwind CLI build process
+
+When you are editing any tailwind classes, run this command (in another terminal after running `python index.py` to run the flask server):
+```Powershell
+npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
+```
+this should start running a script and whenever you edit any tailwind classes in the html files it will generate the corresponding css for those classes in another file so that tailwind like does its job :D
+
+> Note: Whenever you have a html file that uses tailwind classes make sure to put a link to the output.css file at the end of the `<head>` html tag as shown below
+> ```html
+> <link href="../static/output.css" rel="stylesheet">
+>```

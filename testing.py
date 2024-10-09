@@ -7,7 +7,6 @@
 #     {"id": 1, "name": "Item 1"},
 #     {"id": 2, "name": "Item 2"},
 # ]
-
 # # GET all items
 # @app.route('/items', methods=['GET'])
 # def get_items():
@@ -59,3 +58,4 @@
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
+

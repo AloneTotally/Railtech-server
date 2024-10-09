@@ -14,9 +14,9 @@ socketio = SocketIO(app)
 
 # Define a User class to hold each user's name and coordinates
 class User:
-    def __init__(self, name):
+    def __init__(self, name, current_coordinates={"x": random.randint(0, 100), "y": random.randint(0, 100)}):
         self.name = name
-        self.current_coordinates = {"x": random.randint(0, 100), "y": random.randint(0, 100)}
+        self.current_coordinates = current_coordinates
         self.previous_coordinates = {"x": None, "y": None}
         self.wifi_scan_data = None  # Store WiFi scan data
         self.accelerator_data = None  # Store Accelerator data
@@ -32,6 +32,11 @@ users = {
 def index():
     """Render the main page with real-time updates."""
     return render_template("index.html")
+
+@app.route('/no-food-for-dayan')
+def no_food_for_dayan():
+    """Render an example page."""
+    return render_template("railtech-web.html")
 
 wifi_scan_requests = []
 
@@ -66,15 +71,15 @@ def update_wifi_scan():
 
 
 # Route to handle POST requests for Accelerator data
-@app.route('/update_accelerator', methods=['POST'])
-def update_accelerator():
-    data = request.json
-    for user_name, acc_data in data.items():
-        if user_name in users:
-            users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
-    # Emit the updated Accelerator data to all connected clients
-    socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
-    return jsonify({"status": "Accelerator data updated successfully"}), 200
+# @app.route('/update_accelerator', methods=['POST'])
+# def update_accelerator():
+#     data = request.json
+#     for user_name, acc_data in data.items():
+#         if user_name in users:
+#             users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
+#     # Emit the updated Accelerator data to all connected clients
+#     socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
+#     return jsonify({"status": "Accelerator data updated successfully"}), 200
 
 
 # @app.route('/update-coordinates', methods=['POST'])
@@ -116,15 +121,18 @@ def post_coordinates():
     result, meta = trilaterate_actual(data, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
-    new_coords = (result.center.x, result.center.y)
+    new_coords = {'x': result.center.x, 'y': result.center.y}
 
+    # note that `data` is a dictionary and not the database reference
     user_name = data.get('user')
     access_points = data.get('accessPoints')
     
     if not user_name or not access_points:
         return jsonify({"error": "Invalid request data"}), 400
 
-    # TODO: this whole part is replaced by the database request
+    # TODO: this whole part is to be replaced by the database request
+    # not sure about the significance of the previous coordinates attribute tho... can be used in ekf maybe???
+    # but imma just leave it there for now
     # Update the user's coordinates in the global `users` dictionary
     if user_name in users:
         user = users[user_name]
@@ -132,13 +140,14 @@ def post_coordinates():
         user.current_coordinates = new_coords  # Update current coordinates
     else:
         # Create a new user if they don't exist
-        # TODO: error lies in the data formatting of the User object :skull:
-        users[user_name] = User(name=user_name, current_coordinates=new_coords, previous_coordinates=None)
+        users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
             # "current_coordinates": new_coords,
             # "previous_coordinates": None,
         
-
+    # TODO: incorporate find new APs function here
+    # TODO: get the location of the new APs using the trilateration.memo global var
+    # TODO: update the APs on the map or smt
     all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
         
