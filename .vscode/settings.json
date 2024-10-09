@@ -1,3 +1,4 @@
 {
-    "python.REPL.enableREPLSmartSend": true
+    "python.REPL.enableREPLSmartSend": true,
+    "liveServer.settings.port": 5501
 }
