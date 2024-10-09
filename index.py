@@ -23,7 +23,7 @@ class User:
         self.accelerator_data = None  # Store Accelerator data
 
 # Create a dictionary to hold all users
-users = daytum.get_document("Users")
+users = daytum.get_collection("Users")
 
 @app.route('/')
 def index():
