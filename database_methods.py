@@ -7,13 +7,14 @@ try:
     cred = credentials.Certificate(path)
     if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
+    db = firestore.client()
     print("Firebase Initialized")
 except Exception as e:
     print(e)
 
 '''------------------------FUNCTIONS----------------------------------------------------'''
 
-db = firestore.client()
+
 
 def add(collection, document, data):
     try:
@@ -63,6 +64,7 @@ start = time.time()
 data = {"position": [1, 0], "tracking": True, "age": 30}
 people = ["Nash", "Venti"]
 x = query("Access Points", "age", ">", 9)
+
 print(len(x))
 print(time.time()-start)
 # Sample query: Get users with age greater than 9
@@ -72,14 +74,3 @@ print(time.time()-start)
 # update("Users", "Nash", {"age": 31})
 # print(get_document("Users", "Nash"))
 # print(get_field("Users", "Nash", "position"))
-=======
-data = {"position":[1,0],"tracking": False,"age":10}
-people = ["Alonzo","Isaac","Nash","Venti"]
-for i in people:
-    add("Users",i,data)
-print(query("Users","age",9))
-# update(collections[0],"Alonzo",data)
-# print(getall("Users","Alonzo"))
-# print(getfield(collections[0],"Alonzo","Position"))
-# print(query("Users","Tracking","==",True))
->>>>>>> Stashed changes
