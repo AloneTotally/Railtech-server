@@ -62,11 +62,11 @@ def query(collection, check, operator, val):
 start = time.time()
 data = {"position": [1, 0], "tracking": True, "age": 30}
 people = ["Nash", "Venti"]
-print(get_document("Users","Darius"))
-print(add("Users","Isaac",data))
+x = query("Access Points", "age", ">", 9)
+print(len(x))
 print(time.time()-start)
 # Sample query: Get users with age greater than 9
-# print(query("Users", "age", ">", 9))
+
 
 # Other function tests
 # update("Users", "Nash", {"age": 31})
