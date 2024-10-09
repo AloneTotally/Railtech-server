@@ -144,6 +144,7 @@ def post_coordinates():
     else:
         data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
         daytum.add("Users",user_name, data)
+        users = daytum.get_collection("Users")
         # Create a new user if they don't exist
         # users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
