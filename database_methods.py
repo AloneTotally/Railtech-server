@@ -38,7 +38,12 @@ def update(collection, document, data):
         return 1  # worked
     except Exception as e:
         return e  # returns exception
-
+def update_field(collection, document, field, data):
+    try:
+        db.collection(collection).document(document).update({field: data})
+        return 1  # worked
+    except Exception as e:
+        return e  # returns exception
 def get_document(collection, document):
     try:
         doc = db.collection(collection).document(document).get()
@@ -60,10 +65,20 @@ def query(collection, check, operator, val):
         return results
     except Exception as e:
         return e
-
+def get_collection(collection):
+    try:
+        doc = db.collection(collection).stream()
+        results = [x.id for x in doc]
+        return results
+    except Exception as e:
+        return e  # returns exception
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
-# start = time.time()
+data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
+users = ["Isaac","Nash","Venti","Darius"]
+for i in users:
+    data["name"] = i  
+    add("Users",i,data)
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):

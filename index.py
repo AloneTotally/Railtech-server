@@ -13,7 +13,6 @@ template_folder = template_folder=os.path.join(os.path.dirname(__file__), 'templ
 app = Flask(__name__, template_folder=template_folder)
 # Enable CORS for all routes
 socketio = SocketIO(app)
-
 # Define a User class to hold each user's name and coordinates
 class User:
     def __init__(self, name, current_coordinates={"x": random.randint(0, 100), "y": random.randint(0, 100)}):
@@ -24,11 +23,7 @@ class User:
         self.accelerator_data = None  # Store Accelerator data
 
 # Create a dictionary to hold all users
-users = {
-    "Alice": User("Alice"),
-    "Bob": User("Bob"),
-    "Charlie": User("Charlie"),
-}
+users = daytum.get_document("Users")
 
 @app.route('/')
 def index():
@@ -137,9 +132,13 @@ def post_coordinates():
     # but imma just leave it there for now
     # Update the user's coordinates in the global `users` dictionary
     if user_name in users:
-        user = users[user_name]
-        user.previous_coordinates = user.current_coordinates.copy()  # Store previous
-        user.current_coordinates = new_coords  # Update current coordinates
+        # user = users[user_name]
+        # user.previous_coordinates = user.current_coordinates.copy()  # Store previous
+        # user.current_coordinates = new_coords  # Update current coordinates
+        user = daytum.get_document("Users",user_name)
+        daytum.update_field("Users",user_name,"previous_coordinates",user["current_coordinates"])
+        user = daytum.get_document("Users",user_name)
+        
     else:
         # Create a new user if they don't exist
         users[user_name] = User(name=user_name, current_coordinates=new_coords)
