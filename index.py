@@ -137,11 +137,14 @@ def post_coordinates():
         # user.current_coordinates = new_coords  # Update current coordinates
         user = daytum.get_document("Users",user_name)
         daytum.update_field("Users",user_name,"previous_coordinates",user["current_coordinates"])
+        daytum.update_field("Users",user_name,"current_coordinates",new_coords)
         user = daytum.get_document("Users",user_name)
         
     else:
+        data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
+        daytum.add("Users",user_name, data)
         # Create a new user if they don't exist
-        users[user_name] = User(name=user_name, current_coordinates=new_coords)
+        # users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
             # "current_coordinates": new_coords,
             # "previous_coordinates": None,
@@ -149,7 +152,8 @@ def post_coordinates():
     # TODO: incorporate find new APs function here
     # TODO: get the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
-    all_coordinates = {u.name: u.current_coordinates for u in users.values()}
+    # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
+    all_coordinates = daytum.select_field("Users","current_coordinates")
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
         
     # Emit the updated coordinates to all connected clients

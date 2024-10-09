@@ -72,6 +72,17 @@ def get_collection(collection):
         return results
     except Exception as e:
         return e  # returns exception
+def select_field(collection,field):
+    try:
+        x = db.collection(collection).get()
+        data = [i.to_dict() for i in x]
+        result = {}
+        for i in data:
+            result[i["name"]] = i[field]
+        print(result)
+        return result
+    except Exception as e:
+        return e
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
