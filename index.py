@@ -4,7 +4,9 @@ import random
 import os
 import time
 import matplotlib
-matplotlib.use('Agg') 
+import database_methods as daytum
+matplotlib.use('Agg')
+db = daytum.setup()
 
 template_folder = template_folder=os.path.join(os.path.dirname(__file__), 'templates')
 # The path name is because to change the path name

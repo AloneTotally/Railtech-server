@@ -2,19 +2,21 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import time
 # Firebase setup
-path = "railtech-database-firebase-adminsdk-62eza-b93f1145aa.json"
-try:
-    cred = credentials.Certificate(path)
-    if not firebase_admin._apps:
-        firebase_admin.initialize_app(cred)
-    db = firestore.client()
-    print("Firebase Initialized")
-except Exception as e:
-    print(e)
+
 
 '''------------------------FUNCTIONS----------------------------------------------------'''
 
-
+#FirebaseS Setup
+def setup():
+    path = "railtech-database-firebase-adminsdk-62eza-b93f1145aa.json"
+    try:
+        cred = credentials.Certificate(path)
+        if not firebase_admin._apps:
+            firebase_admin.initialize_app(cred)
+        db = firestore.client()
+        return db
+    except Exception as e:
+        return 0
 
 def add(collection, document, data):
     try:
@@ -60,13 +62,13 @@ def query(collection, check, operator, val):
         return e
 
 '''-------------------------------------------------Code-----------------------------------'''
-start = time.time()
-data = {"position": [1, 0], "tracking": True, "age": 30}
-people = ["Nash", "Venti"]
-x = query("Access Points", "age", ">", 9)
-
-print(len(x))
-print(time.time()-start)
+db = setup()
+# start = time.time()
+# data = {"position": [1, 0], "tracking": True, "age": 30}
+# # people = ["Nash", "Venti"]
+# for i in range(100):
+#     delete("Access Points",str(i))
+# print(time.time()-start)
 # Sample query: Get users with age greater than 9
 
 
