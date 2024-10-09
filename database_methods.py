@@ -72,3 +72,14 @@ print(time.time()-start)
 # update("Users", "Nash", {"age": 31})
 # print(get_document("Users", "Nash"))
 # print(get_field("Users", "Nash", "position"))
+=======
+data = {"position":[1,0],"tracking": False,"age":10}
+people = ["Alonzo","Isaac","Nash","Venti"]
+for i in people:
+    add("Users",i,data)
+print(query("Users","age",9))
+# update(collections[0],"Alonzo",data)
+# print(getall("Users","Alonzo"))
+# print(getfield(collections[0],"Alonzo","Position"))
+# print(query("Users","Tracking","==",True))
+>>>>>>> Stashed changes
