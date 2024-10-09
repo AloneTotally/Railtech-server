@@ -1,0 +1,80 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from math import log10
+from easy_trilateration.model import Circle
+from easy_trilateration.least_squares import easy_least_squares
+
+# Simulate some RSSI (Received Signal Strength Indicator) measurements for each AP
+rssis_per_ap = [
+    [-60, -62, -61, -63, -64, -50, -10, -5, -2, -100],  # AP 1 RSSIs
+    [-55, -57, -59, -61, -60, -45, -15, -8, -3, -90],   # AP 2 RSSIs
+    [-70, -65, -63, -67, -66, -55, -30, -25, -15, -95]  # AP 3 RSSIs
+]
+
+# Positions of multiple access points (APs)
+AP_positions = [
+    np.array([0, 0]),    # AP at (0, 0)
+    np.array([10, 0]),   # AP at (10, 0)
+    np.array([5, 10])    # AP at (5, 10)
+]
+
+# Free-Space Path Loss parameters
+FSPL = 27.55  # For routers and access points
+n = 3  # Path loss exponent for indoor environments
+
+# Function to convert signal strength (RSSI) to distance
+def signal_to_distance(mhz, dbm):
+    distance = 10 ** ((FSPL - (20 * log10(mhz)) + abs(dbm)) / (10 * n))
+    return distance
+
+# Store estimated positions for plotting later
+estimated_positions = []
+
+# Loop through the simulated RSSI values for all APs
+for time_step in range(len(rssis_per_ap[0])):  # Assuming equal length for all AP RSSIs
+    distances = []
+
+    for i, AP_pos in enumerate(AP_positions):
+        dBm = rssis_per_ap[i][time_step]  # Get RSSI value from the i-th AP at current time step
+        ghz = 5  # Assume AP operates at 5 GHz
+        mhz = ghz * 1000  # Convert GHz to MHz
+        distance = signal_to_distance(mhz, dBm)
+
+        if distance > 0:
+            distances.append(distance)
+        else:
+            print(f"Invalid distance calculated: {distance}. Setting to small positive value.")
+            distances.append(1e-3)
+
+    # Create Circle objects for trilateration
+    circles = [
+        Circle(AP_positions[0][0], AP_positions[0][1], distances[0]),  # Circle for AP 1
+        Circle(AP_positions[1][0], AP_positions[1][1], distances[1]),  # Circle for AP 2
+        Circle(AP_positions[2][0], AP_positions[2][1], distances[2])   # Circle for AP 3
+    ]
+
+    # Perform trilateration using the Circle objects
+    try:
+        estimated_state = easy_least_squares(circles)  # Get the estimated position
+        print(f"Time step {time_step}: Estimated Position: x={estimated_state[0].center.x:.2f}, y={estimated_state[0].center.y:.2f}")
+        estimated_positions.append((estimated_state[0].center.x, estimated_state[0].center.y))
+    except Exception as e:
+        print(f"Error in trilateration at time step {time_step}: {e}")
+        estimated_positions.append([None, None])
+
+# Convert estimated_positions to a NumPy array for plotting
+estimated_positions = np.array([pos for pos in estimated_positions if pos[0] is not None])
+
+# Plotting the estimated positions if available
+if len(estimated_positions) > 0:
+    plt.plot(estimated_positions[:, 0], estimated_positions[:, 1], 'r*-', label='Trilaterated Positions')
+    plt.scatter([AP[0] for AP in AP_positions], [AP[1] for AP in AP_positions], color='blue', label='AP Locations')
+
+    plt.xlabel('X Position')
+    plt.ylabel('Y Position')
+    plt.title('Estimated Position Over Time with Easy-Trilateration')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+else:
+    print("No valid positions to plot.")

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Accelerator</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    </head>
+    <body>
+        <h1>Accelerator Results</h1>
+        <div id="accelerator-results">Loading...</div>
+        <h1><a href="/">Go back to Coordinates</a></h1>
+
+        <script>
+            const socket = io();
+
+            socket.on('update_accelerator', function(data) {
+                const acceleratorDiv = document.getElementById('accelerator-results');
+                acceleratorDiv.innerHTML = ''; // Clear previous results
+                for (const [name, value] of Object.entries(data)) {
+                    acceleratorDiv.innerHTML += `<p>${name}: Accelerator Data: ${JSON.stringify(value)}</p>`;
+                }
+            });
+        </script>
+    </body>
+    </html>
