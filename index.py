@@ -160,7 +160,7 @@ def post_coordinates():
         
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
-    return jsonify({"status": "Trilateration data updated successfully"}), 200
+    return jsonify({"status": f"Trilateration data updated successfully{user_name}{user}"}), 200
 
 
 # Start the background thread for updating coordinates
