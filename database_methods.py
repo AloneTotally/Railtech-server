@@ -24,7 +24,12 @@ def add(collection, document, data):
         return 1  # worked
     except Exception as e:
         return e  # returns exception
-
+def add_field(collection, document, data):
+    try:
+        db.collection(collection).document(document).set(data,merge = True)
+        return 1  # worked
+    except Exception as e:
+        return e  # returns exception
 def delete(collection, document):
     try:
         db.collection(collection).document(document).delete()
