@@ -84,17 +84,15 @@ def select_field(collection,field):
         result = {}
         for i in data:
             result[i["name"]] = i[field]
-        print(result)
         return result
     except Exception as e:
-        return e
+        return str(e)
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
 users = ["Isaac","Nash","Venti","Darius"]
-for i in users:
-    data["name"] = i  
-    add("Users",i,data)
+x = select_field("Users","current_coordinates")
+print(x)
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):
