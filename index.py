@@ -175,11 +175,12 @@ def post_coordinates():
         user = daytum.get_document("Users",user_name)
         daytum.update_field("Users",user_name,"previous_coordinates",user["current_coordinates"])
         daytum.update_field("Users",user_name,"current_coordinates",new_coords)
+        daytum.update_field("Users",user_name,"rssi",data)
         user = daytum.get_document("Users",user_name)
         
     else:
         # TODO: Darius urm try not to change the schema of a variable instead create a new variable (u previously named it data)
-        user_data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":user_name}
+        user_data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":True,"rssi":data,"name":user_name}
         daytum.add("Users",user_name, user_data)
         users = daytum.get_collection("Users")
         # Create a new user if they don't exist
