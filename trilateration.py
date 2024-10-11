@@ -118,10 +118,15 @@ def trilaterate_actual(data, ref_APs):
         return []
 
 # TODO: also can technically be in the database? but this data shld be used in the ekf
-memo = {
-    # "bssid1": (Circle(3, 3, 5), {some long ass info abt the thing})
-}
+memo = {}
+# memo stores where the APs are using trilateration follows the following schema:
+# {
+# "bssid1": (Circle(3, 3, 5), {some long ass info abt the thing})
+# }
+
 # TODO: to be replaced by database
+# this stores the circles of the user (with each circles
+# radius being the length to each AP)
 insufficient_circles = {}
 
 # This is a function that will be called multiple times, and it will update the memo as required

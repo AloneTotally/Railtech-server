@@ -112,13 +112,12 @@ def post_coordinates():
     global users
 
     data = request.json
-
+    # TODO: ref_APs variable shld be in a database and should probably be modified to fit schema of memo (find new APs portion)
     ref_APs = {
         'bssid1': (4, 0),
         'bssid2': (10, 9),    
         'bssid3': (1, 10)
-    } # TODO: ref_APs variable shld be in a database
-    # TODO: Put trilateration portion here
+    } 
 
     from trilateration import trilaterate_actual
     result, meta = trilaterate_actual(data, ref_APs)
@@ -147,17 +146,22 @@ def post_coordinates():
         user = daytum.get_document("Users",user_name)
         
     else:
-        data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":user_name}
-        daytum.add("Users",user_name, data)
+        # TODO: Darius urm try not to change the schema of a variable instead create a new variable (u previously named it data)
+        user_data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":user_name}
+        daytum.add("Users",user_name, user_data)
         users = daytum.get_collection("Users")
         # Create a new user if they don't exist
         # users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
             # "current_coordinates": new_coords,
             # "previous_coordinates": None,
-        
-    # TODO: incorporate find new APs function here
-    # TODO: get the location of the new APs using the trilateration.memo global var
+    
+    # TODO: note that memo and insufficient circles are to be replaced by
+    # TODO: db as they are meant to be constantly changing
+    from trilateration import find_new_APs, memo, insufficient_circles
+    find_new_APs(data, (new_coords["x"], new_coords["y"]))
+    
+    # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     all_coordinates = daytum.select_field("Users","current_coordinates")

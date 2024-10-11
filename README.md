@@ -57,7 +57,7 @@ If it says that html doesnt work go install nodejs [here](https://nodejs.org/en/
 
 When you are editing any tailwind classes, run this command (in another terminal after running `python index.py` to run the flask server):
 ```Powershell
-npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
+npx tailwindcss -i ./static/src/input.css -o ./static/dist/css/output.css --watch
 ```
 this should start running a script and whenever you edit any tailwind classes in the html files it will generate the corresponding css for those classes in another file so that tailwind like does its job :D
 

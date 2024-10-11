@@ -7,13 +7,14 @@
     <title>Document</title>
     <!-- <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" /> -->
     <!-- TAILWIND STYLES -->
-    <link href="../static/output.css" rel="stylesheet">
+    <link href="../static/dist/css/output.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}"> -->
 
     <!-- ALPINE IMPORT -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-gray-900">
+<body class="bg-gray-900 dark">
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
         type="button"
         class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -234,7 +235,13 @@
                                             <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="">
                                             <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800" href="#">+3</a>
                                         </div>
-                                        <span x-text="item.type"  class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"></span>
+                                        <template x-if="item.type == 'TAR'">
+                                            <span  class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span>
+                                        </template>
+                                        <template x-if="item.type == 'EWR'">
+                                            <span class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">EWR</span>
+                                        </template>
+
                                      </div>
                                        
                                 </div>
@@ -242,7 +249,15 @@
                             <td x-text="item.id"  class="px-6 py-4"></td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                    <template x-if="item.status == 'Not Started'">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                    </template>
+                                    <template x-if="item.status == 'Ongoing'">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                    </template>
+                                    <template x-if="item.status == 'Finished'">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
+                                    </template>
                                     <p x-text="item.status"></p>
                                 </div>
                             </td>
@@ -273,15 +288,15 @@
                 },
                 {
                     title: 'Maintanence between Bukit Panjang and Cashew',
-                    type: 'TAR',
+                    type: 'EWR',
                     id: 'SBST123456789A',
-                    status: 'Ongoing',
+                    status: 'Not Started',
                 },
                 {
                     title: 'Maintanence between Bukit Panjang and Cashew',
                     type: 'TAR',
                     id: 'SBST123456789A',
-                    status: 'Ongoing',
+                    status: 'Finished',
                 },
             ]
         })
