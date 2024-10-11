@@ -213,8 +213,8 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody x-data="$store.userInfo">
-                    <template x-for="item in listItems">
+                <tbody>
+                    {% for item in data.listItems %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
@@ -226,7 +226,7 @@
                             <th scope="row"
                                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                 <div class="ps-3">
-                                    <div x-text="item.title"  class="text-base font-semibold"></div>
+                                    <div class="text-base font-semibold">{{item.title}}</div>
                                     <div class="flex flex-row items-center gap-3">
                                         <!-- <div class="font-normal">SBST123456789A</div> -->
                                         <div class="flex -space-x-3 rtl:space-x-reverse">
@@ -235,30 +235,26 @@
                                             <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="">
                                             <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800" href="#">+3</a>
                                         </div>
-                                        <template x-if="item.type == 'TAR'">
+                                        {% if item.type == 'TAR' %}
                                             <span  class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span>
-                                        </template>
-                                        <template x-if="item.type == 'EWR'">
+                                        {% elif item.type == 'EWR' %}
                                             <span class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">EWR</span>
-                                        </template>
-
+                                        {% endif %}
                                      </div>
                                        
                                 </div>
                             </th>
-                            <td x-text="item.id"  class="px-6 py-4"></td>
+                            <td  class="px-6 py-4">{{item.id}}</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    <template x-if="item.status == 'Not Started'">
+                                    {% if item.status == 'Not Started' %}
                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                    </template>
-                                    <template x-if="item.status == 'Ongoing'">
+                                    {% elif item.status == 'Ongoing' %}
                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                    </template>
-                                    <template x-if="item.status == 'Finished'">
+                                    {% elif item.status == 'Finished' %}
                                         <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
-                                    </template>
-                                    <p x-text="item.status"></p>
+                                    {% endif %}
+                                    <p>{{item.status}}</p>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
@@ -266,8 +262,7 @@
                                     user</a>
                             </td>
                         </tr>
-                    </template>
-                   
+                        {% endfor %}               
                 </tbody>
             </table>
         </div>
@@ -275,30 +270,3 @@
 </body>
 
 </html>
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.store('userInfo', {
-            listItems: [
-                {
-                    title: 'Maintanence between Bukit Panjang and Cashew',
-                    type: 'TAR',
-                    id: 'SBST123456789A',
-                    status: 'Ongoing',
-                },
-                {
-                    title: 'Maintanence between Bukit Panjang and Cashew',
-                    type: 'EWR',
-                    id: 'SBST123456789A',
-                    status: 'Not Started',
-                },
-                {
-                    title: 'Maintanence between Bukit Panjang and Cashew',
-                    type: 'TAR',
-                    id: 'SBST123456789A',
-                    status: 'Finished',
-                },
-            ]
-        })
-    })
-</script>

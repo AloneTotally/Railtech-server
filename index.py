@@ -37,8 +37,30 @@ def no_food_for_dayan():
 
 @app.route('/home')
 def home_page():
+    data = {
+            "listItems": [
+                {
+                    "title": 'Maintanence between Bukit Panjang and Cashew',
+                    "type": 'TAR',
+                    "id": 'SBST123456789A',
+                    "status": 'Ongoing',
+                },
+                {
+                    "title": 'Maintanence between Bukit Panjang and Cashew',
+                    "type": 'EWR',
+                    "id": 'SBST123456789A',
+                    "status": 'Not Started',
+                },
+                {
+                    "title": 'Maintanence between Bukit Panjang and Cashew',
+                    "type": 'TAR',
+                    "id": 'SBST123456789A',
+                    "status": 'Finished',
+                },
+            ]
+        }
     """Render the main page."""
-    return render_template("railtech-web-flowbite.html")
+    return render_template("railtech-web-flowbite.html", data=data)
 
 wifi_scan_requests = []
 
