@@ -121,6 +121,22 @@
             ctx.fillStyle = "lightgray"; // Fill background
             ctx.fillRect(0, 0, Width, height);
 
+            // Draw grid
+            // const gridSize = 50;
+            // ctx.strokeStyle = '#888';
+            // for (let x = -offsetX % gridSize; x < canvas.width; x += gridSize) {
+            //     ctx.beginPath();
+            //     ctx.moveTo(x, 0);
+            //     ctx.lineTo(x, canvas.height);
+            //     ctx.stroke();
+            // }
+            // for (let y = -offsetY % gridSize; y < canvas.height; y += gridSize) {
+            //     ctx.beginPath();
+            //     ctx.moveTo(0, y);
+            //     ctx.lineTo(canvas.width, y);
+            //     ctx.stroke();
+            // }
+
             // Draw the image onto the canvas
             ctx.drawImage(img, 0, 0, Width, height);
 
