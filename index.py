@@ -35,6 +35,11 @@ def no_food_for_dayan():
     """Render an example page."""
     return render_template("railtech-web.html")
 
+@app.route('/home')
+def home_page():
+    """Render the main page."""
+    return render_template("railtech-web-flowbite.html")
+
 wifi_scan_requests = []
 
 @app.route('/wifiscan')
