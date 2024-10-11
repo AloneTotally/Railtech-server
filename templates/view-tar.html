@@ -158,11 +158,12 @@
             </ol>
         </nav>
 
-        <div class="flex flex-row gap-5 items-center mt-3">
-            <h2 class="text-4xl font-bold dark:text-white">SBST123456789A</h2>
+        <div class="flex flex-row gap-5 items-center mt-7">
+
+            <h1 class="text-5xl font-bold dark:text-white">SBST123456789A</h1>
             <!-- <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span> -->
         </div>
-        <div class="flex flex-row items-center gap-3">
+        <div class="flex flex-row items-center gap-3 mt-3">
             <!-- <div class="font-normal">SBST123456789A</div> -->
             <div class="flex -space-x-3 rtl:space-x-reverse">
                 <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
@@ -182,20 +183,139 @@
                 class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">EWR</span>
             {% endif %}
         </div>
-
-        <div class="flex flex-row gap-5">
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+        <div id="leftright-container" class="flex flex-row gap-10">
             <div id="left" class="w-5/6">
-                <h3 class="text-3xl font-bold dark:text-white mt-10">Description</h3>
+                <h3 class="text-3xl font-bold dark:text-white">Description</h3>
 
-                <p class="mb-3 text-gray-500 dark:text-gray-400 mt-2">Track work across the enterprise through an open,
+                <p class="mb-3 text-gray-500 dark:text-gray-400 mt-3">
+                    Track work across the enterprise through an open,
                     collaborative platform. Link issues across Jira and ingest data from other software development
                     tools,
                     so your IT support and operations teams have richer contextual information to rapidly respond to
-                    requests, incidents, and changes.</p>
-                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                    requests, incidents, and changes.
+                </p>
+                <button type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
+                    View PDF
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
+                </button>
+
+
+                <h3 class="text-3xl font-bold dark:text-white mt-10">Workzones</h3>
+
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700 mt-5">
+                    <li class="pb-3 sm:pb-4">
+                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Neil Sims
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    example info 1
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $320
+                            </div>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                                    alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Bonnie Green
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    example info 1
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $3467
+                            </div>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                    alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Michael Gough
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    example info 1
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $67
+                            </div>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Thomas Lean
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    example info 1
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $2367
+                            </div>
+                        </div>
+                    </li>
+                    <li class="pt-3 pb-0 sm:pt-4">
+                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+                                    alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Lana Byrd
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    example info 1
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                $367
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+
             </div>
             <div id="right">
-                <h3 class="text-3xl font-bold dark:text-white mt-10">Activity Log</h3>
+                <!-- <h4 class="text-2xl font-bold dark:text-white">Activity Log</h4> -->
+                <h3 class="text-3xl font-bold dark:text-white">Activity Log</h3>
 
                 <div
                     class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
@@ -204,7 +324,8 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="Jese Leos image" />
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Jese Leos image" />
                                 <div class="text-gray-600 dark:text-gray-400">
                                     <div class="text-base font-normal"><span
                                             class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
@@ -230,7 +351,8 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="Bonnie Green image" />
+                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                                    alt="Bonnie Green image" />
                                 <div>
                                     <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
                                             class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
@@ -262,7 +384,8 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg" alt="Laura Romeros image" />
+                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+                                    alt="Laura Romeros image" />
                                 <div class="text-gray-600 dark:text-gray-400">
                                     <div class="text-base font-normal"><span
                                             class="font-medium text-gray-900 dark:text-white">Laura Romeros</span> likes
@@ -291,7 +414,8 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Mike Willi image" />
+                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                    alt="Mike Willi image" />
                                 <div>
                                     <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
                                             class="font-medium text-gray-900 dark:text-white">Mike Willi</span> react to
@@ -313,7 +437,8 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Jese Leos image" />
+                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    alt="Jese Leos image" />
                                 <div class="text-gray-600 dark:text-gray-400">
                                     <div class="text-base font-normal"><span
                                             class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
@@ -339,7 +464,8 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="Bonnie Green image" />
+                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                                    alt="Bonnie Green image" />
                                 <div class="text-gray-600 dark:text-gray-400">
                                     <div class="text-base font-normal"><span
                                             class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> likes
