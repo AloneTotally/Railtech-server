@@ -60,7 +60,17 @@ def home_page():
             ]
         }
     """Render the main page."""
-    return render_template("railtech-web-flowbite.html", data=data)
+    return render_template("view-tars.html", data=data)
+
+@app.route('/view-tar')
+def view_tar():
+    item =  {
+        "title": 'Maintanence between Bukit Panjang and Cashew',
+        "type": 'TAR',
+        "id": 'SBST123456789A',
+        "status": 'Ongoing',
+    },
+    return render_template("view-tar.html", item=item)
 
 wifi_scan_requests = []
 
