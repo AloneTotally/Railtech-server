@@ -145,11 +145,15 @@ def post_coordinates():
 
     data = request.json
     # TODO: ref_APs variable shld be in a database and should probably be modified to fit schema of memo (find new APs portion)
-    ref_APs = {
-        'bssid1': (4, 0),
-        'bssid2': (10, 9),    
-        'bssid3': (1, 10)
-    } 
+    # ref_APs = {
+    #     'bssid1': (4, 0),
+    #     'bssid2': (10, 9),    
+    #     'bssid3': (1, 10)
+    # } 
+    ref_APs = {}
+    aps = daytum.get_collection("Access Points")
+    for i in aps:
+        ref_APs[i["mac"]] = i["coordinates"]
 
     from trilateration import trilaterate_actual
     result, meta = trilaterate_actual(data, ref_APs)
@@ -197,9 +201,9 @@ def post_coordinates():
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
-    all_coordinates = daytum.select_field("Users","current_coordinates")
+    all_coordinates = {"Users":daytum.select_field("Users","current_coordinates"),"APs":daytum.select_field("Access Points","coordinates")}
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
-        
+    
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
     return jsonify({"status": "Trilateration data updated successfully"}), 200
