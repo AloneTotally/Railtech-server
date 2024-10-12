@@ -70,10 +70,17 @@ def query(collection, check, operator, val):
         return results
     except Exception as e:
         return e
-def get_collection(collection):
+def get_collection_names(collection):
     try:
         doc = db.collection(collection).stream()
         results = [x.id for x in doc]
+        return results
+    except Exception as e:
+        return e  # returns exception
+def get_collection_data(collection):
+    try:
+        doc = db.collection(collection).stream()
+        results = [x.to_dict() for x in doc]
         return results
     except Exception as e:
         return e  # returns exception
@@ -91,8 +98,13 @@ def select_field(collection,field):
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
 users = ["Isaac","Nash","Venti","Darius"]
-x = select_field("Users","current_coordinates")
-print(x)
+ref_APs = {}
+aps = get_collection_data("Access Points")
+print(aps)
+for i in aps:
+        ref_APs[i["mac"]] = i["coordinates"]
+print(ref_APs)
+print({"Users":select_field("Users","current_coordinates"),"APs":select_field("Access Points","coordinates")})
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):

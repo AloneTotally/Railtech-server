@@ -23,7 +23,7 @@ class User:
         self.accelerator_data = None  # Store Accelerator data
 
 # Create a dictionary to hold all users
-users = daytum.get_collection("Users")
+users = daytum.get_collection_names("Users")
 
 @app.route('/')
 def index():
@@ -151,7 +151,7 @@ def post_coordinates():
     #     'bssid3': (1, 10)
     # } 
     ref_APs = {}
-    aps = daytum.get_collection("Access Points")
+    aps = daytum.get_collection_data("Access Points")
     for i in aps:
         ref_APs[i["mac"]] = i["coordinates"]
 
@@ -186,7 +186,7 @@ def post_coordinates():
         # TODO: Darius urm try not to change the schema of a variable instead create a new variable (u previously named it data)
         user_data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":True,"rssi":data["accessPoints"],"name":user_name}
         daytum.add("Users",user_name, user_data)
-        users = daytum.get_collection("Users")
+        users = daytum.get_collection_names("Users")
         # Create a new user if they don't exist
         # users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
