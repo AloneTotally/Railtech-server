@@ -98,13 +98,7 @@ def select_field(collection,field,identifier):
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
 users = ["Isaac","Nash","Venti","Darius"]
-ref_APs = {}
-aps = get_collection_data("Access Points")
-print(aps)
-for i in aps:
-        ref_APs[i["mac"]] = i["coordinates"]
-print(ref_APs)
-print(select_field("Access Points","coordinates","mac"))
+update_field("Access Points","bssid3","coordinates",{"x":1,"y":10})
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):
