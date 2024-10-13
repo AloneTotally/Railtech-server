@@ -15,7 +15,8 @@
     <div id="coordinates"></div>
     <!-- <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
     <h1><a href="/accelerator">Go to Accelerator</a></h1> -->
-
+    <h1>Real-time Aps Coordinates</h1>
+    <div id="coordinates-ap"></div>
     <canvas id="Rectangle" width="1200" height="400" class="border border-black"></canvas>
     
     <!-- <script>
@@ -145,7 +146,7 @@
         const stepY = 1
 
         const xMin = -20, xMax = 20;
-        const yMin = -10, yMax = 10;
+        const yMin = -15, yMax = 15;
 
         // Load image
         const img = new Image();
@@ -234,11 +235,13 @@
 
         // Handle real-time coordinate updates
         socket.on('update_coordinates', function (data) {
-            // console.log(data)
-            userData = data.Users
-            apData = data.APs // Do what u will with this ig
+            console.log(data);
+            userData = data.Users;
+            apData = data.APs; // Do what u will with this ig
             const coordinatesDiv = document.getElementById('coordinates');
+            const apcoordinatesDiv = document.getElementById('coordinates-ap')
             coordinatesDiv.innerHTML = ''; // Clear previous coordinates
+            apcoordinatesDiv.innerHTML = ''; // Clear previous coordinates
 
             // Clear canvas and redraw default map
             DefaultMap();
@@ -252,6 +255,17 @@
                 const userColor = colors[index % colors.length]; // Cycle through colors
 
                 plot(name, coords.x, coords.y, userColor); // Plot user's position
+            });
+
+            // Plot each user's coordinates
+            Object.entries(apData).forEach(([mac, coords], index) => {
+                apcoordinatesDiv.innerHTML += `<p>${mac}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
+                console.log([mac,coords]);
+                // Choose a different color for each user
+                const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+                const userColor = colors[index % colors.length]; // Cycle through colors
+
+                plot(mac, coords.x, coords.y, userColor); // Plot user's position
             });
         });
 

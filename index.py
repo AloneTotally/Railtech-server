@@ -152,6 +152,7 @@ def post_coordinates():
     # } 
     ref_APs = {}
     aps = daytum.get_collection_data("Access Points")
+    print(aps)
     for i in aps:
         ref_APs[i["mac"]] = i["coordinates"]
 
