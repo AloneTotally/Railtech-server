@@ -234,6 +234,9 @@
 
         // Handle real-time coordinate updates
         socket.on('update_coordinates', function (data) {
+            // console.log(data)
+            userData = data.Users
+            apData = data.APs // Do what u will with this ig
             const coordinatesDiv = document.getElementById('coordinates');
             coordinatesDiv.innerHTML = ''; // Clear previous coordinates
 
@@ -241,7 +244,7 @@
             DefaultMap();
 
             // Plot each user's coordinates
-            Object.entries(data).forEach(([name, coords], index) => {
+            Object.entries(userData).forEach(([name, coords], index) => {
                 coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
 
                 // Choose a different color for each user
