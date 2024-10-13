@@ -128,7 +128,7 @@
         </div>
     </aside>
 
-    <div class="p-4 sm:ml-64">
+    <div class="p-8 sm:ml-64">
 
 
         <nav class="flex" aria-label="Breadcrumb">
@@ -158,10 +158,27 @@
             </ol>
         </nav>
 
-        <div class="flex flex-row gap-5 items-center mt-7">
+        <div class="flex flex-row gap-5 items-center mt-7 justify-between">
+            <div class="flex flex-row items-center gap-4">
+                <h2 class="text-4xl font-bold dark:text-white">{{ item.title }}</h2>
+                {% if item.status == 'Not Started' %}
+                <div class="h-4 w-4 rounded-full bg-red-500 me-2"></div>
+                {% elif item.status == 'Ongoing' %}
+                <div class="h-4 w-4 rounded-full bg-green-500 me-2"></div>
+                {% elif item.status == 'Finished' %}
+                <div class="h-4 w-4 rounded-full bg-cyan-500 me-2"></div>
+                {% endif %}
+            </div>
 
-            <h1 class="text-5xl font-bold dark:text-white">SBST123456789A</h1>
-            <!-- <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span> -->
+            <button type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
+                Scan QR
+                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+            </button>
         </div>
         <div class="flex flex-row items-center gap-3 mt-3">
             <!-- <div class="font-normal">SBST123456789A</div> -->
@@ -175,6 +192,23 @@
                 <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800"
                     href="#">+3</a>
             </div>
+            <div class="text-white flex flex-row items-center gap-1">
+                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    Isaac
+                </p>
+                <p class="text-gray-400">&#x2022;</p>
+                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    Venti
+                </p>
+                <p class="text-gray-400">&#x2022;</p>
+                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    Nash
+                </p>
+                <p class="text-gray-400">&#x2022;</p>
+                <p class="text-sm text-gray-500 truncate dark:text-gray-400 font-bold">
+                    +3 more
+                </p>
+            </div>
             {% if item.type == 'TAR' %}
             <span
                 class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span>
@@ -184,9 +218,9 @@
             {% endif %}
         </div>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-        <div id="leftright-container" class="flex flex-row gap-10">
-            <div id="left" class="w-5/6">
-                <h3 class="text-3xl font-bold dark:text-white">Description</h3>
+        <div id="leftright-container" class="flex flex-row justify-between gap-10">
+            <div id="left">
+                <!-- <h3 class="text-3xl font-bold dark:text-white">Description</h3>
 
                 <p class="mb-3 text-gray-500 dark:text-gray-400 mt-3">
                     Track work across the enterprise through an open,
@@ -194,9 +228,39 @@
                     tools,
                     so your IT support and operations teams have richer contextual information to rapidly respond to
                     requests, incidents, and changes.
-                </p>
+                </p> -->
+
+                <div class="w-full">
+                    <div class="px-4 sm:px-0">
+                        <h3 class="text-3xl font-bold dark:text-white">Information</h3>
+                        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal details and application.</p>
+                    </div>
+                    <div class="mt-6 border-t border-gray-700">
+                        <dl class="divide-y divide-gray-700">
+                            {% for key, value in item.items() %}
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-normal font-medium leading-6 text-white">{{ key[0].upper() + key[1:] if
+                                    key != 'id' else 'ID' }}</dt>
+                                <dd class="mt-1 text-normal leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{{ value }}
+                                </dd>
+                            </div>
+                            {% endfor %}
+
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-normal font-medium leading-6 text-white">Description</dt>
+                                <dd class="mt-1 text-normal leading-6 text-gray-400 sm:col-span-2 sm:mt-0">Fugiat ipsum
+                                    ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.
+                                    Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea
+                                    officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit
+                                    deserunt qui eu.</dd>
+                            </div>
+
+                        </dl>
+                    </div>
+                </div>
+
                 <button type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
+                    class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-3 text-center inline-flex items-center dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-800 mt-2">
                     View PDF
                     <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 14 10">
@@ -208,7 +272,7 @@
 
                 <h3 class="text-3xl font-bold dark:text-white mt-10">Workzones</h3>
 
-                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700 mt-5">
+                <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-5">
                     <li class="pb-3 sm:pb-4">
                         <div class="flex items-center space-x-4 rtl:space-x-reverse">
                             <div class="flex-shrink-0">
@@ -313,14 +377,289 @@
 
 
             </div>
-            <div id="right">
+            <div id="right" class="w-full">
                 <!-- <h4 class="text-2xl font-bold dark:text-white">Activity Log</h4> -->
                 <h3 class="text-3xl font-bold dark:text-white">Activity Log</h3>
+                <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Log of Activities detected by LTAPal.</p>
 
                 <div
                     class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
-                    <time class="text-lg font-semibold text-gray-900 dark:text-white">January 13th, 2022</time>
+                    <div id="row" class="flex w-full justify-between items-center">
+                        <div class=" text-lg font-bold text-gray-900 dark:text-white">Everyone checked in</div>
+                        <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                            1:30 AM
+                        </span>
+                    </div>
                     <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Jese Leos image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Alonzo</span> checked in
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                    alt="Mike Willi image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Darius</span> checked in
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+                                    alt="Laura Romeros image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Isaac</span> checked in
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+                                    alt="Laura Romeros image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Venti</span> checked in
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+
+                <div
+                    class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
+                    <div id="row" class="flex w-full justify-between items-center">
+                        <div class=" text-lg font-bold text-gray-900 dark:text-white">Workzone A - Workzone B (3/4)
+                        </div>
+                        <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                            1:30 AM
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
+                        Alonzo, Isaac, Darius
+                    </span>
+                    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Jese Leos image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Alonzo</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone A</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone B</span>
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                    alt="Mike Willi image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Isaac</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone A</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone B</span>
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+                                    alt="Laura Romeros image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Darius</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone A</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone B</span>
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+                <div
+                    class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-red-950 dark:border-red-700 mt-4">
+                    <div id="row" class="flex w-full justify-between items-center">
+                        <div class=" max-w-4xl text-lg font-bold text-gray-900 dark:text-white">Workzone B - Workzone C
+                            (1/4)</div>
+                        <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                            1:30 AM
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center text-sm font-normal text-red-500 dark:text-red-400">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, provident!
+                    </span>
+                    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Jese Leos image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Alonzo</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone B</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone C</span>
+                                    </div>
+                                    <!-- <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div> -->
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ol>
+
+                </div>
+                <div
+                    class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
+                    <div id="row" class="flex w-full justify-between items-center">
+                        <div class="text-lg font-bold text-gray-900 dark:text-white">Workzone B - Workzone D (2/4)</div>
+                        <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                            2:00 AM
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
+                        Alonzo, Isaac
+                    </span>
+                    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                                    alt="Elena Gomez image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Alonzo</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone B</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone D</span>
+                                    </div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        2:00 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    alt="John Doe image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Isaac</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone B</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone D</span>
+                                    </div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        2:00 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+
+                <div
+                    class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-red-950 dark:border-red-700 mt-4">
+                    <div id="row" class="flex w-full justify-between items-center">
+                        <div class="max-w-4xl text-lg font-bold text-gray-900 dark:text-white">Workzone D - Workzone E
+                            (1/4)</div>
+                        <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                            2:30 AM
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center text-sm font-normal text-red-500 dark:text-red-400">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla, modi!
+                    </span>
+                    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    alt="Sara Williams image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Isaac</span> moved from
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone D</span> to
+                                        <span class="font-medium text-gray-900 dark:text-white">Workzone E</span>
+                                    </div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        2:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+
+
+
+                <div
+                    class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
+                    <ol class="divide-y divider-gray-200 dark:divide-gray-700">
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
@@ -338,12 +677,7 @@
                                     <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
                                     <span
                                         class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        <svg class="w-2.5 h-2.5 me-1" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 .5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19ZM8.374 17.4a7.6 7.6 0 0 1-5.9-7.4c0-.83.137-1.655.406-2.441l.239.019a3.887 3.887 0 0 1 2.082 2.5 4.1 4.1 0 0 0 2.441 2.8c1.148.522 1.389 2.007.732 4.522Zm3.6-8.829a.997.997 0 0 0-.027-.225 5.456 5.456 0 0 0-2.811-3.662c-.832-.527-1.347-.854-1.486-1.89a7.584 7.584 0 0 1 8.364 2.47c-1.387.208-2.14 2.237-2.14 3.307a1.187 1.187 0 0 1-1.9 0Zm1.626 8.053-.671-2.013a1.9 1.9 0 0 1 1.771-1.757l2.032.619a7.553 7.553 0 0 1-3.132 3.151Z" />
-                                        </svg>
-                                        Public
+                                        1:30 AM
                                     </span>
                                 </div>
                             </a>
@@ -362,51 +696,7 @@
                                     </div>
                                     <span
                                         class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        <svg class="w-2.5 h-2.5 me-1" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="m2 13.587 3.055-3.055A4.913 4.913 0 0 1 5 10a5.006 5.006 0 0 1 5-5c.178.008.356.026.532.054l1.744-1.744A8.973 8.973 0 0 0 10 3C4.612 3 0 8.336 0 10a6.49 6.49 0 0 0 2 3.587Z" />
-                                            <path
-                                                d="m12.7 8.714 6.007-6.007a1 1 0 1 0-1.414-1.414L11.286 7.3a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.401.211.59l-6.007 6.007a1 1 0 1 0 1.414 1.414L8.714 12.7c.189.091.386.162.59.211.011 0 .021.007.033.01a2.981 2.981 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
-                                            <path
-                                                d="M17.821 6.593 14.964 9.45a4.952 4.952 0 0 1-5.514 5.514L7.665 16.75c.767.165 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
-                                        </svg>
-                                        Private
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                    </ol>
-                </div>
-                <div class="p-5 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                    <time class="text-lg font-semibold text-gray-900 dark:text-white">January 12th, 2022</time>
-                    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
-                                    alt="Laura Romeros image" />
-                                <div class="text-gray-600 dark:text-gray-400">
-                                    <div class="text-base font-normal"><span
-                                            class="font-medium text-gray-900 dark:text-white">Laura Romeros</span> likes
-                                        <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
-                                        post
-                                        in <span class="font-medium text-gray-900 dark:text-white"> How to start with
-                                            Flowbite library</span>
-                                    </div>
-                                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        <svg class="w-2.5 h-2.5 me-1" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="m2 13.587 3.055-3.055A4.913 4.913 0 0 1 5 10a5.006 5.006 0 0 1 5-5c.178.008.356.026.532.054l1.744-1.744A8.973 8.973 0 0 0 10 3C4.612 3 0 8.336 0 10a6.49 6.49 0 0 0 2 3.587Z" />
-                                            <path
-                                                d="m12.7 8.714 6.007-6.007a1 1 0 1 0-1.414-1.414L11.286 7.3a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.401.211.59l-6.007 6.007a1 1 0 1 0 1.414 1.414L8.714 12.7c.189.091.386.162.59.211.011 0 .021.007.033.01a2.981 2.981 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
-                                            <path
-                                                d="M17.821 6.593 14.964 9.45a4.952 4.952 0 0 1-5.514 5.514L7.665 16.75c.767.165 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
-                                        </svg>
-                                        Private
+                                        1:35 AM
                                     </span>
                                 </div>
                             </a>
@@ -414,30 +704,7 @@
                         <li>
                             <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                                    alt="Mike Willi image" />
-                                <div>
-                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
-                                            class="font-medium text-gray-900 dark:text-white">Mike Willi</span> react to
-                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
-                                        comment
-                                    </div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        <svg class="w-2.5 h-2.5 me-1" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 .5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19ZM8.374 17.4a7.6 7.6 0 0 1-5.9-7.4c0-.83.137-1.655.406-2.441l.239.019a3.887 3.887 0 0 1 2.082 2.5 4.1 4.1 0 0 0 2.441 2.8c1.148.522 1.389 2.007.732 4.522Zm3.6-8.829a.997.997 0 0 0-.027-.225 5.456 5.456 0 0 0-2.811-3.662c-.832-.527-1.347-.854-1.486-1.89a7.584 7.584 0 0 1 8.364 2.47c-1.387.208-2.14 2.237-2.14 3.307a1.187 1.187 0 0 1-1.9 0Zm1.626 8.053-.671-2.013a1.9 1.9 0 0 1 1.771-1.757l2.032.619a7.553 7.553 0 0 1-3.132 3.151Z" />
-                                        </svg>
-                                        Public
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
                                     alt="Jese Leos image" />
                                 <div class="text-gray-600 dark:text-gray-400">
                                     <div class="text-base font-normal"><span
@@ -451,12 +718,7 @@
                                     <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
                                     <span
                                         class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        <svg class="w-2.5 h-2.5 me-1" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 .5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19ZM8.374 17.4a7.6 7.6 0 0 1-5.9-7.4c0-.83.137-1.655.406-2.441l.239.019a3.887 3.887 0 0 1 2.082 2.5 4.1 4.1 0 0 0 2.441 2.8c1.148.522 1.389 2.007.732 4.522Zm3.6-8.829a.997.997 0 0 0-.027-.225 5.456 5.456 0 0 0-2.811-3.662c-.832-.527-1.347-.854-1.486-1.89a7.584 7.584 0 0 1 8.364 2.47c-1.387.208-2.14 2.237-2.14 3.307a1.187 1.187 0 0 1-1.9 0Zm1.626 8.053-.671-2.013a1.9 1.9 0 0 1 1.771-1.757l2.032.619a7.553 7.553 0 0 1-3.132 3.151Z" />
-                                        </svg>
-                                        Public
+                                        1:30 AM
                                     </span>
                                 </div>
                             </a>
@@ -466,34 +728,104 @@
                                 <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
                                     src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                                     alt="Bonnie Green image" />
+                                <div>
+                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
+                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
+                                        to
+                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
+                                        comment
+                                    </div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:35 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Jese Leos image" />
                                 <div class="text-gray-600 dark:text-gray-400">
                                     <div class="text-base font-normal"><span
-                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> likes
+                                            class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
                                         <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
-                                        post
-                                        in <span class="font-medium text-gray-900 dark:text-white"> Top figma
-                                            designs</span>
+                                        post in
+                                        <span class="font-medium text-gray-900 dark:text-white"> How to start with
+                                            Flowbite
+                                            library</span>
                                     </div>
                                     <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
                                     <span
                                         class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        <svg class="w-2.5 h-2.5 me-1" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="m2 13.587 3.055-3.055A4.913 4.913 0 0 1 5 10a5.006 5.006 0 0 1 5-5c.178.008.356.026.532.054l1.744-1.744A8.973 8.973 0 0 0 10 3C4.612 3 0 8.336 0 10a6.49 6.49 0 0 0 2 3.587Z" />
-                                            <path
-                                                d="m12.7 8.714 6.007-6.007a1 1 0 1 0-1.414-1.414L11.286 7.3a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.401.211.59l-6.007 6.007a1 1 0 1 0 1.414 1.414L8.714 12.7c.189.091.386.162.59.211.011 0 .021.007.033.01a2.981 2.981 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
-                                            <path
-                                                d="M17.821 6.593 14.964 9.45a4.952 4.952 0 0 1-5.514 5.514L7.665 16.75c.767.165 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
-                                        </svg>
-                                        Private
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                                    alt="Bonnie Green image" />
+                                <div>
+                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
+                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
+                                        to
+                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
+                                        comment
+                                    </div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:35 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                    alt="Jese Leos image" />
+                                <div class="text-gray-600 dark:text-gray-400">
+                                    <div class="text-base font-normal"><span
+                                            class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
+                                        <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
+                                        post in
+                                        <span class="font-medium text-gray-900 dark:text-white"> How to start with
+                                            Flowbite
+                                            library</span>
+                                    </div>
+                                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:30 AM
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                                    alt="Bonnie Green image" />
+                                <div>
+                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
+                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
+                                        to
+                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
+                                        comment
+                                    </div>
+                                    <span
+                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        1:35 AM
                                     </span>
                                 </div>
                             </a>
                         </li>
                     </ol>
                 </div>
-
 
             </div>
         </div>

@@ -64,12 +64,12 @@ def home_page():
 
 @app.route('/view-tar')
 def view_tar():
-    item =  {
-        "title": 'Maintanence between Bukit Panjang and Cashew',
+    item = {
+        "title": 'Maintenance between Bukit Panjang and Cashew',
         "type": 'TAR',
         "id": 'SBST123456789A',
         "status": 'Ongoing',
-    },
+    }
     return render_template("view-tar.html", item=item)
 
 wifi_scan_requests = []
