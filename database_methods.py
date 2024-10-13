@@ -84,13 +84,13 @@ def get_collection_data(collection):
         return results
     except Exception as e:
         return e  # returns exception
-def select_field(collection,field):
+def select_field(collection,field,identifier):
     try:
         x = db.collection(collection).get()
         data = [i.to_dict() for i in x]
         result = {}
         for i in data:
-            result[i["name"]] = i[field]
+            result[i[identifier]] = i[field]
         return result
     except Exception as e:
         return str(e)
@@ -104,7 +104,7 @@ print(aps)
 for i in aps:
         ref_APs[i["mac"]] = i["coordinates"]
 print(ref_APs)
-print({"Users":select_field("Users","current_coordinates"),"APs":select_field("Access Points","coordinates")})
+print(select_field("Access Points","coordinates","mac"))
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):
