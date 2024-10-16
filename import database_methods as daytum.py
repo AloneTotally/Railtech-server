@@ -19,9 +19,10 @@ def classtodict(x):
     return {"x":x.x,"y":x.y,"radius":x.radius}
 def dicttoclass(x):
     return circle(x["x"],x["y"],x["radius"])
-x = circle(1,2,3)
-all_coordinates = daytum.add("test","test",{"data":classtodict(x)})
-print(all_coordinates)
-all_coordinates = dicttoclass(daytum.get_field("test","test","data"))
-print(all_coordinates.radius)
+#darius, alonzo phone, alonzo computer
+mac = ["c6:3f:a1:3e:e7:af","c6:37:08:bb:91:a0","a2:02:a5:de:62:96"]
+data = {"coordinates":{"x":None,"y":None}}
+for i in mac:
+    data["mac"] = i
+    daytum.add("Access Points",i,data)
 
