@@ -30,6 +30,10 @@ def index():
     """Render the main page with real-time updates."""
     return render_template("index.html")
 
+@app.route('/qrcode-gen')
+def qrcode():
+    return render_template('qrcode.html')
+
 @app.route('/employees')
 def employees():
     """Render the employees page."""
