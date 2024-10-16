@@ -106,7 +106,7 @@ def trilaterate_actual(data, ref_APs):
 
             distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
             arr.append(Circle(coords["x"], coords["y"], distance))
-
+    print([i.center.x, i.center.y, i.radius] for i in arr)
     # trilaterate_test(arr)
     try:
         return easy_least_squares(arr)  
