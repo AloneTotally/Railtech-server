@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
 import time
+from easy_trilateration.model import Circle
 # Firebase setup
 
 
@@ -94,6 +95,10 @@ def select_field(collection,field,identifier):
         return result
     except Exception as e:
         return str(e)
+def classtodict(x):
+    return {"x":x.x,"y":x.y,"radius":x.radius}
+def dicttoclass(x):
+    return Circle(x["x"],x["y"],x["radius"])
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}

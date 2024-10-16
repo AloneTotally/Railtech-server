@@ -252,7 +252,7 @@ def post_coordinates():
     - how many times trilaterated
     """
     
-    # TODO: note that memo and insufficient circles are to be replaced by
+    # TODO: note that memo and insufficient_circles are to be replaced by
     # TODO: db as they are meant to be constantly changing
     from trilateration import find_new_APs, memo, insufficient_circles
     find_new_APs(data, (new_coords["x"], new_coords["y"]))

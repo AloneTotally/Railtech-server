@@ -151,7 +151,7 @@ def find_new_APs(data_variant, user_loc):
 
                 try:
                     memo[accessPoint["bssid"]] = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
-                    create_circle(memo[accessPoint["bssid"]][0], target=True)
+                    # create_circle(memo[accessPoint["bssid"]][0], target=True)
                     # TODO: UNCOMMENT ME FOR TESTING
                     # draw(insufficient_circles[accessPoint["bssid"]])
 
