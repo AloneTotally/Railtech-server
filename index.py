@@ -30,6 +30,50 @@ def index():
     """Render the main page with real-time updates."""
     return render_template("index.html")
 
+@app.route('/employees')
+def employees():
+    """Render the employees page."""
+    workers = [
+        {
+            "name": "Alice Johnson",
+            "coordinates": {"x": 10.5, "y": 20.3},
+            "tracking": True,
+            "job": "Track Inspector",
+            "email": "alice.johnson@example.com"
+        },
+        {
+            "name": "Bob Smith",
+            "coordinates": {"x": 15.0, "y": 25.6},
+            "tracking": False,
+            "job": "Maintenance Worker",
+            "email": "bob.smith@example.com"
+        },
+        {
+            "name": "Charlie Davis",
+            "coordinates": {"x": 12.7, "y": 18.9},
+            "tracking": True,
+            "job": "Construction Foreman",
+            "email": "charlie.davis@example.com"
+        },
+        {
+            "name": "Dana Lee",
+            "coordinates": {"x": 9.2, "y": 22.5},
+            "tracking": True,
+            "job": "Safety Officer",
+            "email": "dana.lee@example.com"
+        },
+        {
+            "name": "Evan Brown",
+            "coordinates": {"x": 14.1, "y": 19.0},
+            "tracking": False,
+            "job": "Signal Technician",
+            "email": "evan.brown@example.com"
+        }
+    ]
+
+
+    return render_template("employees.html",  data=workers)
+
 @app.route('/no-food-for-dayan')
 def no_food_for_dayan():
     """Render an example page."""
@@ -193,6 +237,20 @@ def post_coordinates():
             # "name": user_name,
             # "current_coordinates": new_coords,
             # "previous_coordinates": None,
+    # TODO:
+    """
+    Things to store in database:
+    - currentLocation
+    - previousLocation(idk if we really need this anymore)
+    - circleData ([
+        {
+            "x": float,
+            "y": float,
+            "radius": float
+        }
+    ])
+    - how many times trilaterated
+    """
     
     # TODO: note that memo and insufficient circles are to be replaced by
     # TODO: db as they are meant to be constantly changing

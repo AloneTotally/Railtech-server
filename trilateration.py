@@ -117,14 +117,14 @@ def trilaterate_actual(data, ref_APs):
         print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
         return []
 
-# TODO: also can technically be in the database? but this data shld be used in the ekf
+# TODO: refer to line 201 in index.py for db schema
 memo = {}
 # memo stores where the APs are using trilateration follows the following schema:
 # {
 # "bssid1": (Circle(3, 3, 5), {some long ass info abt the thing})
 # }
 
-# TODO: to be replaced by database
+# TODO: memo and insufficient circles to be replaced by database
 # this stores the circles of the user (with each circles
 # radius being the length to each AP)
 insufficient_circles = {}
