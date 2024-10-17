@@ -94,17 +94,17 @@ def home_page():
                     "status": 'Ongoing',
                 },
                 {
-                    "title": 'Maintanence between Bukit Panjang and Cashew',
+                    "title": 'Not Maintanence between Bukit Panjang and Cashew',
                     "type": 'EWR',
                     "id": 'SBST123456789A',
                     "status": 'Not Started',
                 },
                 {
-                    "title": 'Maintanence between Bukit Panjang and Cashew',
+                    "title": 'Testing Maintanence between Bukit Panjang and Cashew',
                     "type": 'TAR',
                     "id": 'SBST123456789A',
                     "status": 'Finished',
-                },
+                }
             ]
         }
     """Render the main page."""
