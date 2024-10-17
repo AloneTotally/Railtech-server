@@ -32,7 +32,7 @@ def index():
 
 @app.route('/qrcode-gen')
 def qrcode():
-    return render_template('qrcode.html')
+    return render_template('railtech-qr.html')
 
 @app.route('/employees')
 def employees():
