@@ -177,6 +177,16 @@
             // Draw grid
             ctx.strokeStyle = '#888';
             ctx.lineWidth = 1;
+            
+            ctx.fillStyle = 'blue';
+            let rectTopX = 5
+            let rectTopY = 3
+            let rectWidth = 30
+            let rectHeight = 5
+            ctx.fillRect(parseInt(toCanvasX(rectTopX)), parseInt(toCanvasY(rectTopY)), parseInt(toCanvasX(rectWidth-5)-toCanvasX(5-5)), parseInt(toCanvasY(3-5)-toCanvasY(-3-5)))
+            // console.log(parseInt(toCanvasY(5-5)), parseInt(toCanvasX(-2-5)), parseInt(toCanvasY(30-5)), parseInt(toCanvasX(3-5)))
+            // ctx.fillRect(50, 50, 100, 100)
+            // ctx.fillRect(133, 380, 800, 50)
 
             for (let x = xMin; x <= xMax; x+=stepX) {
                 const canvasX = toCanvasX(x);
@@ -220,6 +230,12 @@
             ctx.fillStyle = color;
             ctx.fill();
 
+            // Plot circle at user coordinates
+            // ctx.beginPath();
+            // ctx.arc(plotX, plotY, toCanvasX(10), 0, 2 * Math.PI);
+
+            // ctx.stroke();
+
             // Label the marker with the user's name
             ctx.font = '12px Arial';
             const text = name;
@@ -257,6 +273,11 @@
                 const userColor = colors[index % colors.length]; // Cycle through colors
 
                 plot(name, coords.x, coords.y, userColor); // Plot user's position
+                if (name == 'alonzo') {
+                    ctx.beginPath();
+                    ctx.arc(toCanvasX(coords.x), toCanvasY(coords.y), toCanvasX(data.radius-5), 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
             });
 
             // Plot each user's coordinates
@@ -274,6 +295,16 @@
         // For testing, you can manually plot coordinates
         setTimeout(() => {
             plot("John", 10, 0, "green");
+
+            // Ensure the x, y coordinates scale to canvas dimensions
+            const plotX = toCanvasX(10);
+            const plotY = toCanvasY(0);
+
+            // Plot circle at user coordinates
+            ctx.beginPath();
+            ctx.arc(plotX, plotY, toCanvasX(28-5), 0, 2 * Math.PI);
+
+            ctx.stroke();
         }, 1000); // Delay added to ensure the map is drawn first
     </script>
 </body>
