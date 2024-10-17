@@ -155,7 +155,7 @@ def update_wifi_scan():
 
     # Add the new data to the list of all requests
     
-    daytum.add("Users","alonzo",{"name": 1})
+    # daytum.add("Users","alonzo",{"name": 1})
     wifi_scan_requests.append(data)
     # Emit the updated list to all clients
     socketio.emit('update_wifi_scan', wifi_scan_requests)
@@ -275,7 +275,12 @@ def post_coordinates():
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
-    all_coordinates = {"Users":daytum.select_field("Users","current_coordinates","name"),"APs":daytum.select_field("Access Points","coordinates","mac")}
+    all_coordinates = {
+        "Users": daytum.select_field("Users","current_coordinates","name"),
+        "APs":daytum.select_field("Access Points","coordinates","mac"),
+        "radius": abs(result.radius)
+
+    }
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
     
     # Emit the updated coordinates to all connected clients

@@ -21,8 +21,14 @@ def dicttoclass(x):
     return circle(x["x"],x["y"],x["radius"])
 #darius, alonzo phone, alonzo computer
 mac = ["c6:3f:a1:3e:e7:af","c6:37:08:bb:91:a0","a2:02:a5:de:62:96"]
-data = {"coordinates":{"x":None,"y":None}}
-for i in mac:
-    data["mac"] = i
-    daytum.add("Access Points",i,data)
+# 60:b9:c0:97:c6:ac is esc np wireless x ap
+# 88:d7:f6:a8:b1:7c is esc own router
+data = {"coordinates":{"x":4,"y":2},"mac":"ee:b8:5f:33:3d:41"
+
+}
+
+macs = daytum.get_collection_names("Access Points")
+print(macs)
+for i in macs:
+    daytum.update_field("Access Points",i,"radius",5)
 
