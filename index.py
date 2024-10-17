@@ -144,7 +144,7 @@ def update_wifi_scan():
 
     # Add the new data to the list of all requests
     
-    daytum.add("Users","alonzo",{"name": 1})
+    # daytum.add("Users","alonzo",{"name": 1})
     wifi_scan_requests.append(data)
     # Emit the updated list to all clients
     socketio.emit('update_wifi_scan', wifi_scan_requests)

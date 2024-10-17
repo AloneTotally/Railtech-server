@@ -9,7 +9,7 @@ from easy_trilateration.model import Circle
 
 #FirebaseS Setup
 def setup():
-    path = "railtech-database-firebase-adminsdk-62eza-b93f1145aa.json"
+    path = "railtech-database-firebase-adminsdk-62eza-2c3d383796.json"
     try:
         cred = credentials.Certificate(path)
         if not firebase_admin._apps:
@@ -101,9 +101,10 @@ def dicttoclass(x):
     return Circle(x["x"],x["y"],x["radius"])
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
-data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{}}
+data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":"alonzo"}
 users = ["Isaac","Nash","Venti","Darius"]
-update_field("Access Points","bssid3","coordinates",{"x":1,"y":10})
+x = select_field("Users","current_coordinates","name")
+print(x)
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):
