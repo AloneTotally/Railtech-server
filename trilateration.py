@@ -3,7 +3,7 @@ from easy_trilateration.model import *
 from easy_trilateration.least_squares import easy_least_squares, solve_history 
 from easy_trilateration.graph import *  
 from math import log10
-
+import database_methods as daytum
 '''
 However it is not recommended to do what is being done here and ideally the following should be used:
 1. A dynamic loss model (Adjusts the FSPL based on real-time measurements or smt)
@@ -118,10 +118,10 @@ def trilaterate_actual(data, ref_APs):
         return []
 
 # TODO: refer to line 201 in index.py for db schema
-memo = {}
+memo = daytum.get_collection_data("Access Points")
 # memo stores where the APs are using trilateration follows the following schema:
 # {
-# "bssid1": (Circle(3, 3, 5), {some long ass info abt the thing})
+# "mac": (Circle(3, 3, 5), {some long ass info abt the thing})
 # }
 
 # TODO: memo and insufficient circles to be replaced by database
@@ -138,25 +138,25 @@ def find_new_APs(data_variant, user_loc):
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
         # the circles that we have calculated for the current AP
-        circleInfo = insufficient_circles.get(accessPoint["bssid"], [])
+        circleInfo = insufficient_circles.get(accessPoint["mac"], [])
         if circleInfo == []:
             # create AP in insufficient_circles
-            insufficient_circles[accessPoint["bssid"]] = [Circle(user_loc[0], user_loc[1], distance)]
+            insufficient_circles[accessPoint["mac"]] = [Circle(user_loc[0], user_loc[1], distance)]
         else:
-            insufficient_circles[accessPoint["bssid"]].append(Circle(user_loc[0], user_loc[1], distance))
+            insufficient_circles[accessPoint["mac"]].append(Circle(user_loc[0], user_loc[1], distance))
             
             # This is done in a way where this will always trilaterate as long as there is 
             # 3 or more, it will not delete the element from the circleInfo array
             if len(circleInfo) >= 3:
 
                 try:
-                    memo[accessPoint["bssid"]] = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
-                    # create_circle(memo[accessPoint["bssid"]][0], target=True)
+                    memo[accessPoint["mac"]] = easy_least_squares(insufficient_circles[accessPoint["mac"]])
+                    # create_circle(memo[accessPoint["mac"]][0], target=True)
                     # TODO: UNCOMMENT ME FOR TESTING
-                    # draw(insufficient_circles[accessPoint["bssid"]])
+                    # draw(insufficient_circles[accessPoint["mac"]])
 
                 except Exception as e:
-                    print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
+                    print(f"Trilateration failed for AP {accessPoint['mac']} due to: {e}")
 
 
 
