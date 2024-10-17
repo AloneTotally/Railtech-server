@@ -32,7 +32,18 @@ def index():
 
 @app.route('/qrcode-gen')
 def qrcode():
-    return render_template('qrcode.html')
+    data = [
+                {
+                    "id": 'SBST123456789A'
+                },
+                {
+                    "id": 'SBST123456789A'
+                },
+                {
+                    "id": 'SBST123456789A'
+                }
+            ]
+    return render_template('qrcode.html', data=data)
 
 @app.route('/employees')
 def employees():
