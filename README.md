@@ -55,7 +55,7 @@ If it says that html doesnt work go install nodejs [here](https://nodejs.org/en/
 
 ### 2. Start the Tailwind CLI build process
 
-When you are editing any tailwind classes, run this command (in another terminal after running `python index.py` to run the flask server):
+When you are editing any tailwind classes, run this command (in another terminal after running `python index.py` to run the flask server):3
 ```Powershell
 npx tailwindcss -i ./static/src/input.css -o ./static/dist/css/output.css --watch
 ```
