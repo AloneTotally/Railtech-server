@@ -14,7 +14,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-gray-900 dark">
+<body class="bg-gray-900 dark" x-data='$store.data'>
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
         type="button"
         class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -61,7 +61,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="/view-tar"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -84,7 +84,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="view-tars"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -157,7 +157,8 @@
                     </div>
                     <input type="text" id="table-search-users"
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search for users">
+                        placeholder="Search for users"
+                        x-on:change="search($event.target.value)">
                 </div>
             </div>
 
@@ -188,8 +189,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in data.listItems %}
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <template x-for="item in listItems">
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                            @click="window.location.href='/view-tar'">
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
                                     <input id="checkbox-table-search-1" type="checkbox"
@@ -197,50 +200,81 @@
                                     <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                 </div>
                             </td>
-                            <th scope="row"
-                                class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                 <div class="ps-3">
-                                    <div class="text-base font-semibold">{{item.title}}</div>
+                                    <div class="text-base font-semibold" x-text="item.title"></div>
                                     <div class="flex flex-row items-center gap-3">
-                                        <!-- <div class="font-normal">SBST123456789A</div> -->
                                         <div class="flex -space-x-3 rtl:space-x-reverse">
-                                            <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="">
-                                            <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="">
-                                            <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="">
-                                            <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800" href="#">+3</a>
+                                            <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
+                                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="">
+                                            <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
+                                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="">
+                                            <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
+                                                src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="">
+                                            <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800"
+                                                href="#">+3</a>
                                         </div>
-                                        {% if item.type == 'TAR' %}
-                                            <span  class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span>
-                                        {% elif item.type == 'EWR' %}
-                                            <span class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">EWR</span>
-                                        {% endif %}
-                                     </div>
-                                       
+                                        <template x-if="item.type === 'TAR'">
+                                            <span
+                                                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span>
+                                        </template>
+                                        <template x-if="item.type === 'EWR'">
+                                            <span
+                                                class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">EWR</span>
+                                        </template>
+                                    </div>
                                 </div>
                             </th>
-                            <td  class="px-6 py-4"><a href="/view-tar#">{{item.id}}</a></td>
+                            <td class="px-6 py-4" x-text="item.id"></td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    {% if item.status == 'Not Started' %}
+                                    <template x-if="item.status === 'Not Started'">
                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
-                                    {% elif item.status == 'Ongoing' %}
+                                    </template>
+                                    <template x-if="item.status === 'Ongoing'">
                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-                                    {% elif item.status == 'Finished' %}
+                                    </template>
+                                    <template x-if="item.status === 'Finished'">
                                         <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
-                                    {% endif %}
-                                    <p>{{item.status}}</p>
+                                    </template>
+                                    <p x-text="item.status"></p>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit
-                                    user</a>
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
                             </td>
                         </tr>
-                        {% endfor %}               
+                    </template>
                 </tbody>
+                
             </table>
         </div>
     </div>
 </body>
 
 </html>
+
+<script>
+    let original = {{ data | tojson }};
+
+    const updated = JSON.parse(JSON.stringify(original))
+    // console.log(original)
+    const search = (keyword) => {
+        Alpine.store('data').listItems = []
+        for (let i = 0; i < original.listItems.length; i++) {
+            item = original.listItems[i]
+            // console.log(item)
+            itemTitle = item.title.toLowerCase()
+            if (itemTitle.includes(keyword.toLowerCase())) {
+                Alpine.store('data').listItems.push(item)
+                // console.log('item is pushed')
+            }
+        }
+    }
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('data', updated)
+        Alpine.store('search', {search: search})
+    })
+    
+</script>
