@@ -43,7 +43,7 @@ def qrcode():
                     "id": 'SBST123456789A'
                 }
             ]
-    return render_template('qrcode.html', data=data)
+    return render_template('railtech-qr.html', data=data)
 
 @app.route('/employees')
 def employees():
@@ -94,6 +94,7 @@ def no_food_for_dayan():
     """Render an example page."""
     return render_template("railtech-web.html")
 
+
 @app.route('/home')
 def home_page():
     data = {
@@ -143,6 +144,32 @@ def accelerator():
     """Render the accelerator page."""
     return render_template('accelerator.html')
 
+@app.route('/view_employee')
+def view_employee():
+    listItems = [
+        {
+            "title": 'Maintenance between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST123456789A',
+            "status": 'Ongoing',
+        },
+        {
+            "title": 'Maintenance between Bukit Panjang and Cashew',
+            "type": 'EWR',
+            "id": 'SBST123456789A',
+            "status": 'Not Started',
+        },
+        {
+            "title": 'Maintenance between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST123456789A',
+            "status": 'Finished',
+        },
+    ]
+    return render_template("view_employee.html", listItems=listItems)
+
+
+
 
 # Route to handle POST requests for WiFi scan data
 wifi_scan_requests = []
@@ -155,7 +182,7 @@ def update_wifi_scan():
 
     # Add the new data to the list of all requests
     
-    # daytum.add("Users","alonzo",{"name": 1})
+    daytum.add("Users","alonzo",{"name": 1})
     wifi_scan_requests.append(data)
     # Emit the updated list to all clients
     socketio.emit('update_wifi_scan', wifi_scan_requests)
@@ -275,12 +302,7 @@ def post_coordinates():
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
-    all_coordinates = {
-        "Users": daytum.select_field("Users","current_coordinates","name"),
-        "APs":daytum.select_field("Access Points","coordinates","mac"),
-        "radius": abs(result.radius)
-
-    }
+    all_coordinates = {"Users":daytum.select_field("Users","current_coordinates","name"),"APs":daytum.select_field("Access Points","coordinates","mac")}
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
     
     # Emit the updated coordinates to all connected clients
