@@ -43,7 +43,7 @@ def qrcode():
                     "id": 'SBST123456789A'
                 }
             ]
-    return render_template('qrcode.html', data=data)
+    return render_template('railtech-qr.html', data=data)
 
 @app.route('/employees')
 def employees():
