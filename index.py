@@ -175,33 +175,38 @@ def checkin():
     worker = [
         {
             "name": "Alice Johnson",
-            "Date": "01/01/2024",
-            "time": "23:59",
+            "Date": "12/10/2023",
+            "time": "09:15",
             "status": False,
+            "job": "Electrical Engineer"
         },
         {
             "name": "Bob Smith",
-            "Date": "01/01/2024",
-            "time": "23:59",
-            "status": True,     
+            "Date": "10/08/2023",
+            "time": "14:30",
+            "status": True,
+            "job": "Project Manager"
         },
         {
             "name": "Charlie Davis",
-            "Date": "01/01/2024",
-            "time": "23:59",
+            "Date": "05/09/2023",
+            "time": "18:45",
             "status": False,
+            "job": "Software Developer"
         },
         {
             "name": "Dana Lee",
-            "Date": "01/01/2024",
-            "time": "23:59",
+            "Date": "23/09/2023",
+            "time": "11:00",
             "status": True,
+            "job": "Data Analyst"
         },
         {
             "name": "Evan Brown",
-            "Date": "01/01/2024",
-            "time": "23:59",
+            "Date": "17/07/2023",
+            "time": "08:00",
             "status": False,
+            "job": "Mechanical Engineer"
         }
     ]
 
