@@ -169,6 +169,45 @@ def view_employee():
     return render_template("view_employee.html", listItems=listItems)
 
 
+@app.route('/view-checkin')
+def checkin():
+    """Render the Checkin page."""
+    worker = [
+        {
+            "name": "Alice Johnson",
+            "Date": "01/01/2024",
+            "time": "23:59",
+            "status": False,
+        },
+        {
+            "name": "Bob Smith",
+            "Date": "01/01/2024",
+            "time": "23:59",
+            "status": True,     
+        },
+        {
+            "name": "Charlie Davis",
+            "Date": "01/01/2024",
+            "time": "23:59",
+            "status": False,
+        },
+        {
+            "name": "Dana Lee",
+            "Date": "01/01/2024",
+            "time": "23:59",
+            "status": True,
+        },
+        {
+            "name": "Evan Brown",
+            "Date": "01/01/2024",
+            "time": "23:59",
+            "status": False,
+        }
+    ]
+
+    return render_template("view_checkin.html", data=worker)
+
+
 
 
 # Route to handle POST requests for WiFi scan data
