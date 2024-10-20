@@ -139,7 +139,7 @@
 
         <div class="flex flex-row gap-5 items-center mt-7 justify-between">
             <div class="flex flex-row items-center gap-4">
-                <h2 class="text-4xl font-bold dark:text-white">{{ item.title }}</h2>
+                <h2 class="text-3xl font-bold dark:text-white">{{ item.title }}</h2>
                 {% if item.status == 'Not Started' %}
                 <div class="h-4 w-4 rounded-full bg-red-500 me-2"></div>
                 {% elif item.status == 'Ongoing' %}
@@ -199,16 +199,7 @@
         </div>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
         <div id="leftright-container" class="flex flex-row justify-between gap-10">
-            <div id="left">
-                <!-- <h3 class="text-3xl font-bold dark:text-white">Description</h3>
-
-                <p class="mb-3 text-gray-500 dark:text-gray-400 mt-3">
-                    Track work across the enterprise through an open,
-                    collaborative platform. Link issues across Jira and ingest data from other software development
-                    tools,
-                    so your IT support and operations teams have richer contextual information to rapidly respond to
-                    requests, incidents, and changes.
-                </p> -->
+            <div id="left" class="w-full">
 
                 <div class="w-full">
                     <div class="px-4 sm:px-0">
@@ -357,7 +348,7 @@
 
 
             </div>
-            <div id="right" class="w-full">
+            <div id="right" class="w-2/3">
                 <!-- <h4 class="text-2xl font-bold dark:text-white">Activity Log</h4> -->
                 <h3 class="text-3xl font-bold dark:text-white">Activity Log</h3>
                 <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Log of Activities detected by LTAPal.</p>
@@ -365,7 +356,7 @@
                 <div
                     class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
                     <div id="row" class="flex w-full justify-between items-center">
-                        <div class=" text-lg font-bold text-gray-900 dark:text-white">Everyone checked in</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-white">Everyone checked in</div>
                         <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
                             1:30 AM
                         </span>
@@ -628,178 +619,6 @@
                                     <span
                                         class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
                                         2:30 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                    </ol>
-                </div>
-
-
-
-                <div
-                    class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 mt-4">
-                    <ol class="divide-y divider-gray-200 dark:divide-gray-700">
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                                    alt="Jese Leos image" />
-                                <div class="text-gray-600 dark:text-gray-400">
-                                    <div class="text-base font-normal"><span
-                                            class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
-                                        <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
-                                        post in
-                                        <span class="font-medium text-gray-900 dark:text-white"> How to start with
-                                            Flowbite
-                                            library</span>
-                                    </div>
-                                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:30 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                    alt="Bonnie Green image" />
-                                <div>
-                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
-                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
-                                        to
-                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
-                                        comment
-                                    </div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:35 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                                    alt="Jese Leos image" />
-                                <div class="text-gray-600 dark:text-gray-400">
-                                    <div class="text-base font-normal"><span
-                                            class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
-                                        <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
-                                        post in
-                                        <span class="font-medium text-gray-900 dark:text-white"> How to start with
-                                            Flowbite
-                                            library</span>
-                                    </div>
-                                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:30 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                    alt="Bonnie Green image" />
-                                <div>
-                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
-                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
-                                        to
-                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
-                                        comment
-                                    </div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:35 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                                    alt="Jese Leos image" />
-                                <div class="text-gray-600 dark:text-gray-400">
-                                    <div class="text-base font-normal"><span
-                                            class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
-                                        <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
-                                        post in
-                                        <span class="font-medium text-gray-900 dark:text-white"> How to start with
-                                            Flowbite
-                                            library</span>
-                                    </div>
-                                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:30 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                    alt="Bonnie Green image" />
-                                <div>
-                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
-                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
-                                        to
-                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
-                                        comment
-                                    </div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:35 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                                    alt="Jese Leos image" />
-                                <div class="text-gray-600 dark:text-gray-400">
-                                    <div class="text-base font-normal"><span
-                                            class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes
-                                        <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span>
-                                        post in
-                                        <span class="font-medium text-gray-900 dark:text-white"> How to start with
-                                            Flowbite
-                                            library</span>
-                                    </div>
-                                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:30 AM
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                    alt="Bonnie Green image" />
-                                <div>
-                                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span
-                                            class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react
-                                        to
-                                        <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span>
-                                        comment
-                                    </div>
-                                    <span
-                                        class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        1:35 AM
                                     </span>
                                 </div>
                             </a>

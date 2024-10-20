@@ -268,6 +268,28 @@ def update_wifi_scan():
 #         socketio.emit('update_coordinates', all_coordinates)
 #     return jsonify({"status": "Trilateration data updated successfully"}), 200
 
+@app.route('/check-in', methods=['POST'])
+def post_checkin():
+    """
+    data class CheckInObject(
+        val user: String,
+        val checkIn: Boolean,
+        val sessionID: String
+    )
+    """
+    data = request.json
+    
+    # user checked in
+    if data["checkIn"]:
+        # Probably should include the session ID in here which is tied to QR code? im not so sure
+        socketio.emit(f'checkInData-{data["sessionID"]}', data)
+    # user checked out
+    else:
+        socketio.emit(f'checkOutData-{data["sessionID"]}', data)
+
+    return jsonify({"status": "Check in data updated successfully"}), 200
+
+
 @app.route('/update-coordinate', methods=['POST'])
 def post_coordinates():
     """Function to update the coordinate of the user specified by the api."""
