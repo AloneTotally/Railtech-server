@@ -130,6 +130,7 @@ def view_tar():
             "timestamp": "1:30 AM",
             "alert": False,
             "origin": None,
+            "note": "",
             "target": "checked in",
             "details": [
                 {
@@ -160,7 +161,7 @@ def view_tar():
             "alert": False,
             "origin": "Workzone A",
             "target": "Workzone B",
-            "note": "Participants: Alonzo, Isaac, Darius",
+            "note": "Alonzo, Isaac, Darius",
             "details": [
                 {
                     "name": "Alonzo",
@@ -200,7 +201,7 @@ def view_tar():
             "alert": False,
             "origin": "Workzone B",
             "target": "Workzone D",
-            "note": "Participants: Alonzo, Isaac",
+            "note": "Alonzo, Isaac",
             "details": [
                 {
                     "name": "Alonzo",
