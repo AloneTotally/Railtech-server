@@ -10,7 +10,7 @@
 
 </head>
 
-<body>
+<body class="dark bg-slate-900 text-white">
     <h1>Real-Time User Coordinates</h1>
     <div id="coordinates"></div>
     <!-- <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
@@ -18,8 +18,8 @@
     <h1>Real-time Aps Coordinates</h1>
     <div id="coordinates-ap"></div>
     <canvas id="Rectangle" width="1200" height="400" class="border border-black"></canvas>
-    
-    
+
+
     <script>
 
         const socket = io();
@@ -37,7 +37,7 @@
         // const xMin = -20, xMax = 20;
         // const yMin = -15, yMax = 15;
         const xMin = -5, xMax = 40;
-        const yMin = -5, yMax = 5;
+        const yMin = -5, yMax = 6;
 
         // Load image
         const img = new Image();
@@ -60,24 +60,44 @@
         // Draws the default map with background image
         function DefaultMap() {
             ctx.clearRect(0, 0, Width, height); // Clear canvas
-            ctx.fillStyle = "lightgray"; // Fill background
+            ctx.fillStyle = "#1f2937"; // Fill background
             ctx.fillRect(0, 0, Width, height);
 
             // Draw grid
-            ctx.strokeStyle = '#888';
+            ctx.strokeStyle = '#374151';
             ctx.lineWidth = 1;
-            
-            ctx.fillStyle = 'blue';
-            let rectTopX = 5
-            let rectTopY = 3
-            let rectWidth = 30
-            let rectHeight = 5
-            ctx.fillRect(parseInt(toCanvasX(rectTopX)), parseInt(toCanvasY(rectTopY)), parseInt(toCanvasX(rectWidth-5)-toCanvasX(5-5)), parseInt(toCanvasY(3-5)-toCanvasY(-3-5)))
-            // console.log(parseInt(toCanvasY(5-5)), parseInt(toCanvasX(-2-5)), parseInt(toCanvasY(30-5)), parseInt(toCanvasX(3-5)))
+
+            ctx.fillStyle = '#7dd3fc';
+
+            // Define workzones here
+            workzones = [
+                {
+                    "rectLeftX": 20,
+                    "rectBottomY": -4,
+                    "rectWidth": 10,
+                    "rectHeight": 8
+                }
+            ]
+
+            for (let i = 0; i < workzones.length; i++) {
+                let rectLeftX = workzones[i].rectLeftX;
+                let rectBottomY = workzones[i].rectBottomY;
+                let rectWidth = workzones[i].rectWidth;
+                let rectHeight = workzones[i].rectHeight;
+
+                ctx.fillRect(
+                    parseInt(toCanvasX(rectLeftX)),  // X position
+                    parseInt(toCanvasY(rectBottomY)),  // Y position
+                    parseInt(toCanvasX(rectLeftX + rectWidth) - toCanvasX(rectLeftX)),
+                    parseInt(toCanvasY(rectBottomY + rectHeight) - toCanvasY(rectBottomY))
+                );
+            }
+            // Draw the rectangle, correcting the subtraction logic for dimensions
+
             // ctx.fillRect(50, 50, 100, 100)
             // ctx.fillRect(133, 380, 800, 50)
 
-            for (let x = xMin; x <= xMax; x+=stepX) {
+            for (let x = xMin; x <= xMax; x += stepX) {
                 const canvasX = toCanvasX(x);
                 ctx.beginPath();
                 ctx.moveTo(canvasX, 0);
@@ -85,12 +105,12 @@
                 ctx.stroke();
 
                 // Draw X axis labels
-                ctx.fillStyle = 'black';
+                ctx.fillStyle = 'white';
                 ctx.font = '10px Arial';
                 ctx.fillText(x, canvasX + 2, height / 2 - 2);
             }
 
-            for (let y = yMin; y <= yMax; y+=stepY) {
+            for (let y = yMin; y <= yMax; y += stepY) {
                 const canvasY = toCanvasY(y);
                 ctx.beginPath();
                 ctx.moveTo(0, canvasY);
@@ -98,7 +118,7 @@
                 ctx.stroke();
 
                 // Draw Y axis labels
-                ctx.fillStyle = 'black';
+                ctx.fillStyle = 'white';
                 ctx.font = '10px Arial';
                 ctx.fillText(y, Width / 2 + 2, canvasY - 2);
             }
@@ -164,7 +184,7 @@
                 plot(name, coords.x, coords.y, userColor); // Plot user's position
                 if (name == 'alonzo') {
                     ctx.beginPath();
-                    ctx.arc(toCanvasX(coords.x), toCanvasY(coords.y), toCanvasX(data.radius-5), 0, 2 * Math.PI);
+                    ctx.arc(toCanvasX(coords.x), toCanvasY(coords.y), toCanvasX(data.radius - 5), 0, 2 * Math.PI);
                     ctx.stroke();
                 }
             });
@@ -172,7 +192,7 @@
             // Plot each user's coordinates
             Object.entries(apData).forEach(([mac, coords], index) => {
                 apcoordinatesDiv.innerHTML += `<p>${mac}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
-                console.log([mac,coords]);
+                console.log([mac, coords]);
                 // Choose a different color for each user
                 const colors = ['red', 'green', 'blue', 'orange', 'purple'];
                 const userColor = colors[index % colors.length]; // Cycle through colors
@@ -191,7 +211,7 @@
 
             // Plot circle at user coordinates
             ctx.beginPath();
-            ctx.arc(plotX, plotY, toCanvasX(28-5), 0, 2 * Math.PI);
+            ctx.arc(plotX, plotY, toCanvasX(28 - 5), 0, 2 * Math.PI);
 
             ctx.stroke();
         }, 1000); // Delay added to ensure the map is drawn first

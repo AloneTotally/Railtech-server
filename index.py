@@ -126,7 +126,7 @@ def home_page():
 def view_tar():
     activities = [
         {
-            "title": "Everyone checked in",
+            "title": "Checked in - Workzone A",
             "timestamp": "1:30 AM",
             "alert": False,
             "origin": None,
