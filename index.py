@@ -124,13 +124,128 @@ def home_page():
 
 @app.route('/view-tar')
 def view_tar():
+    activities = [
+        {
+            "title": "Everyone checked in",
+            "timestamp": "1:30 AM",
+            "alert": False,
+            "origin": None,
+            "target": "checked in",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Darius",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Venti",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+                    "timestamp": "1:30 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone A - Workzone B",
+            "timestamp": "1:30 AM",
+            "alert": False,
+            "origin": "Workzone A",
+            "target": "Workzone B",
+            "note": "Participants: Alonzo, Isaac, Darius",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Darius",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+                    "timestamp": "1:30 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone B - Workzone C",
+            "timestamp": "1:30 AM",
+            "alert": True,
+            "origin": "Workzone B",
+            "target": "Workzone C",
+            "note": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, provident!",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+                    "timestamp": "1:30 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone B - Workzone D",
+            "timestamp": "2:00 AM",
+            "alert": False,
+            "origin": "Workzone B",
+            "target": "Workzone D",
+            "note": "Participants: Alonzo, Isaac",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+                    "timestamp": "2:00 AM"
+                },
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+                    "timestamp": "2:00 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone D - Workzone E",
+            "timestamp": "2:30 AM",
+            "alert": True,
+            "origin": "Workzone D",
+            "target": "Workzone E",
+            "note": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla, modi!",
+            "details": [
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+                    "timestamp": "2:30 AM"
+                }
+            ]
+        }
+    ]
+
+
+   
+
     item = {
         "title": 'Maintenance between Bukit Panjang and Cashew',
         "type": 'TAR',
         "id": 'SBST123456789A',
         "status": 'Ongoing',
     }
-    return render_template("view-tar.html", item=item)
+
+    data = {
+        "item": item,
+        "activities": activities
+    }
+    return render_template("view-tar.html", data=data)
 
 wifi_scan_requests = []
 
