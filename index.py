@@ -33,16 +33,16 @@ def index():
 @app.route('/qrcode-gen')
 def qrcode():
     data = [
-                {
-                    "id": 'SBST123456789A'
-                },
-                {
-                    "id": 'SBST123456789A'
-                },
-                {
-                    "id": 'SBST123456789A'
-                }
-            ]
+        {
+            "id": 'SBST123456789A'
+        },
+        {
+            "id": 'SBST123456789A'
+        },
+        {
+            "id": 'SBST123456789A'
+        }
+    ]
     return render_template('railtech-qr.html', data=data)
 
 @app.route('/employees')
@@ -291,37 +291,37 @@ def checkin():
     worker = [
         {
             "name": "Alice Johnson",
-            "Date": "12/10/2023",
-            "time": "09:15",
-            "status": False,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Electrical Engineer"
         },
         {
             "name": "Bob Smith",
-            "Date": "10/08/2023",
-            "time": "14:30",
-            "status": True,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Project Manager"
         },
         {
             "name": "Charlie Davis",
-            "Date": "05/09/2023",
-            "time": "18:45",
-            "status": False,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Software Developer"
         },
         {
             "name": "Dana Lee",
-            "Date": "23/09/2023",
-            "time": "11:00",
-            "status": True,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Data Analyst"
         },
         {
             "name": "Evan Brown",
-            "Date": "17/07/2023",
-            "time": "08:00",
-            "status": False,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Mechanical Engineer"
         }
     ]
