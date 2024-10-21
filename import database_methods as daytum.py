@@ -67,6 +67,5 @@ user_loc = (10, 20)
 # print(pulledcircles)
 # find_new_APs(data_variant,user_loc,db)
 for i in mac:
-    circleinfo = [{"x":data.x,"y":data.y,"radius":data.radius,"mac":"wow"}]
-    daytum.update_field("Access Points",i,"trilat",circleinfo)
+    daytum.update_field("Access Points",i,"mac",i)
 
