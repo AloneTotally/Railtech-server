@@ -1,4 +1,6 @@
 import database_methods as daytum
+from easy_trilateration.model import Circle
+from trilateration import find_new_APs
 db = daytum.setup()
 users = ["Darius"]
 user_name = "Darius"
@@ -23,12 +25,48 @@ def dicttoclass(x):
 mac = ["c6:3f:a1:3e:e7:af","c6:37:08:bb:91:a0","a2:02:a5:de:62:96"]
 # 60:b9:c0:97:c6:ac is esc np wireless x ap
 # 88:d7:f6:a8:b1:7c is esc own router
-data = {"coordinates":{"x":4,"y":2},"mac":"ee:b8:5f:33:3d:41"
+data = circle(4,3,1)
 
+
+mac = daytum.get_collection_names("Access Points")
+# transaction = db.transaction()
+# daytum.transactional_update(transaction,"test","test",{"radius":data.radius,"coordinates":{"x":data.x,"y":data.y},"trilat":circleinfo})
+# pulledcircles = daytum.select_field("test","trilat","mac")
+# print(pulledcircles)
+# insufficient_circles = {i:circle(pulledcircles[i]["x"],pulledcircles[i]["y"],pulledcircles[i]["radius"]) for i in pulledcircles }
+# print(insufficient_circles)
+# Sample Data Variant
+data_variant = {
+    "accessPoints": [
+        {
+            "mac": "0a:0b:a7:68:7a:02",
+            "frequency": 2412,  # 2.4 GHz frequency
+            "signalStrength": -50  # Signal strength in dBm
+        },
+        {
+            "mac": "60:b9:c0:97:c6:ac",
+            "frequency": 5180,  # 5 GHz frequency
+            "signalStrength": -70
+        },
+        {
+            "mac": "9a:59:7a:97:1c:65",
+            "frequency": 2412,
+            "signalStrength": -60
+        },
+        {
+            "mac": "wow",
+            "frequency": 2412,
+            "signalStrength": -50
+        }
+    ]
 }
 
-macs = daytum.get_collection_names("Access Points")
-print(macs)
-for i in macs:
-    daytum.update_field("Access Points",i,"radius",5)
+# Sample User Location
+user_loc = (10, 20)
+# pulledcircles = daytum.select_field("Access Points","trilat","mac")
+# print(pulledcircles)
+# find_new_APs(data_variant,user_loc,db)
+for i in mac:
+    circleinfo = [{"x":data.x,"y":data.y,"radius":data.radius,"mac":"wow"}]
+    daytum.update_field("Access Points",i,"trilat",circleinfo)
 
