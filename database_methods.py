@@ -4,7 +4,6 @@ import time
 from easy_trilateration.model import Circle
 # Firebase setup
 
-
 '''------------------------FUNCTIONS----------------------------------------------------'''
 
 #FirebaseS Setup
@@ -99,12 +98,14 @@ def classtodict(x):
     return {"x":x.x,"y":x.y,"radius":x.radius}
 def dicttoclass(x):
     return Circle(x["x"],x["y"],x["radius"])
+@firestore.transactional
+def transactional_update(transaction,collection,document,data):
+    ref = db.collection(collection).document(document)
+    snapshot = ref.get(transaction = transaction)
+    transaction.update(ref,data)
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":"alonzo"}
-users = ["Isaac","Nash","Venti","Darius"]
-x = select_field("Users","current_coordinates","name")
-print(x)
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):
