@@ -276,8 +276,8 @@
     sessionID = 'SBST123456789A'
     socket.on(`checkInData-${sessionID}`, function (data) {
         let i;
-        for (i = 0; i < Alpine.store('data'); i++) {
-            if (Alpine.store('data').name == data.user) {
+        for (i = 0; i < Alpine.store('data').listItems.length; i++) {
+            if (Alpine.store('data').listItems[i].name == data.user) {
                 break;
             }
         }
@@ -297,8 +297,8 @@
 
     socket.on(`checkOutData-${sessionID}`, function (data) {
         let i;
-        for (i = 0; i < Alpine.store('data'); i++) {
-            if (Alpine.store('data').name == data.user) {
+        for (i = 0; i < Alpine.store('data').listItems.length; i++) {
+            if (Alpine.store('data').listItems[i].name == data.user) {
                 break;
             }
         }
