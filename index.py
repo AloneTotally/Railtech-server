@@ -413,7 +413,8 @@ def post_coordinates():
         ref_APs[i["mac"]] = i["coordinates"]
 
     from trilateration import trilaterate_actual
-    result, meta = trilaterate_actual(data, ref_APs)
+    trilateratedata = {i:data[i] for i in data if ref_APs[i] != None}
+    result, meta = trilaterate_actual(trilateratedata, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
     new_coords = {'x': result.center.x, 'y': result.center.y}
