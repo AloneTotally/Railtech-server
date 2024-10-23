@@ -39,11 +39,12 @@ def delete(collection, document):
 
 def update(collection, document, data):
     try:
-        docref = db.collection(collection).document(document).get()
-        if docref.exists:
+        docref = db.collection(collection).document(document)
+        doccheck = docref.get()
+        if doccheck.exists:
             docref.update(data)
         else:
-            docref.add(data)
+            docref.set(data)
         return 1  # worked
     except Exception as e:
         return e  # returns exception

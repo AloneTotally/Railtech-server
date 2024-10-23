@@ -65,5 +65,5 @@ data_variant = {
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Points","trilat","mac")
 # print(pulledcircles)
-find_new_APs(data_variant,user_loc,db)
+print(daytum.update("test","hi",{"e":"hi"}))
 
