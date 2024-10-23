@@ -65,5 +65,5 @@ data_variant = {
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Points","trilat","mac")
 # print(pulledcircles)
-daytum.add("Access Points","60:b9:c0:97:c6:cc")
-
+daytum.add("Access Points","60:b9:c0:97:c6:cc",{"coordinates":{"x":2,"y":3},"mac":"60:b9:c0:97:c6:cc","trilat":[],"radius":0})
+print(Circle(None,None,None))
