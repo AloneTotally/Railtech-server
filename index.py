@@ -262,27 +262,15 @@ def accelerator():
 
 @app.route('/view_employee')
 def view_employee():
-    listItems = [
-        {
-            "title": 'Maintenance between Bukit Panjang and Cashew',
-            "type": 'TAR',
-            "id": 'SBST123456789A',
-            "status": 'Ongoing',
-        },
-        {
-            "title": 'Maintenance between Bukit Panjang and Cashew',
-            "type": 'EWR',
-            "id": 'SBST123456789A',
-            "status": 'Not Started',
-        },
-        {
-            "title": 'Maintenance between Bukit Panjang and Cashew',
-            "type": 'TAR',
-            "id": 'SBST123456789A',
-            "status": 'Finished',
-        },
-    ]
-    return render_template("view_employee.html", listItems=listItems)
+    userinfo = {
+        "Name": 'Alice Johnson',
+        "Age": '20',
+        "Email": 'AliceJohnson@gmail.com',
+        "Contact number": '91234567',
+        'Job Role': 'Train expert'
+    }
+       
+    return render_template("view_employee.html", userinfo=userinfo)
 
 
 @app.route('/view-checkin')
