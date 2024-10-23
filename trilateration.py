@@ -158,7 +158,7 @@ def find_new_APs(data_variant, user_loc,db):
     print(insufficient_circles,memo)
     for accessPoint in data_variant["accessPoints"]:
         if not daytum.exists("Access Points",accessPoint["bssid"]):
-            daytum.add("Access Points",accessPoint["bssid"],{"coordinates":{"x":None,"y":None},"radius":None,"trilat":[]})
+            daytum.add("Access Points",accessPoint["bssid"],{"coordinates":{"x":None,"y":None},"radius":None,"trilat":[],"mac":accessPoint["bssid"]})
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
         # the circles that we have calculated for the current AP
