@@ -25,10 +25,127 @@ class User:
 # Create a dictionary to hold all users
 users = daytum.get_collection_names("Users")
 
+workzones = {
+    "Workzone A": {
+        "rectLeftX": 20,
+        "rectBottomY": -4,
+        "rectWidth": 10,
+        "rectHeight": 8
+    },
+    "Workzone B": {
+        "rectLeftX": 10,
+        "rectBottomY": -4,
+        "rectWidth": 2,
+        "rectHeight": 1
+    },
+    "Workzone C": {
+        "rectLeftX": 30,
+        "rectBottomY": -4,
+        "rectWidth": 14,
+        "rectHeight": 8
+    },
+    "Workzone D": {
+        "rectLeftX": 0,
+        "rectBottomY": -4,
+        "rectWidth": 1,
+        "rectHeight": 4
+    },
+    "Workzone E": {
+        "rectLeftX": 0,
+        "rectBottomY": 0,
+        "rectWidth": 1,
+        "rectHeight": 4
+    },
+    "Workzone F": {
+        "rectLeftX": 3,
+        "rectBottomY": 0,
+        "rectWidth": 4,
+        "rectHeight": 4
+    },
+}
+
+
+
+
 @app.route('/')
 def index():
     """Render the main page with real-time updates."""
-    return render_template("index.html")
+    global workzones
+
+    
+    def inrect(rect, point) -> bool:
+        # Extract rectangle properties
+        rect_left_x = rect['rectLeftX']
+        rect_bottom_y = rect['rectBottomY']
+        rect_width = rect['rectWidth']
+        rect_height = rect['rectHeight']
+        
+        # Calculate the boundaries of the rectangle
+        rect_right_x = rect_left_x + rect_width
+        rect_top_y = rect_bottom_y + rect_height
+        
+        # Extract point coordinates
+        x = point['current_coordinates']['x']
+        y = point['current_coordinates']['y']
+        
+        # Check if the point is within the rectangle
+        if rect_left_x <= x <= rect_right_x and rect_bottom_y <= y <= rect_top_y:
+            return True
+        else:
+            return False
+
+    def users_in_workzones(workzones, users):
+        in_workzones = {
+            # user name: workzone name
+        } # returned value (the number of workzones)
+        for user in users: # Loop thru user
+            for key in workzones: # Loop thru workzones, key is the workzone name
+                # print(workzones[key])
+                # print(user.name)
+                if inrect(workzones[key], user):
+                    if in_workzones.get(key, []) == []:
+                        in_workzones[key] = [user.get('name')]
+                    else:
+                        in_workzones[key].append(user.get('name'))
+                    # in_workzones[user.get('name')] = key
+
+        return in_workzones
+
+    
+
+    users = [
+        {
+            'current_coordinates': {
+                'x': 4,
+                'y': 1,
+            },
+            'name': 'Alonzo',
+        },
+        {
+            'current_coordinates': {
+                'x': 4,
+                'y': 0,
+            },
+            'name': 'John'
+        },
+        {
+            'current_coordinates': {
+                'x': 1,
+                'y': 2,
+            },
+            'name': 'John'
+        },
+    ]
+    
+    data = {
+        "users": users,
+        "workzones": workzones,
+        "inWorkzones": users_in_workzones(workzones, users)
+    }
+
+
+
+    return render_template("index.html", data=data)
 
 @app.route('/qrcode-gen')
 def qrcode():
@@ -481,7 +598,15 @@ def post_coordinates():
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
-    all_coordinates = {"Users":daytum.select_field("Users","current_coordinates","name"),"APs":daytum.select_field("Access Points","coordinates","mac")}
+    
+    global workzones
+
+    all_coordinates = {
+        "Users": daytum.select_field("Users","current_coordinates","name"),
+        "APs": daytum.select_field("Access Points","coordinates","mac"),
+        "workzones": workzones
+    }
+    
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
     
     # Emit the updated coordinates to all connected clients
