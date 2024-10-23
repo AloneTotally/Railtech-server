@@ -65,4 +65,5 @@ data_variant = {
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Points","trilat","mac")
 # print(pulledcircles)
-print(not daytum.exists("Access Points","bssid1"))
+if not daytum.exists("Access Points","hihihi"):
+    print(daytum.add("Access Points","hihihi",{"why is this so autsitic":"hi"}))
