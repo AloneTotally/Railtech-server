@@ -65,5 +65,5 @@ data_variant = {
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Points","trilat","mac")
 # print(pulledcircles)
-print(daytum.update("test","hi",{"e":"hi"}))
+daytum.add("Access Points","60:b9:c0:97:c6:cc")
 

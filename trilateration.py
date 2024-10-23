@@ -160,27 +160,27 @@ def find_new_APs(data_variant, user_loc,db):
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
         # the circles that we have calculated for the current AP
-        circleInfo = insufficient_circles.get(accessPoint["mac"], [])
+        circleInfo = insufficient_circles.get(accessPoint["bssid"], [])
         if circleInfo == []:
             # create AP in insufficient_circles
-            insufficient_circles[accessPoint["mac"]] = [Circle(user_loc[0], user_loc[1], distance)]
+            insufficient_circles[accessPoint["bssid"]] = [Circle(user_loc[0], user_loc[1], distance)]
         else:
-            insufficient_circles[accessPoint["mac"]].append(Circle(user_loc[0], user_loc[1], distance))
+            insufficient_circles[accessPoint["bssid"]].append(Circle(user_loc[0], user_loc[1], distance))
             
             # This is done in a way where this will always trilaterate as long as there is 
             # 3 or more, it will not delete the element from the circleInfo array
-            if len(insufficient_circles[accessPoint["mac"]]) >= 3:
+            if len(insufficient_circles[accessPoint["bssid"]]) >= 3:
 
                 try:
-                    data,_ = easy_least_squares(insufficient_circles[accessPoint["mac"]])
-                    memo[accessPoint["mac"]] = Circle(user_loc[0], user_loc[1], distance)
-                    daytum.update("Access Points",accessPoint["mac"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
-                    # create_circle(memo[accessPoint["mac"]][0], target=True)
+                    data,_ = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
+                    memo[accessPoint["bssid"]] = Circle(user_loc[0], user_loc[1], distance)
+                    daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
+                    # create_circle(memo[accessPoint["bssid"]][0], target=True)
                     # TODO: UNCOMMENT ME FOR TESTING
-                    # draw(insufficient_circles[accessPoint["mac"]])
+                    # draw(insufficient_circles[accessPoint["bssid"]])
 
                 except Exception as e:
-                    print(f"Trilateration failed for AP {accessPoint['mac']} due to: {e}")
+                    print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
                     
 
     for i in insufficient_circles:
