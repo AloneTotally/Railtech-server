@@ -63,7 +63,7 @@ data_variant = {
 
 # Sample User Location
 user_loc = (90, 20)
-# pulledcircles = daytum.select_field("Access Points","trilat","mac")
+# pulledcircles = daytum.select_field("Access Point     s","trilat","mac")  
 # print(pulledcircles)
-if not daytum.exists("Access Points","hihihi"):
-    print(daytum.add("Access Points","hihihi",{"why is this so autsitic":"hi"}))
+
+daytum.add("Access Points","88:d7:f6:a8:b1:7c",{"coordinates":{"x":None,"y":None},"radius":None,"trilat":[],"mac":"88:d7:f6:a8:b1:7c"})
