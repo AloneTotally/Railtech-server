@@ -108,7 +108,7 @@ def transactional_update(transaction,collection,document,data):
     ref = db.collection(collection).document(document)
     snapshot = ref.get(transaction = transaction)
     transaction.update(ref,data)
-def exists(collection, document,data):
+def exists(collection, document):
     docref = db.collection(collection).document(document)
     doccheck = docref.get()
     if doccheck.exists:
