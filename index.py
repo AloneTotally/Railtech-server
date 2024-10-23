@@ -413,7 +413,7 @@ def post_coordinates():
         ref_APs[i["mac"]] = i["coordinates"]
 
     from trilateration import trilaterate_actual
-    trilateratedata = {i:data[i] for i in data["accessPoints"] if ref_APs[i["bssid"]] != None}
+    trilateratedata = {i:data["accessPoints"][i] for i in data["accessPoints"] if ref_APs[i["bssid"]] != None}
     result, meta = trilaterate_actual(trilateratedata, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
