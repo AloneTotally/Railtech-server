@@ -4,7 +4,6 @@ import time
 from easy_trilateration.model import Circle
 # Firebase setup
 
-
 '''------------------------FUNCTIONS----------------------------------------------------'''
 
 #FirebaseS Setup
@@ -40,7 +39,12 @@ def delete(collection, document):
 
 def update(collection, document, data):
     try:
-        db.collection(collection).document(document).update(data)
+        docref = db.collection(collection).document(document)
+        doccheck = docref.get()
+        if doccheck.exists:
+            docref.update(data)
+        else:
+            docref.set(data)
         return 1  # worked
     except Exception as e:
         return e  # returns exception
@@ -99,12 +103,21 @@ def classtodict(x):
     return {"x":x.x,"y":x.y,"radius":x.radius}
 def dicttoclass(x):
     return Circle(x["x"],x["y"],x["radius"])
+@firestore.transactional
+def transactional_update(transaction,collection,document,data):
+    ref = db.collection(collection).document(document)
+    snapshot = ref.get(transaction = transaction)
+    transaction.update(ref,data)
+def exists(collection, document,data):
+    docref = db.collection(collection).document(document)
+    doccheck = docref.get()
+    if doccheck.exists:
+        return 1
+    else:
+        return 0
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":"alonzo"}
-users = ["Isaac","Nash","Venti","Darius"]
-x = select_field("Users","current_coordinates","name")
-print(x)
 # data = {"position": [1, 0], "tracking": True, "age": 30}
 # # people = ["Nash", "Venti"]
 # for i in range(100):

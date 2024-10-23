@@ -7,6 +7,7 @@
     <title>Check-in</title>
     <link href="../static/dist/css/output.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 
 </head>
 
@@ -225,10 +226,13 @@
                                     <template x-if="user.status">
                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                     </template>
-                                    <template x-if="!user.status">
+                                    <template x-if="user.status == null">
                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                     </template>
-                                    <p x-text="user.status ? 'Checked in' : 'Absent'"></p>
+                                    <template x-if="user.status == false">
+                                        <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
+                                    </template>
+                                    <p x-text="displayCheckIn(user.status)">Not Present</p>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
@@ -252,10 +256,55 @@
 </html>
 
 <script>
+    const socket = io();
+
     let original = { listItems: {{ data | tojson }} };
 
     const updated = JSON.parse(JSON.stringify(original))
     console.log(updated)
+
+    const displayCheckIn = (checkIn) => {
+        if (checkIn == null) {
+            return 'Not Present'
+        } else if (checkIn) {
+            return 'Checked in'
+        } else {
+            return 'Checked Out'
+        }
+    }
+
+    sessionID = 'SBST123456789A'
+    socket.on(`checkInData-${sessionID}`, function (data) {
+        let i;
+        for (i = 0; i < Alpine.store('data').listItems.length; i++) {
+            if (Alpine.store('data').listItems[i].name == data.user) {
+                break;
+            }
+        }
+
+        let currentDate = new Date()
+        let dateString = currentDate.toLocaleString()
+        // console.log(dateString)
+        const date = dateString.split(', ')[0], time = dateString.split(', ')[1]
+        // console.log(date, time)
+
+        Alpine.store('data').listItems[i].time = time
+        Alpine.store('data').listItems[i].Date = date
+
+
+        Alpine.store('data').listItems[i].status = true
+    })
+
+    socket.on(`checkOutData-${sessionID}`, function (data) {
+        let i;
+        for (i = 0; i < Alpine.store('data').listItems.length; i++) {
+            if (Alpine.store('data').listItems[i].name == data.user) {
+                break;
+            }
+        }
+
+        Alpine.store('data').listItems[i].status = false
+    })
 
     const search = (keyword) => {
         Alpine.store('data').listItems = []

@@ -33,16 +33,16 @@ def index():
 @app.route('/qrcode-gen')
 def qrcode():
     data = [
-                {
-                    "id": 'SBST123456789A'
-                },
-                {
-                    "id": 'SBST123456789A'
-                },
-                {
-                    "id": 'SBST123456789A'
-                }
-            ]
+        {
+            "id": 'SBST123456789A'
+        },
+        {
+            "id": 'SBST123456789A'
+        },
+        {
+            "id": 'SBST123456789A'
+        }
+    ]
     return render_template('railtech-qr.html', data=data)
 
 @app.route('/employees')
@@ -279,37 +279,37 @@ def checkin():
     worker = [
         {
             "name": "Alice Johnson",
-            "Date": "12/10/2023",
-            "time": "09:15",
-            "status": False,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Electrical Engineer"
         },
         {
             "name": "Bob Smith",
-            "Date": "10/08/2023",
-            "time": "14:30",
-            "status": True,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Project Manager"
         },
         {
             "name": "Charlie Davis",
-            "Date": "05/09/2023",
-            "time": "18:45",
-            "status": False,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Software Developer"
         },
         {
             "name": "Dana Lee",
-            "Date": "23/09/2023",
-            "time": "11:00",
-            "status": True,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Data Analyst"
         },
         {
             "name": "Evan Brown",
-            "Date": "17/07/2023",
-            "time": "08:00",
-            "status": False,
+            "Date": "-",
+            "time": "-",
+            "status": None,
             "job": "Mechanical Engineer"
         }
     ]
@@ -462,12 +462,12 @@ def post_coordinates():
         }
     ])
     - how many times trilaterated
-    """
+    """ 
     
     # TODO: note that memo and insufficient_circles are to be replaced by
     # TODO: db as they are meant to be constantly changing
-    from trilateration import find_new_APs, memo, insufficient_circles
-    find_new_APs(data, (new_coords["x"], new_coords["y"]))
+    from trilateration import find_new_APs
+    find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
     
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt

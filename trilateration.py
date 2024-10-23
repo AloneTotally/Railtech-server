@@ -4,6 +4,8 @@ from easy_trilateration.least_squares import easy_least_squares, solve_history
 from easy_trilateration.graph import *  
 from math import log10
 import database_methods as daytum
+import firebase_admin
+from firebase_admin import credentials, firestore
 '''
 However it is not recommended to do what is being done here and ideally the following should be used:
 1. A dynamic loss model (Adjusts the FSPL based on real-time measurements or smt)
@@ -118,7 +120,7 @@ def trilaterate_actual(data, ref_APs):
         return []
 
 # TODO: refer to line 201 in index.py for db schema
-memo = daytum.get_collection_data("Access Points")
+
 # memo stores where the APs are using trilateration follows the following schema:
 # {
 # "mac": (Circle(3, 3, 5), {some long ass info abt the thing})
@@ -127,38 +129,72 @@ memo = daytum.get_collection_data("Access Points")
 # TODO: memo and insufficient circles to be replaced by database
 # this stores the circles of the user (with each circles
 # radius being the length to each AP)
-insufficient_circles = {}
 
 # This is a function that will be called multiple times, and it will update the memo as required
 # user_loc is a tuple (x, y)
-def find_new_APs(data_variant, user_loc):
-    global memo
-    global insufficient_circles
+def find_new_APs(data_variant, user_loc,db):
+    pulledmemo = daytum.get_collection_data("Access Points")
+    memo ={
+    i["mac"] : Circle(
+        i["coordinates"]["x"],
+        i["coordinates"]["y"],
+        i["radius"]
+    ) for i in pulledmemo if i["coordinates"]["x"] != None
+    }
+    pulledcircles = daytum.select_field("Access Points","trilat","mac")
+    
+    insufficient_circles = {}
+    for a in pulledcircles:
+        print(pulledcircles[a])
+        templist = [Circle(i["x"],i["y"],i["radius"]) for i in pulledcircles[a]]
+        insufficient_circles[a] = templist
+    # insufficient_circles = {
+    # i : Circle(
+    #     pulledcircles[i]["x"],
+    #     pulledcircles[i]["y"],
+    #     pulledcircles[i]["radius"]
+    # ) for i in pulledcircles 
+    # }
+    print(insufficient_circles,memo)
     for accessPoint in data_variant["accessPoints"]:
+        if not daytum.exists("Access Points",accessPoint):
+            daytum.add("Access Points",accessPoint,{"coordinates":{"x":None,"y":None},"radius":None,"trilat":[]})
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
         # the circles that we have calculated for the current AP
-        circleInfo = insufficient_circles.get(accessPoint["mac"], [])
+        circleInfo = insufficient_circles.get(accessPoint["bssid"], [])
         if circleInfo == []:
             # create AP in insufficient_circles
-            insufficient_circles[accessPoint["mac"]] = [Circle(user_loc[0], user_loc[1], distance)]
+            insufficient_circles[accessPoint["bssid"]] = [Circle(user_loc[0], user_loc[1], distance)]
         else:
-            insufficient_circles[accessPoint["mac"]].append(Circle(user_loc[0], user_loc[1], distance))
+            insufficient_circles[accessPoint["bssid"]].append(Circle(user_loc[0], user_loc[1], distance))
             
             # This is done in a way where this will always trilaterate as long as there is 
             # 3 or more, it will not delete the element from the circleInfo array
-            if len(circleInfo) >= 3:
+            if len(insufficient_circles[accessPoint["bssid"]]) >= 3:
 
                 try:
-                    memo[accessPoint["mac"]] = easy_least_squares(insufficient_circles[accessPoint["mac"]])
-                    # create_circle(memo[accessPoint["mac"]][0], target=True)
+                    data,_ = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
+                    memo[accessPoint["bssid"]] = Circle(user_loc[0], user_loc[1], distance)
+                    daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
+                    # create_circle(memo[accessPoint["bssid"]][0], target=True)
                     # TODO: UNCOMMENT ME FOR TESTING
-                    # draw(insufficient_circles[accessPoint["mac"]])
+                    # draw(insufficient_circles[accessPoint["bssid"]])
 
                 except Exception as e:
-                    print(f"Trilateration failed for AP {accessPoint['mac']} due to: {e}")
+                    print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
+                    
 
+    for i in insufficient_circles:
+        print(i,insufficient_circles[i])
+        for a in range(len(insufficient_circles[i])):
+            temp = insufficient_circles[i][a]
+            insufficient_circles[i][a] = {"x":temp.center.x,"y":temp.center.y,"radius":temp.radius}
+    print(insufficient_circles)
 
+    for i in insufficient_circles:
+        transaction = db.transaction()
+        daytum.transactional_update(transaction,"Access Points",i,{"trilat":insufficient_circles[i]})
 
 
 # from dummydata import data_variant_1, data_variant_2, data_variant_3
