@@ -56,16 +56,14 @@ data_variant = {
         {
             "mac": "wow",
             "frequency": 2412,
-            "signalStrength": -50
+            "signalStrength": -20
         }
     ]
 }
 
 # Sample User Location
-user_loc = (10, 20)
+user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Points","trilat","mac")
 # print(pulledcircles)
-# find_new_APs(data_variant,user_loc,db)
-for i in mac:
-    daytum.update_field("Access Points",i,"mac",i)
+find_new_APs(data_variant,user_loc,db)
 

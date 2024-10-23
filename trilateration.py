@@ -174,7 +174,7 @@ def find_new_APs(data_variant, user_loc,db):
                 try:
                     data,_ = easy_least_squares(insufficient_circles[accessPoint["mac"]])
                     memo[accessPoint["mac"]] = Circle(user_loc[0], user_loc[1], distance)
-                   
+                    daytum.update("Access Points",accessPoint["mac"],{"coordinates":{"x":data.center.x,"y":data.center.y,"radius":data.radius}})
                     # create_circle(memo[accessPoint["mac"]][0], target=True)
                     # TODO: UNCOMMENT ME FOR TESTING
                     # draw(insufficient_circles[accessPoint["mac"]])
@@ -193,15 +193,6 @@ def find_new_APs(data_variant, user_loc,db):
     for i in insufficient_circles:
         transaction = db.transaction()
         daytum.transactional_update(transaction,"Access Points",i,{"trilat":insufficient_circles[i]})
-    for i in memo:
-        indivdata = memo[i]
-        print(indivdata)
-        transaction = db.transaction()
-        result = daytum.transactional_update(transaction,"Access Points",i,{"coordinates":{"x":indivdata.center.x,"y":indivdata.center.y},"radius":indivdata.radius})
-        if result == 0:
-            daytum.add("Access Points",i,{"coordinates":{"x":indivdata.center.x,"y":indivdata.center.y},"radius":indivdata.radius})
-
-
 
 
 # from dummydata import data_variant_1, data_variant_2, data_variant_3
