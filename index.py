@@ -96,45 +96,69 @@ def index():
 
     def users_in_workzones(workzones, users):
         in_workzones = {
-            # user name: workzone name
+            # workzone name: user name
         } # returned value (the number of workzones)
         for user in users: # Loop thru user
-            for key in workzones: # Loop thru workzones, key is the workzone name
-                # print(workzones[key])
-                # print(user.name)
-                if inrect(workzones[key], user):
-                    if in_workzones.get(key, []) == []:
-                        in_workzones[key] = [user.get('name')]
-                    else:
-                        in_workzones[key].append(user.get('name'))
-                    # in_workzones[user.get('name')] = key
 
+            user_in_workzone = False  # Flag to check if user is inside any workzone
+
+            for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
+                if inrect(workzone_rect, user):  # Check if user is in the workzone
+                    user_in_workzone = True
+                    
+                    # Initialize the list if the workzone is not already in the dictionary
+                    if workzone_name not in in_workzones:
+                        in_workzones[workzone_name] = []
+                    
+                    # Append the user name if not already in the list (to avoid duplicates)
+                    if user.get('name') not in in_workzones[workzone_name]:
+                        in_workzones[workzone_name].append(user.get('name'))
+
+            # If the user wasn't found in any workzone, add them to "No workzone"
+            if not user_in_workzone:
+                if 'No workzone' not in in_workzones:
+                    in_workzones['No workzone'] = []
+                if user.get('name') not in in_workzones['No workzone']:
+                    in_workzones['No workzone'].append(user.get('name'))
         return in_workzones
 
-    
 
     users = [
         {
-            'current_coordinates': {
-                'x': 4,
-                'y': 1,
-            },
-            'name': 'Alonzo',
+            "name": "Alice Johnson",
+            "current_coordinates": {"x": 26, "y": 1.4},
+            "tracking": True,
+            "job": "Track Inspector",
+            "email": "alice.johnson@example.com"
         },
         {
-            'current_coordinates': {
-                'x': 4,
-                'y': 0,
-            },
-            'name': 'John'
+            "name": "Bob Smith",
+            "current_coordinates": {"x": 24, "y": 1.3},
+            "tracking": False,
+            "job": "Maintenance Worker",
+            "email": "bob.smith@example.com"
         },
         {
-            'current_coordinates': {
-                'x': 1,
-                'y': 2,
-            },
-            'name': 'John'
+            "name": "Charlie Davis",
+            "current_coordinates": {"x": 12.7, "y": -1.9},
+            "tracking": True,
+            "job": "Construction Foreman",
+            "email": "charlie.davis@example.com"
         },
+        {
+            "name": "Dana Lee",
+            "current_coordinates": {"x": 9.2, "y": 3},
+            "tracking": True,
+            "job": "Safety Officer",
+            "email": "dana.lee@example.com"
+        },
+        {
+            "name": "Evan Brown",
+            "current_coordinates": {"x": 14.1, "y": -3},
+            "tracking": False,
+            "job": "Signal Technician",
+            "email": "evan.brown@example.com"
+        }
     ]
     
     data = {
@@ -168,35 +192,35 @@ def employees():
     workers = [
         {
             "name": "Alice Johnson",
-            "coordinates": {"x": 10.5, "y": 20.3},
+            "current_coordinates": {"x": 10.5, "y": 20.3},
             "tracking": True,
             "job": "Track Inspector",
             "email": "alice.johnson@example.com"
         },
         {
             "name": "Bob Smith",
-            "coordinates": {"x": 15.0, "y": 25.6},
+            "current_coordinates": {"x": 15.0, "y": 25.6},
             "tracking": False,
             "job": "Maintenance Worker",
             "email": "bob.smith@example.com"
         },
         {
             "name": "Charlie Davis",
-            "coordinates": {"x": 12.7, "y": 18.9},
+            "current_coordinates": {"x": 12.7, "y": 18.9},
             "tracking": True,
             "job": "Construction Foreman",
             "email": "charlie.davis@example.com"
         },
         {
             "name": "Dana Lee",
-            "coordinates": {"x": 9.2, "y": 22.5},
+            "current_coordinates": {"x": 9.2, "y": 22.5},
             "tracking": True,
             "job": "Safety Officer",
             "email": "dana.lee@example.com"
         },
         {
             "name": "Evan Brown",
-            "coordinates": {"x": 14.1, "y": 19.0},
+            "current_coordinates": {"x": 14.1, "y": 19.0},
             "tracking": False,
             "job": "Signal Technician",
             "email": "evan.brown@example.com"
