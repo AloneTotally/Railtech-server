@@ -25,10 +25,151 @@ class User:
 # Create a dictionary to hold all users
 users = daytum.get_collection_names("Users")
 
+workzones = {
+    "Workzone A": {
+        "rectLeftX": 20,
+        "rectBottomY": -4,
+        "rectWidth": 10,
+        "rectHeight": 8
+    },
+    "Workzone B": {
+        "rectLeftX": 10,
+        "rectBottomY": -4,
+        "rectWidth": 2,
+        "rectHeight": 1
+    },
+    "Workzone C": {
+        "rectLeftX": 30,
+        "rectBottomY": -4,
+        "rectWidth": 14,
+        "rectHeight": 8
+    },
+    "Workzone D": {
+        "rectLeftX": 0,
+        "rectBottomY": -4,
+        "rectWidth": 1,
+        "rectHeight": 4
+    },
+    "Workzone E": {
+        "rectLeftX": 0,
+        "rectBottomY": 0,
+        "rectWidth": 1,
+        "rectHeight": 4
+    },
+    "Workzone F": {
+        "rectLeftX": 3,
+        "rectBottomY": 0,
+        "rectWidth": 4,
+        "rectHeight": 4
+    },
+}
+
+
+
+
 @app.route('/')
 def index():
     """Render the main page with real-time updates."""
-    return render_template("index.html")
+    global workzones
+
+    
+    def inrect(rect, point) -> bool:
+        # Extract rectangle properties
+        rect_left_x = rect['rectLeftX']
+        rect_bottom_y = rect['rectBottomY']
+        rect_width = rect['rectWidth']
+        rect_height = rect['rectHeight']
+        
+        # Calculate the boundaries of the rectangle
+        rect_right_x = rect_left_x + rect_width
+        rect_top_y = rect_bottom_y + rect_height
+        
+        # Extract point coordinates
+        x = point['current_coordinates']['x']
+        y = point['current_coordinates']['y']
+        
+        # Check if the point is within the rectangle
+        if rect_left_x <= x <= rect_right_x and rect_bottom_y <= y <= rect_top_y:
+            return True
+        else:
+            return False
+
+    def users_in_workzones(workzones, users):
+        in_workzones = {
+            # workzone name: user name
+        } # returned value (the number of workzones)
+        for user in users: # Loop thru user
+
+            user_in_workzone = False  # Flag to check if user is inside any workzone
+
+            for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
+                if inrect(workzone_rect, user):  # Check if user is in the workzone
+                    user_in_workzone = True
+                    
+                    # Initialize the list if the workzone is not already in the dictionary
+                    if workzone_name not in in_workzones:
+                        in_workzones[workzone_name] = []
+                    
+                    # Append the user name if not already in the list (to avoid duplicates)
+                    if user.get('name') not in in_workzones[workzone_name]:
+                        in_workzones[workzone_name].append(user.get('name'))
+
+            # If the user wasn't found in any workzone, add them to "No workzone"
+            if not user_in_workzone:
+                if 'No workzone' not in in_workzones:
+                    in_workzones['No workzone'] = []
+                if user.get('name') not in in_workzones['No workzone']:
+                    in_workzones['No workzone'].append(user.get('name'))
+        return in_workzones
+
+
+    users = [
+        {
+            "name": "Alice Johnson",
+            "current_coordinates": {"x": 26, "y": 1.4},
+            "tracking": True,
+            "job": "Track Inspector",
+            "email": "alice.johnson@example.com"
+        },
+        {
+            "name": "Bob Smith",
+            "current_coordinates": {"x": 24, "y": 1.3},
+            "tracking": False,
+            "job": "Maintenance Worker",
+            "email": "bob.smith@example.com"
+        },
+        {
+            "name": "Charlie Davis",
+            "current_coordinates": {"x": 12.7, "y": -1.9},
+            "tracking": True,
+            "job": "Construction Foreman",
+            "email": "charlie.davis@example.com"
+        },
+        {
+            "name": "Dana Lee",
+            "current_coordinates": {"x": 9.2, "y": 3},
+            "tracking": True,
+            "job": "Safety Officer",
+            "email": "dana.lee@example.com"
+        },
+        {
+            "name": "Evan Brown",
+            "current_coordinates": {"x": 14.1, "y": -3},
+            "tracking": False,
+            "job": "Signal Technician",
+            "email": "evan.brown@example.com"
+        }
+    ]
+    
+    data = {
+        "users": users,
+        "workzones": workzones,
+        "inWorkzones": users_in_workzones(workzones, users)
+    }
+
+
+
+    return render_template("index.html", data=data)
 
 @app.route('/qrcode-gen')
 def qrcode():
@@ -51,35 +192,35 @@ def employees():
     workers = [
         {
             "name": "Alice Johnson",
-            "coordinates": {"x": 10.5, "y": 20.3},
+            "current_coordinates": {"x": 10.5, "y": 20.3},
             "tracking": True,
             "job": "Track Inspector",
             "email": "alice.johnson@example.com"
         },
         {
             "name": "Bob Smith",
-            "coordinates": {"x": 15.0, "y": 25.6},
+            "current_coordinates": {"x": 15.0, "y": 25.6},
             "tracking": False,
             "job": "Maintenance Worker",
             "email": "bob.smith@example.com"
         },
         {
             "name": "Charlie Davis",
-            "coordinates": {"x": 12.7, "y": 18.9},
+            "current_coordinates": {"x": 12.7, "y": 18.9},
             "tracking": True,
             "job": "Construction Foreman",
             "email": "charlie.davis@example.com"
         },
         {
             "name": "Dana Lee",
-            "coordinates": {"x": 9.2, "y": 22.5},
+            "current_coordinates": {"x": 9.2, "y": 22.5},
             "tracking": True,
             "job": "Safety Officer",
             "email": "dana.lee@example.com"
         },
         {
             "name": "Evan Brown",
-            "coordinates": {"x": 14.1, "y": 19.0},
+            "current_coordinates": {"x": 14.1, "y": 19.0},
             "tracking": False,
             "job": "Signal Technician",
             "email": "evan.brown@example.com"
@@ -481,7 +622,15 @@ def post_coordinates():
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
-    all_coordinates = {"Users":daytum.select_field("Users","current_coordinates","name"),"APs":daytum.select_field("Access Points","coordinates","mac")}
+    
+    global workzones
+
+    all_coordinates = {
+        "Users": daytum.select_field("Users","current_coordinates","name"),
+        "APs": daytum.select_field("Access Points","coordinates","mac"),
+        "workzones": workzones
+    }
+    
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
     
     # Emit the updated coordinates to all connected clients

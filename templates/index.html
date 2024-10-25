@@ -7,10 +7,23 @@
     <title>Real-Time Coordinates</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <link href="../static/dist/css/output.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- <script src="../node_modules/flowbite/dist/flowbite.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
 </head>
 
 <body class="dark bg-slate-900 text-white">
+    <!-- <template x-for="item in Object.entries(receivedData.inWorkzones)">
+        <div>
+            <span x-text="item[0]"></span>
+            <template x-for="user in item[1]">
+                <span x-text="user"></span>
+            </template>
+        </div>
+    </template> -->
+
+
     <h1>Real-Time User Coordinates</h1>
     <div id="coordinates"></div>
     <!-- <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
@@ -19,9 +32,124 @@
     <div id="coordinates-ap"></div>
     <canvas id="Rectangle" width="1200" height="400" class="border border-black"></canvas>
 
+    <div class="mt-10" id="accordion-collapse" data-accordion="open"
+        x-data="{inWorkzones: Object.entries(receivedData.inWorkzones)}">
+        <template x-for="(item, index) in inWorkzones">
+            <div>
+                <h2 :id="`accordion-collapse-heading-${index+1}`">
+                    <button type="button" :class="index == 0 ? 'rounded-t-xl': ''"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                        :data-accordion-target="`#accordion-collapse-body-${index+1}`" aria-expanded="true"
+                        :aria-controls="`accordion-collapse-body-${index+1}`">
+                        <span x-text="item[0]"></span>
+
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5 5 1 1 5" />
+                        </svg>
+                    </button>
+                </h2>
+                <div :id="`accordion-collapse-body-${index+1}`" class="hidden"
+                    :aria-labelledby="`accordion-collapse-heading-${index+1}`">
+                    <div :class=" index+1 < inWorkzones.length ? 'border-b-0' : ''"
+                        class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="p-4">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-all-search" type="checkbox"
+                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Position
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <template x-for="person in item[1]">
+                                <!-- <span x-text="user"></span> -->
+
+                                <tbody x-data="{user: findUserIndex(receivedData.users, person)}">
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+                                        @click="window.location.href='/view_employee'">
+                                        <td class="w-4 p-4">
+                                            <div class="flex items-center">
+                                                <input id="checkbox-table-search-1" type="checkbox"
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                            </div>
+                                        </td>
+                                        <th scope="row"
+                                            class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                            <img class="w-10 h-10 rounded-full"
+                                                src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                                alt="Jese image">
+                                            <div class="ps-3">
+                                                <div class="text-base font-semibold" x-text="user.name"></div>
+                                                <div class="font-normal text-gray-500" x-text="user.email"></div>
+                                            </div>
+                                        </th>
+                                        <td class="px-6 py-4" x-text="user.job">
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center">
+                                                <template x-if="user.tracking">
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                                </template>
+                                                <template x-if="!user.tracking">
+                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                                </template>
+                                                <p x-text="user.tracking ? 'Working' : 'Offline'"></p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <a href="#"
+                                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit
+                                                user</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+
+
 
     <script>
+        // finds user index from the name
+        function findUserIndex(users, name) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].name === name) {
+                    return users[i];
+                }
+            }
+            return -1; // Return -1 if the name is not found
+        }
+        const receivedData = {{ data | tojson }};
+        console.log(receivedData)
+        // console.log(Object.entries(receivedData.inWorkzones))
 
+        const workzones = receivedData.workzones
+        // const workzones = Object.values(receivedData.workzones)
+        const users = receivedData.users
         const socket = io();
 
         // Get canvas and context
@@ -43,9 +171,10 @@
         const img = new Image();
         img.src = 'https://i.pinimg.com/736x/49/65/20/496520b109ebd4c0ae16de6f481152c8.jpg';
 
+
         // Default map with image once it's loaded
         img.onload = function () {
-            DefaultMap();
+            DefaultMap(workzones);
         };
 
         // Convert from grid coordinates (-20 to 20) to canvas coordinates
@@ -58,7 +187,7 @@
         }
 
         // Draws the default map with background image
-        function DefaultMap() {
+        function DefaultMap(workzones) {
             ctx.clearRect(0, 0, Width, height); // Clear canvas
             ctx.fillStyle = "#1f2937"; // Fill background
             ctx.fillRect(0, 0, Width, height);
@@ -67,23 +196,38 @@
             ctx.strokeStyle = '#374151';
             ctx.lineWidth = 1;
 
-            ctx.fillStyle = '#7dd3fc';
+            // ctx.fillStyle = '#7dd3fc';
+            // console.log(workzones)
 
-            // Define workzones here
-            workzones = [
-                {
-                    "rectLeftX": 20,
-                    "rectBottomY": -4,
-                    "rectWidth": 10,
-                    "rectHeight": 8
-                }
+            const workzoneColours = [
+                "#16a34a",
+                "#059669",
+                "#0d9488",
+                "#0891b2",
+                "#0284c7",
+                "#2563eb",
+                "#4f46e5",
+                "#7c3aed",
+                "#9333ea",
+                "#c026d3",
+                "#db2777",
+                "#e11d48",
+                "#dc2626",
+                "#ea580c",
+                "#d97706",
+                "#ca8a04",
+                "#65a30d",
             ]
 
-            for (let i = 0; i < workzones.length; i++) {
-                let rectLeftX = workzones[i].rectLeftX;
-                let rectBottomY = workzones[i].rectBottomY;
-                let rectWidth = workzones[i].rectWidth;
-                let rectHeight = workzones[i].rectHeight;
+            let i = 0;
+            Object.entries(workzones).forEach(([workzoneName, workzone]) => {
+
+                ctx.fillStyle = workzoneColours[i]
+                // ctx.fillStyle = "#dc2626"
+                let rectLeftX = workzone.rectLeftX;
+                let rectBottomY = workzone.rectBottomY;
+                let rectWidth = workzone.rectWidth;
+                let rectHeight = workzone.rectHeight;
 
                 ctx.fillRect(
                     parseInt(toCanvasX(rectLeftX)),  // X position
@@ -91,7 +235,23 @@
                     parseInt(toCanvasX(rectLeftX + rectWidth) - toCanvasX(rectLeftX)),
                     parseInt(toCanvasY(rectBottomY + rectHeight) - toCanvasY(rectBottomY))
                 );
-            }
+                // Add label (change this to whatever label you want)
+                const label = workzoneName;  // Example: "Workzone 1", "Workzone 2", etc.
+
+                // Set label style
+                ctx.fillStyle = "#fff";  // Black color for the label text
+                ctx.font = "12px Arial"; // Font size and family
+
+                // Position the label inside the rectangle (adjust as necessary)
+                let labelX = parseInt(toCanvasX(rectLeftX) + 10);  // 10px padding from left
+                let labelY = parseInt(toCanvasY(rectBottomY + rectHeight) - 10);  // 10px above the bottom
+
+                ctx.fillText(label, labelX, labelY);
+                i++;
+
+            });
+
+
             // Draw the rectangle, correcting the subtraction logic for dimensions
 
             // ctx.fillRect(50, 50, 100, 100)
@@ -170,8 +330,9 @@
             coordinatesDiv.innerHTML = ''; // Clear previous coordinates
             apcoordinatesDiv.innerHTML = ''; // Clear previous coordinates
 
+            // console.log(data.workzones)
             // Clear canvas and redraw default map
-            DefaultMap();
+            DefaultMap(data.workzones);
 
             // Plot each user's coordinates
             Object.entries(userData).forEach(([name, coords], index) => {
@@ -197,13 +358,18 @@
                 const colors = ['red', 'green', 'blue', 'orange', 'purple'];
                 const userColor = colors[index % colors.length]; // Cycle through colors
 
-                plot(mac, coords.x, coords.y, userColor); // Plot user's position
+                plot(mac, coords.x, coords.y, 'white'); // Plot user's position
             });
         });
 
         // For testing, you can manually plot coordinates
         setTimeout(() => {
-            plot("John", 10, 0, "green");
+            for (let i = 0; i < users.length; i++) {
+                const user = users[i]
+                const coords = user["current_coordinates"]
+                console.log(user.name, coords.x, coords.y, "white")
+                plot(user.name, coords.x, coords.y, "white");
+            }
 
             // Ensure the x, y coordinates scale to canvas dimensions
             const plotX = toCanvasX(10);
