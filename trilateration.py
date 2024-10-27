@@ -133,6 +133,9 @@ def trilaterate_actual(data, ref_APs):
 # This is a function that will be called multiple times, and it will update the memo as required
 # user_loc is a tuple (x, y)
 def find_new_APs(data_variant, user_loc,db):
+    # to make data variant only top 5
+    # data = array of top 5 in data_variant["accessPoints"]
+    data = daytum.top5(data_variant["accessPoints"],"bssid",ascending=True)
     pulledmemo = daytum.get_collection_data("Access Points")
     memo ={
     i["mac"] : Circle(
@@ -156,7 +159,7 @@ def find_new_APs(data_variant, user_loc,db):
     # ) for i in pulledcircles 
     # }
     print(insufficient_circles,memo)
-    for accessPoint in data_variant["accessPoints"]:
+    for accessPoint in data:
         if not daytum.exists("Access Points",accessPoint["bssid"]):
             daytum.add("Access Points",accessPoint["bssid"],{"coordinates":{"x":None,"y":None},"radius":None,"trilat":[],"mac":accessPoint["bssid"]})
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])

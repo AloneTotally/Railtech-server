@@ -563,6 +563,7 @@ def post_coordinates():
         except:
             pass
     print(trilateratedata)
+    trilateratedata = daytum.top5(trilateratedata,"bssid",True)
     result, meta = trilaterate_actual({"accessPoints":trilateratedata}, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls

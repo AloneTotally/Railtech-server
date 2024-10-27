@@ -115,6 +115,10 @@ def exists(collection, document):
         return 1
     else:
         return 0
+#--------- simple sorting function to take top 5 closes to user
+def top5(array: list[dict], field: str, ascending: bool) -> list:
+    sort = array.sort(key = lambda x: x[field],reverse=ascending) #ascending in the case of rssi since its -0 to -90
+    return sort[:5]
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":"alonzo"}
@@ -125,8 +129,10 @@ data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y
 # print(time.time()-start)
 # Sample query: Get users with age greater than 9
 
-
 # Other function tests
 # update("Users", "Nash", {"age": 31})
 # print(get_document("Users", "Nash"))
 # print(get_field("Users", "Nash", "position"))
+
+
+
