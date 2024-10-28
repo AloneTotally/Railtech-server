@@ -132,6 +132,7 @@ def trilaterate_actual(data, ref_APs):
 
 # This is a function that will be called multiple times, and it will update the memo as required
 # user_loc is a tuple (x, y)
+mac = ["60:b9:c0:97:c6:ac","88:d7:f6:a8:b1:7c","60:b9:c0:97:c6:cc"]
 def find_new_APs(data_variant, user_loc,db):
     # to make data variant only top 5
     # data = array of top 5 in data_variant["accessPoints"]
@@ -142,15 +143,16 @@ def find_new_APs(data_variant, user_loc,db):
         i["coordinates"]["x"],
         i["coordinates"]["y"],
         i["radius"]
-    ) for i in pulledmemo if i["coordinates"]["x"] != None
+    ) for i in pulledmemo if i["coordinates"]["x"] != None and i["mac"] not in mac
     }
     pulledcircles = daytum.select_field("Access Points","trilat","mac")
     
     insufficient_circles = {}
     for a in pulledcircles:
         print(pulledcircles[a])
-        templist = [Circle(i["x"],i["y"],i["radius"]) for i in pulledcircles[a]]
-        insufficient_circles[a] = templist
+        if a not in mac:
+            templist = [Circle(i["x"],i["y"],i["radius"]) for i in pulledcircles[a]]
+            insufficient_circles[a] = templist
     # insufficient_circles = {
     # i : Circle(
     #     pulledcircles[i]["x"],

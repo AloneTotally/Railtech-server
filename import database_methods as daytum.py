@@ -65,9 +65,8 @@ data_variant = {
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Point     s","trilat","mac")  
 # print(pulledcircles)
-ap = daytum.get_collection_names("Users")
-# for i in ap:
-#     if i not in mac:
-#         print("delete")
-#         daytum.delete("Access Points",i)
-print(daytum.top5([{"bssid":-60},{"bssid":-70}],"bssid",True))
+ap = daytum.get_collection_names("Access Points")
+for i in ap:
+    if i not in mac:
+        print("delete")
+        daytum.delete("Access Points",i)
