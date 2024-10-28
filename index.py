@@ -569,7 +569,7 @@ def post_coordinates():
     result, meta = trilaterate_actual({"accessPoints":top5data}, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
-    new_coords = {'x': result.center.x, 'y': result.center.y}
+    new_coords = {'x': result.center.x, 'y': result.center.y,"radius":result.radius}
 
     # note that `data` is a dictionary and not the database reference
     user_name = data.get('user')

@@ -336,7 +336,7 @@
 
             // Plot each user's coordinates
             Object.entries(userData).forEach(([name, coords], index) => {
-                coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
+                coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}, Radius: ${coords.radius}</p>`;
 
                 // Choose a different color for each user
                 const colors = ['red', 'green', 'blue', 'orange', 'purple'];
