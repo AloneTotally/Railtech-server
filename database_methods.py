@@ -118,7 +118,10 @@ def exists(collection, document):
 #--------- simple sorting function to take top 5 closes to user
 def top5(array: list[dict], field: str, ascending: bool) -> list:
     sort = array.sort(key = lambda x: x[field],reverse=ascending) #ascending in the case of rssi since its -0 to -90
-    return sort[:5]
+    if len(sort) <5:
+        return sort
+    else:
+        return sort[:5]
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":"alonzo"}

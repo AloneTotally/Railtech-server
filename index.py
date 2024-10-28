@@ -549,6 +549,7 @@ def post_coordinates():
     # } 
     ref_APs = {}
     aps = daytum.get_collection_data("Access Points")
+    apsname = daytum.get_collection_names("Access Points")
     print(aps)
     for i in aps:
         ref_APs[i["mac"]] = i["coordinates"]
@@ -563,8 +564,9 @@ def post_coordinates():
         except:
             pass
     print(trilateratedata)
-    trilateratedata = daytum.top5(trilateratedata,"bssid",True)
-    result, meta = trilaterate_actual({"accessPoints":trilateratedata}, ref_APs)
+    top5data = [i for i in trilateratedata if i["bssid"] in apsname]
+    top5data = daytum.top5(trilateratedata,"bssid",True)
+    result, meta = trilaterate_actual({"accessPoints":top5data}, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
     new_coords = {'x': result.center.x, 'y': result.center.y}
