@@ -117,7 +117,8 @@ def exists(collection, document):
         return 0
 #--------- simple sorting function to take top 5 closes to user
 def top5(array: list[dict], field: str, ascending: bool) -> list:
-    sort = array.sort(key = lambda x: x[field],reverse=ascending) #ascending in the case of rssi since its -0 to -90
+    sort = array
+    sort.sort(key = lambda x: x[field],reverse=ascending) #ascending in the case of rssi since its -0 to -90
     if len(sort) <5:
         return sort
     else:

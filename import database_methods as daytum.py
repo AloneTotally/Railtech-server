@@ -70,5 +70,4 @@ ap = daytum.get_collection_names("Users")
 #     if i not in mac:
 #         print("delete")
 #         daytum.delete("Access Points",i)
-for i in ap:
-    daytum.add_field("Users",i,{"radius": None})
+print(daytum.top5([{"bssid":-60},{"bssid":-70}],"bssid",True))
