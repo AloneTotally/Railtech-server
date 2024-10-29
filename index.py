@@ -471,10 +471,10 @@ def update_wifi_scan():
 
     # Add the new data to the list of all requests
     
-    daytum.add("Users","alonzo",{"name": 1})
-    wifi_scan_requests.append(data)
+    # daytum.add("Users","alonzo",{"name": 1})
+    # wifi_scan_requests.append(data)
     # Emit the updated list to all clients
-    socketio.emit('update_wifi_scan', wifi_scan_requests)
+    # socketio.emit('update_wifi_scan', wifi_scan_requests)
     
     # Return a success response
     return jsonify({"status": "WiFi scan data updated successfully"}), 200
@@ -633,12 +633,18 @@ def post_coordinates():
         "APs": daytum.select_field("Access Points","coordinates","mac"),
         "workzones": workzones
     }
-    
+
+    # THIS WAS DONE USING CHATGPT
+    workzone_list = [{"name": name, **attributes} for name, attributes in workzones.items()]
+
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
     
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
-    return jsonify({"status": "Trilateration data updated successfully"}), 200
+
+    all_coordinates["workzones"] = workzone_list # Changing the schema to fit with kotlins type annotation
+    return jsonify(all_coordinates), 200
+    # return jsonify({"status": "Trilateration data updated successfully"}), 200
 
 
 # Start the background thread for updating coordinates
