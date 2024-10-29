@@ -60,13 +60,19 @@ data_variant = {
         }
     ]
 }
-
+mac = ["60:B9:C0:7E:AC:8B",
+"60:B9:C0:7E:9C:EB",
+"60:B9:C0:7E:B9:AB"]
 # Sample User Location
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Point     s","trilat","mac")  
 # print(pulledcircles)
+from trilateration import ignoremac
 ap = daytum.get_collection_names("Access Points")
-for i in ap:
-    if i not in mac:
-        print("delete")
-        daytum.delete("Access Points",i)
+# for i in ap:
+#     if i not in mac:
+#         print("delete")
+#         daytum.delete("Access Points",i)
+
+for i in mac:
+    daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
