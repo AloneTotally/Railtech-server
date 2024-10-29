@@ -146,7 +146,6 @@
         const receivedData = {{ data | tojson }};
         console.log(receivedData)
         // console.log(Object.entries(receivedData.inWorkzones))
-
         const workzones = receivedData.workzones
         // const workzones = Object.values(receivedData.workzones)
         const users = receivedData.users
@@ -325,6 +324,9 @@
             console.log(data);
             userData = data.Users;
             apData = data.APs; // Do what u will with this ig
+            receivedData.inWorkzones = data.inWorkzones
+            console.log(receivedData.inWorkzones)
+
             const coordinatesDiv = document.getElementById('coordinates');
             const apcoordinatesDiv = document.getElementById('coordinates-ap')
             coordinatesDiv.innerHTML = ''; // Clear previous coordinates
