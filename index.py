@@ -560,7 +560,7 @@ def post_coordinates():
     aps = daytum.get_collection_data("Access Points")
     print(aps)
     for i in aps:
-        ref_APs[i["mac"]] = {"coordinates":i["coordinates"],"radius":i["radius"]}
+        ref_APs[i["mac"]] = {"x":i["coordinates"]["x"],"y":i["coordinates"]["y"],"radius":i["radius"]}
         print(i["coordinates"])
     from trilateration import trilaterate_actual
     trilateratedata = []
