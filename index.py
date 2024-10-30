@@ -504,6 +504,9 @@ def inrect(rect, point) -> bool:
     rect_right_x = rect_left_x + rect_width
     rect_top_y = rect_bottom_y + rect_height
     
+    print("point", point)
+    print("point['current_coordinates']", point['current_coordinates'])
+    print("point['current_coordinates']['x']", point['current_coordinates']['x'])
     # Extract point coordinates
     x = point['current_coordinates']['x']
     y = point['current_coordinates']['y']
@@ -519,7 +522,6 @@ def users_in_workzones(workzones, users):
         # workzone name: user name
     } # returned value (the number of workzones)
     for user in users: # Loop thru user
-
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
