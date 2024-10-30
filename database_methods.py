@@ -116,13 +116,14 @@ def exists(collection, document):
     else:
         return 0
 #--------- simple sorting function to take top 5 closes to user
-def top5(array: list[dict], field: str, ascending: bool) -> list:
-    sort = array
-    sort.sort(key = lambda x: x[field],reverse=ascending) #ascending in the case of rssi since its -0 to -90
-    if len(sort) <5:
-        return sort
+from trilateration import signal_to_distance
+def top5(array: list[dict], ascending: bool) -> list:
+    x = array
+    x.sort(key=lambda accessPoint: signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])) #ascending in the case of rssi since its -0 to -90
+    if len(x) <5:
+        return x
     else:
-        return sort[:5]
+        return x[:5]
 '''-------------------------------------------------Code-----------------------------------'''
 db = setup()
 data = {"current_coordinates": {"x":0,"y":0},"previous_coordinates":{"x":None,"y":None},"tracking":False,"rssi":{},"name":"alonzo"}
