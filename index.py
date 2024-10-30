@@ -569,7 +569,7 @@ def post_coordinates():
     for i in data["accessPoints"]:
         print(i)
         try:
-            if ref_APs[i["bssid"]]["coordinates"]["x"] != None:
+            if ref_APs[i["bssid"]]["x"] != None:
                 trilateratedata.append(i)
         except:
             pass

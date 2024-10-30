@@ -96,9 +96,9 @@ trilaterate_test([
 # }
 def trilaterate_actual(data, ref_APs):
     arr = []
-
     for accessPoint in data["accessPoints"]:
         if accessPoint['bssid'] in list(ref_APs.keys()):
+            print(f"hi {accessPoint}")
             # Finding the index of the BSSID
             # index = ref_BSSIDs.index(accessPoint['bssid'])
             # currentAP = ref_APs[index]
