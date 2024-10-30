@@ -521,7 +521,8 @@ def users_in_workzones(workzones, users):
     in_workzones = {
         # workzone name: user name
     } # returned value (the number of workzones)
-    for user in users.values(): # Loop thru user
+    print(users)
+    for user in users: # Loop thru user
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
@@ -666,7 +667,7 @@ def post_coordinates():
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
 
     global user_position
-    for i in received_users.key():
+    for i in received_users.keys():
         if i == 'alonzo':
             user_position.append(received_users[i])
     
