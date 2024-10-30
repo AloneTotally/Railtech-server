@@ -521,8 +521,8 @@ def users_in_workzones(workzones, users):
     in_workzones = {
         # workzone name: user name
     } # returned value (the number of workzones)
-    print(users)
-    for (name, user) in users.items(): # Loop thru user
+    print("USERRRRRRSSSS: ", users)
+    for (name, user) in users: # Loop thru user
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
@@ -662,7 +662,7 @@ def post_coordinates():
     print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
     print("WORKZONES:",workzones)
     print("RECEIVED USERS:",received_users)
-    all_coordinates["inWorkzones"] = users_in_workzones(workzones, received_users),
+    # all_coordinates["inWorkzones"] = users_in_workzones(workzones, received_users),
 
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
 
