@@ -662,7 +662,9 @@ def post_coordinates():
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
 
     global user_position
-    user_position.append(received_users.current_coordinates)
+    for i in received_users:
+        if received_users['name'] == 'alonzo':
+            user_position.append(received_users['name']['current_coordinates'])
     
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
