@@ -35,7 +35,7 @@
     <div class="mt-10" id="accordion-collapse" data-accordion="open"
         x-data="{inWorkzones: Object.entries(receivedData.inWorkzones)}">
         <template x-for="(item, index) in inWorkzones">
-            <div>
+            <div x-data="{correctWorkzone: receivedData.correctWorkzone}">
                 <h2 :id="`accordion-collapse-heading-${index+1}`">
                     <button type="button" :class="index == 0 ? 'rounded-t-xl': ''"
                         class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
@@ -83,7 +83,9 @@
                                 <!-- <span x-text="user"></span> -->
 
                                 <tbody x-data="{user: findUserIndex(receivedData.users, person)}">
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+                                    <tr
+                                        :class="correctWorkzone != item[0] ? 'dark:bg-red-950': 'dark:bg-gray-800'"
+                                        class="bg-white border-b  dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                         @click="window.location.href='/view_employee'">
                                         <td class="w-4 p-4">
                                             <div class="flex items-center">
@@ -145,8 +147,10 @@
         }
         const receivedData = {{ data | tojson }};
         console.log(receivedData)
+        // console.log(receivedData.correctWorkzone)
         // console.log(Object.entries(receivedData.inWorkzones))
         const workzones = receivedData.workzones
+        // const correctWorkzone = receivedData.correctWorkzone
         // const workzones = Object.values(receivedData.workzones)
         const users = receivedData.users
         const socket = io();
