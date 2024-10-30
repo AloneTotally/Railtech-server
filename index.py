@@ -634,8 +634,9 @@ def post_coordinates():
     
     # TODO: note that memo and insufficient_circles are to be replaced by
     # TODO: db as they are meant to be constantly changing
-    from trilateration import find_new_APs
-    find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
+
+    # from trilateration import find_new_APs
+    # find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
     
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
@@ -657,11 +658,12 @@ def post_coordinates():
     global user_position
     user_position.append(received_users.current_coordinates)
     
-
-    
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
 
+    # THIS WAS DONE USING CHATGPT
+    workzone_list = [{"name": name, **attributes} for name, attributes in workzones.items()]
+    
     all_coordinates["workzones"] = workzone_list # Changing the schema to fit with kotlins type annotation
     return jsonify(all_coordinates), 200
     # return jsonify({"status": "Trilateration data updated successfully"}), 200
