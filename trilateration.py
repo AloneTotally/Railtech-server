@@ -141,7 +141,7 @@ ignoremac = ["60:b9:c0:97:c6:ac",
 def find_new_APs(data_variant, user_loc,db):
     # to make data variant only top 5
     # data = array of top 5 in data_variant["accessPoints"]
-    data = daytum.top5(data_variant["accessPoints"],"bssid",ascending=True)
+    data = daytum.top5(data_variant["accessPoints"],ascending=True)
     pulledmemo = daytum.get_collection_data("Access Points")
     memo ={
     i["mac"] : Circle(
@@ -186,7 +186,9 @@ def find_new_APs(data_variant, user_loc,db):
                 try:
                     data,_ = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
                     memo[accessPoint["bssid"]] = Circle(user_loc[0], user_loc[1], distance)
-                    daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
+                    ignore = True if data.radius<=5 else False
+                    if not ignore:
+                        daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
                     # create_circle(memo[accessPoint["bssid"]][0], target=True)
                     # TODO: UNCOMMENT ME FOR TESTING
                     # draw(insufficient_circles[accessPoint["bssid"]])
@@ -197,7 +199,7 @@ def find_new_APs(data_variant, user_loc,db):
 
     for i in insufficient_circles:
         print(i,insufficient_circles[i])
-        for a in range(len(insufficient_circles[i])):
+        for a in range(len(insufficient_circles[i])-1 if ignore else len(insufficient_circles[i])):
             temp = insufficient_circles[i][a]
             insufficient_circles[i][a] = {"x":temp.center.x,"y":temp.center.y,"radius":temp.radius}
     print(insufficient_circles)

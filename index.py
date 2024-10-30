@@ -62,63 +62,8 @@ workzones = {
         "rectWidth": 4,
         "rectHeight": 4
     },
-    "Workzone G": {
-        "rectLeftX": 8,
-        "rectBottomY": -6,
-        "rectWidth": 9,
-        "rectHeight": 12
-    },
 }
 
-
-def inrect(rect, point) -> bool:
-    # Extract rectangle properties
-    rect_left_x = rect['rectLeftX']
-    rect_bottom_y = rect['rectBottomY']
-    rect_width = rect['rectWidth']
-    rect_height = rect['rectHeight']
-    
-    # Calculate the boundaries of the rectangle
-    rect_right_x = rect_left_x + rect_width
-    rect_top_y = rect_bottom_y + rect_height
-    
-    # Extract point coordinates
-    x = point['current_coordinates']['x']
-    y = point['current_coordinates']['y']
-    
-    # Check if the point is within the rectangle
-    if rect_left_x <= x <= rect_right_x and rect_bottom_y <= y <= rect_top_y:
-        return True
-    else:
-        return False
-
-def users_in_workzones(workzones, users):
-    in_workzones = {
-        # workzone name: user name
-    } # returned value (the number of workzones)
-    for user in users: # Loop thru user
-
-        user_in_workzone = False  # Flag to check if user is inside any workzone
-
-        for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
-            if inrect(workzone_rect, user):  # Check if user is in the workzone
-                user_in_workzone = True
-                
-                # Initialize the list if the workzone is not already in the dictionary
-                if workzone_name not in in_workzones:
-                    in_workzones[workzone_name] = []
-                
-                # Append the user name if not already in the list (to avoid duplicates)
-                if user.get('name') not in in_workzones[workzone_name]:
-                    in_workzones[workzone_name].append(user.get('name'))
-
-        # If the user wasn't found in any workzone, add them to "No workzone"
-        if not user_in_workzone:
-            if 'No workzone' not in in_workzones:
-                in_workzones['No workzone'] = []
-            if user.get('name') not in in_workzones['No workzone']:
-                in_workzones['No workzone'].append(user.get('name'))
-    return in_workzones
 
 
 
@@ -381,6 +326,8 @@ def view_tar():
     ]
 
 
+   
+
     item = {
         "title": 'Maintenance between Bukit Panjang and Cashew',
         "type": 'TAR',
@@ -546,6 +493,56 @@ def user_location():
     global user_position
     return jsonify({"user_position": user_position}), 200
 
+def inrect(rect, point) -> bool:
+    # Extract rectangle properties
+    rect_left_x = rect['rectLeftX']
+    rect_bottom_y = rect['rectBottomY']
+    rect_width = rect['rectWidth']
+    rect_height = rect['rectHeight']
+    
+    # Calculate the boundaries of the rectangle
+    rect_right_x = rect_left_x + rect_width
+    rect_top_y = rect_bottom_y + rect_height
+    
+    # Extract point coordinates
+    x = point['current_coordinates']['x']
+    y = point['current_coordinates']['y']
+    
+    # Check if the point is within the rectangle
+    if rect_left_x <= x <= rect_right_x and rect_bottom_y <= y <= rect_top_y:
+        return True
+    else:
+        return False
+
+def users_in_workzones(workzones, users):
+    in_workzones = {
+        # workzone name: user name
+    } # returned value (the number of workzones)
+    for user in users: # Loop thru user
+
+        user_in_workzone = False  # Flag to check if user is inside any workzone
+
+        for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
+            if inrect(workzone_rect, user):  # Check if user is in the workzone
+                user_in_workzone = True
+                
+                # Initialize the list if the workzone is not already in the dictionary
+                if workzone_name not in in_workzones:
+                    in_workzones[workzone_name] = []
+                
+                # Append the user name if not already in the list (to avoid duplicates)
+                if user.get('name') not in in_workzones[workzone_name]:
+                    in_workzones[workzone_name].append(user.get('name'))
+
+        # If the user wasn't found in any workzone, add them to "No workzone"
+        if not user_in_workzone:
+            if 'No workzone' not in in_workzones:
+                in_workzones['No workzone'] = []
+            if user.get('name') not in in_workzones['No workzone']:
+                in_workzones['No workzone'].append(user.get('name'))
+    return in_workzones
+
+
 
 @app.route('/update-coordinate', methods=['POST'])
 def post_coordinates():
@@ -561,7 +558,6 @@ def post_coordinates():
     # } 
     ref_APs = {}
     aps = daytum.get_collection_data("Access Points")
-    apsname = daytum.get_collection_names("Access Points")
     print(aps)
     for i in aps:
         ref_APs[i["mac"]] = i["coordinates"]
@@ -576,9 +572,17 @@ def post_coordinates():
         except:
             pass
     print(trilateratedata)
-    top5data = [i for i in trilateratedata if i["bssid"] in apsname]
-    top5data = daytum.top5(trilateratedata,"bssid",True)
-    result, meta = trilaterate_actual({"accessPoints":top5data}, ref_APs)
+    from trilateration import signal_to_distance
+    filtereddata = []
+    for i in trilateratedata:
+        if ref_APs[i["bssid"]]["radius"] <= 5:
+            filtereddata.append(i)
+    if len(filtereddata)<3:
+        x = trilateratedata
+        x.sort(key=lambda accessPoint: signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"]))
+        filtereddata = x[:5] if len(x) > 5 else x
+        
+    result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
 
     # TODO: Implement ekf here plsplsplspls
     new_coords = {'x': result.center.x, 'y': result.center.y,"radius":result.radius}
@@ -599,9 +603,8 @@ def post_coordinates():
         # user.previous_coordinates = user.current_coordinates.copy()  # Store previous
         # user.current_coordinates = new_coords  # Update current coordinates
         user = daytum.get_document("Users",user_name)
-        daytum.update_field("Users",user_name,"previous_coordinates",user["current_coordinates"])
-        daytum.update_field("Users",user_name,"current_coordinates",new_coords)
-        daytum.update_field("Users",user_name,"rssi",data["accessPoints"])
+        updatingdata = {"previous_coordinates":user["current_coordinates"],"current_coordinates":new_coords,"rssi":data["accessPoints"]}
+        daytum.update("Users",user_name,updatingdata)
         user = daytum.get_document("Users",user_name)
         
     else:
@@ -629,15 +632,19 @@ def post_coordinates():
     - how many times trilaterated
     """ 
     
-    from trilateration import find_new_APs
-    find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
+    # TODO: note that memo and insufficient_circles are to be replaced by
+    # TODO: db as they are meant to be constantly changing
 
-    # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
+    # from trilateration import find_new_APs
+    # find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
     
-    global workzones
-
+    # TODO: store the location of the new APs using the trilateration.memo global var
+    # TODO: update the APs on the map or smt
+    # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     received_users = daytum.select_field("Users","current_coordinates","name")
     received_aps = daytum.select_field("Access Points","coordinates","mac"),
+    global workzones
+
     all_coordinates = {
         "Users": received_users,
         "APs": received_aps,
@@ -651,13 +658,12 @@ def post_coordinates():
     global user_position
     user_position.append(received_users.current_coordinates)
     
-
-    
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
 
     # THIS WAS DONE USING CHATGPT
     workzone_list = [{"name": name, **attributes} for name, attributes in workzones.items()]
+    
     all_coordinates["workzones"] = workzone_list # Changing the schema to fit with kotlins type annotation
     return jsonify(all_coordinates), 200
     # return jsonify({"status": "Trilateration data updated successfully"}), 200

@@ -74,5 +74,7 @@ ap = daytum.get_collection_names("Access Points")
 #         print("delete")
 #         daytum.delete("Access Points",i)
 
-for i in mac:
-    daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
+# for i in mac:
+    # daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
+x = daytum.select_field("Access Points","radius","mac")
+print(x)
