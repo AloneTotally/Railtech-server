@@ -650,14 +650,18 @@ def post_coordinates():
     received_users = daytum.select_field("Users","current_coordinates","name")
     received_aps = daytum.select_field("Access Points","coordinates","mac"),
     global workzones
-
+    
     all_coordinates = {
         "Users": received_users,
         "APs": received_aps,
         "workzones": workzones,
-        "inWorkzones": users_in_workzones(workzones, received_users),
         "correctWorkzone": "Workzone G"
     }
+    import json
+    print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
+    print("WORKZONES:",workzones)
+    print("RECEIVED USERS:",received_users)
+    all_coordinates["inWorkzones"] = users_in_workzones(workzones, received_users),
 
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
 
