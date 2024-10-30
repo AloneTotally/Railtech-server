@@ -132,14 +132,14 @@ def index():
     users = [
         {
             "name": "Alice Johnson",
-            "current_coordinates": {"x": 26, "y": 1.4},
+            "current_coordinates": {"x": 26, "y": 5},
             "tracking": True,
             "job": "Track Inspector",
             "email": "alice.johnson@example.com"
         },
         {
             "name": "Bob Smith",
-            "current_coordinates": {"x": 24, "y": 1.3},
+            "current_coordinates": {"x": 14, "y": 1.3},
             "tracking": False,
             "job": "Maintenance Worker",
             "email": "bob.smith@example.com"
@@ -170,7 +170,8 @@ def index():
     data = {
         "users": users,
         "workzones": workzones,
-        "inWorkzones": users_in_workzones(workzones, users)
+        "inWorkzones": users_in_workzones(workzones, users),
+        "correctWorkzone": "Workzone G"
     }
 
 
@@ -538,6 +539,13 @@ def post_checkin():
 
     return jsonify({"status": "Check in data updated successfully"}), 200
 
+user_position = []
+
+@app.route('/user-location')
+def user_location():
+    global user_position
+    return jsonify({"user_position": user_position}), 200
+
 
 @app.route('/update-coordinate', methods=['POST'])
 def post_coordinates():
@@ -634,10 +642,16 @@ def post_coordinates():
         "Users": received_users,
         "APs": received_aps,
         "workzones": workzones,
-        "inWorkzones": users_in_workzones(workzones, received_users)
+        "inWorkzones": users_in_workzones(workzones, received_users),
+        "correctWorkzone": "Workzone G"
     }
 
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
+
+    global user_position
+    user_position.append(received_users.current_coordinates)
+    
+
     
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
