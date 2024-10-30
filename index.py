@@ -522,7 +522,7 @@ def users_in_workzones(workzones, users):
         # workzone name: user name
     } # returned value (the number of workzones)
     print(users)
-    for user in users: # Loop thru user
+    for (name, user) in users.items(): # Loop thru user
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
