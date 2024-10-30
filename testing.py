@@ -58,4 +58,6 @@
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
-
+import database_methods as daytum
+db = daytum.setup()
+print(daytum.get_document("Users","alonzo"))

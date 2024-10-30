@@ -560,27 +560,31 @@ def post_coordinates():
     aps = daytum.get_collection_data("Access Points")
     print(aps)
     for i in aps:
-        ref_APs[i["mac"]] = i["coordinates"]
+        ref_APs[i["mac"]] = {"coordinates":i["coordinates"],"radius":i["radius"]}
         print(i["coordinates"])
     from trilateration import trilaterate_actual
     trilateratedata = []
     for i in data["accessPoints"]:
         print(i)
         try:
-            if ref_APs[i["bssid"]]["x"] != None:
+            if ref_APs[i["bssid"]]["coordinates"]["x"] != None:
                 trilateratedata.append(i)
         except:
             pass
-    print(trilateratedata)
     from trilateration import signal_to_distance
+    print(trilateratedata)
     filtereddata = []
     for i in trilateratedata:
+        print("hi")
+        print(ref_APs[i["bssid"]]["radius"])
         if ref_APs[i["bssid"]]["radius"] <= 5:
             filtereddata.append(i)
+    print(filtereddata)
     if len(filtereddata)<3:
         x = trilateratedata
         x.sort(key=lambda accessPoint: signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"]))
         filtereddata = x[:5] if len(x) > 5 else x
+    print(filtereddata)
         
     result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
 
