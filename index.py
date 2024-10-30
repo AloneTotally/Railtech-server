@@ -371,7 +371,7 @@ def checkin():
     """Render the Checkin page."""
     worker = [
         {
-            "name": "Alice Johnson",
+            "name": "alonzo",
             "Date": "-",
             "time": "-",
             "status": None,
