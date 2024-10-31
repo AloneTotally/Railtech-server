@@ -4,7 +4,9 @@ import random
 import os
 import time
 import matplotlib
+from matplotlib import pyplot as plt
 import database_methods as daytum
+plt.close('all')
 matplotlib.use('Agg')
 db = daytum.setup()
 
@@ -72,12 +74,10 @@ def index():
     """Render the main page with real-time updates."""
     global workzones
 
-
-
     users = [
         {
             "name": "Alice Johnson",
-            "current_coordinates": {"x": 26, "y": 5},
+            "current_coordinates": {"x": 26, "y": 0},
             "tracking": True,
             "job": "Track Inspector",
             "email": "alice.johnson@example.com"
@@ -111,12 +111,22 @@ def index():
             "email": "evan.brown@example.com"
         }
     ]
+
+    user_locations = {
+        "Alice Johnson": {"x": 26, "y": 0},
+        "Bob Smith": {"x": 14, "y": 1.3},
+        "Charlie Davis": {"x": 12.7, "y": -1.9},
+        "Dana Lee": {"x": 9.2, "y": 3},
+        "Evan Brown": {"x": 14.1, "y": -3}
+    }
+
+    # USERRRRRRSSSS=  {'Alonzo': {'y': -0.4879266504588531, 'x': 14.750897467714106}, 'Darius': {'y': 0, 'x': 0}, 'Isaac': {'y': 0, 'x': 0}, 'Nash': {'y': 0, 'x': 0}, 'Venti': {'y': 0, 'x': 0}, 'alonzo': {'y': 0.0, 'radius': 0.0, 'x': 0.0}, 'jane': {'y': -2.718541429794193, 'x': 1.3993322251110163}}
     
     data = {
         "users": users,
         "workzones": workzones,
         # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
-        "inWorkzones": users_in_workzones(workzones, users),
+        "inWorkzones": users_in_workzones(workzones, user_locations),
         "correctWorkzone": "Workzone G"
     }
 
@@ -502,11 +512,11 @@ def inrect(rect, point) -> bool:
     rect_top_y = rect_bottom_y + rect_height
     
     print("point", point)
-    print("point['current_coordinates']", point['current_coordinates'])
-    print("point['current_coordinates']['x']", point['current_coordinates']['x'])
+    # print("point['current_coordinates']", point['current_coordinates'])
+    # print("point['current_coordinates']['x']", point['current_coordinates']['x'])
     # Extract point coordinates
-    x = point['current_coordinates']['x']
-    y = point['current_coordinates']['y']
+    x = point['x']
+    y = point['y']
     
     # Check if the point is within the rectangle
     if rect_left_x <= x <= rect_right_x and rect_bottom_y <= y <= rect_top_y:
@@ -519,12 +529,12 @@ def users_in_workzones(workzones, users):
         # workzone name: user name
     } # returned value (the number of workzones)
     print("USERRRRRRSSSS: ", users)
-    for user in users: # Loop thru user
-        print(f"Current user atm: {user}")
+    for [user, coords] in users.items(): # Loop thru user
+        print(f"Current user atm: {user} with coords {coords}")
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
-            if inrect(workzone_rect, user):  # Check if user is in the workzone
+            if inrect(workzone_rect, coords):  # Check if user is in the workzone
                 user_in_workzone = True
                 
                 # Initialize the list if the workzone is not already in the dictionary
@@ -532,15 +542,15 @@ def users_in_workzones(workzones, users):
                     in_workzones[workzone_name] = []
                 
                 # Append the user name if not already in the list (to avoid duplicates)
-                if user.get('name') not in in_workzones[workzone_name]:
-                    in_workzones[workzone_name].append(user.get('name'))
+                if user not in in_workzones[workzone_name]:
+                    in_workzones[workzone_name].append(user)
 
         # If the user wasn't found in any workzone, add them to "No workzone"
         if not user_in_workzone:
             if 'No workzone' not in in_workzones:
                 in_workzones['No workzone'] = []
-            if user.get('name') not in in_workzones['No workzone']:
-                in_workzones['No workzone'].append(user.get('name'))
+            if user not in in_workzones['No workzone']:
+                in_workzones['No workzone'].append(user)
     return in_workzones
 
 
@@ -655,6 +665,7 @@ def post_coordinates():
         "APs": received_aps,
         "workzones": workzones,
         "correctWorkzone": "Workzone G"
+        # TODO: add another field about the user names and stuff
     }
     import json
     print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
