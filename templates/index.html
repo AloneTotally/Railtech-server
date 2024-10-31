@@ -266,7 +266,7 @@
         const workzones = receivedData.workzones
         // const correctWorkzone = receivedData.correctWorkzone
         // const workzones = Object.values(receivedData.workzones)
-        const users = receivedData.users
+        let users = receivedData.users
         const socket = io();
 
         // Get canvas and context
@@ -445,6 +445,8 @@
             receivedData.inWorkzones = data.inWorkzones
             console.log(receivedData.inWorkzones)
             users = userInfo
+            console.log("USERS is now", users)
+            console.log("userinfo is now", userInfo)
 
             const coordinatesDiv = document.getElementById('coordinates');
             const apcoordinatesDiv = document.getElementById('coordinates-ap')

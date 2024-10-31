@@ -669,6 +669,7 @@ def post_coordinates():
         userinfo["tracking"] = False,
         userinfo["job"] = "Signal Technician",
         userinfo["email"] = "evan.brown@example.com"
+        users_info.append(userinfo)
     
     all_coordinates = {
         "Users": received_users,
