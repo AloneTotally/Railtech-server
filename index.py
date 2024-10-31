@@ -659,13 +659,23 @@ def post_coordinates():
     received_users = daytum.select_field("Users","current_coordinates","name")
     received_aps = daytum.select_field("Access Points","coordinates","mac"),
     global workzones
+
+    # TEMPORARY FUNCTION JUST SO I CAN SEE IT WORKING
+    users_info = []
+    for (name, coords) in received_users:
+        userinfo = {}
+        userinfo["name"] = name,
+        userinfo["current_coordinates"] = coords,
+        userinfo["tracking"] = False,
+        userinfo["job"] = "Signal Technician",
+        userinfo["email"] = "evan.brown@example.com"
     
     all_coordinates = {
         "Users": received_users,
         "APs": received_aps,
         "workzones": workzones,
-        "correctWorkzone": "Workzone G"
-        # TODO: add another field about the user names and stuff
+        "correctWorkzone": "Workzone G",
+        "userInfo": users_info
     }
     import json
     print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
