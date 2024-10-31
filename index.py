@@ -432,18 +432,6 @@ def update_wifi_scan():
     return jsonify({"status": "WiFi scan data updated successfully"}), 200
 
 
-# Route to handle POST requests for Accelerator data
-# @app.route('/update_accelerator', methods=['POST'])
-# def update_accelerator():
-#     data = request.json
-#     for user_name, acc_data in data.items():
-#         if user_name in users:
-#             users[user_name].accelerator_data = acc_data  # Store the Accelerator data for the user
-#     # Emit the updated Accelerator data to all connected clients
-#     socketio.emit('update_accelerator', {user.name: user.accelerator_data for user in users.values()})
-#     return jsonify({"status": "Accelerator data updated successfully"}), 200
-
-
 # @app.route('/update-coordinates', methods=['POST'])
 # def post_coordinates():
 #     """Function to update the coordinates of each user every 5 seconds."""
@@ -493,6 +481,14 @@ def user_location():
     global user_position
     return jsonify({"user_position": user_position}), 200
 
+@app.route('/update-user-location')
+def update_userpos():
+    global user_position
+    user_position.append("hehehhehhehehe")
+    return jsonify({"status": "User position updated successfully"}), 200
+
+
+
 def inrect(rect, point) -> bool:
     # Extract rectangle properties
     rect_left_x = rect['rectLeftX']
@@ -522,7 +518,7 @@ def users_in_workzones(workzones, users):
         # workzone name: user name
     } # returned value (the number of workzones)
     print("USERRRRRRSSSS: ", users)
-    for (name, user) in users: # Loop thru user
+    for user in users: # Loop thru user
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
