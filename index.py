@@ -662,7 +662,7 @@ def post_coordinates():
 
     # TEMPORARY FUNCTION JUST SO I CAN SEE IT WORKING
     users_info = []
-    for (name, coords) in received_users:
+    for (name, coords) in received_users.items():
         userinfo = {}
         userinfo["name"] = name,
         userinfo["current_coordinates"] = coords,
