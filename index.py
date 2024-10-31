@@ -115,6 +115,7 @@ def index():
     data = {
         "users": users,
         "workzones": workzones,
+        # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
         "inWorkzones": users_in_workzones(workzones, users),
         "correctWorkzone": "Workzone G"
     }
@@ -659,7 +660,7 @@ def post_coordinates():
     print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
     print("WORKZONES:",workzones)
     print("RECEIVED USERS:",received_users)
-    # all_coordinates["inWorkzones"] = users_in_workzones(workzones, received_users),
+    all_coordinates["inWorkzones"] = users_in_workzones(workzones, received_users),
 
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
 
@@ -668,7 +669,7 @@ def post_coordinates():
         print(i, end="(i), ")
         if i == 'alonzo':
             user_position.append(received_users[i])
-            print("\n\nUPDATED ALONZOS POSITION IN THE GLOBAL:", user_position, "\n\n")
+            print("UPDATED ALONZOS POSITION IN THE GLOBAL:", user_position, "")
 
     
     # Emit the updated coordinates to all connected clients
