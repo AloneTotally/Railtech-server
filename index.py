@@ -463,7 +463,7 @@ def post_checkin():
     )
     """
     data = request.json
-    
+    print("CHECK IN DATA RECEIVED :DDDDD", data)
     # user checked in
     if data["checkIn"]:
         # Probably should include the session ID in here which is tied to QR code? im not so sure
@@ -519,6 +519,7 @@ def users_in_workzones(workzones, users):
     } # returned value (the number of workzones)
     print("USERRRRRRSSSS: ", users)
     for user in users: # Loop thru user
+        print(f"Current user atm: {user}")
         user_in_workzone = False  # Flag to check if user is inside any workzone
 
         for workzone_name, workzone_rect in workzones.items():  # Loop through workzones
@@ -664,14 +665,17 @@ def post_coordinates():
 
     global user_position
     for i in received_users.keys():
+        print(i, end="(i), ")
         if i == 'alonzo':
             user_position.append(received_users[i])
+            print("\n\nUPDATED ALONZOS POSITION IN THE GLOBAL:", user_position, "\n\n")
+
     
     # Emit the updated coordinates to all connected clients
     socketio.emit('update_coordinates', all_coordinates)
 
     # THIS WAS DONE USING CHATGPT
-    workzone_list = [{"name": name, **attributes} for name, attributes in workzones.items()]
+    workzone_list = [{"label": name, **attributes} for name, attributes in workzones.items()]
     
     all_coordinates["workzones"] = workzone_list # Changing the schema to fit with kotlins type annotation
     return jsonify(all_coordinates), 200
