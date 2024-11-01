@@ -651,7 +651,7 @@ def post_coordinates():
     # TODO: db as they are meant to be constantly changing
 
     from trilateration import find_new_APs
-    find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
+    # find_new_APs(data, (new_coords["x"], new_coords["y"]),db)
     
     # TODO: store the location of the new APs using the trilateration.memo global var
     # TODO: update the APs on the map or smt
