@@ -97,6 +97,7 @@ trilaterate_test([
 def trilaterate_actual(data, ref_APs):
     arr = []
     for accessPoint in data["accessPoints"]:
+        print(accessPoint['bssid'])
         if accessPoint['bssid'] in list(ref_APs.keys()):
             print(f"hi {accessPoint}")
             # Finding the index of the BSSID
@@ -108,7 +109,7 @@ def trilaterate_actual(data, ref_APs):
 
             distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
             arr.append(Circle(coords["x"], coords["y"], distance))
-    print([i.center.x, i.center.y, i.radius] for i in arr)
+    print(arr)
     # trilaterate_test(arr)
     try:
         return easy_least_squares(arr)  
@@ -135,9 +136,12 @@ def trilaterate_actual(data, ref_APs):
 ignoremac = ["60:b9:c0:97:c6:ac",
              "88:d7:f6:a8:b1:7c",
              "60:b9:c0:97:c6:cc",
-             "60:B9:C0:7E:AC:8B",
-             "60:B9:C0:7E:9C:EB",
-             "60:B9:C0:7E:B9:AB"]
+             "60:b9:c0:7e:ac:8b",
+             "60:b9:c0:7e:9c:eb",
+             "60:b9:c0:7e:b9:ab",
+             "60:b9:c0:7e:2e:4c",
+             "60:b9:c0:7e:b2:6c",
+             "60:b9:c0:7e:36:ac"]
 def find_new_APs(data_variant, user_loc,db):
     # to make data variant only top 5
     # data = array of top 5 in data_variant["accessPoints"]

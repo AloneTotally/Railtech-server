@@ -60,4 +60,4 @@
 #     app.run(debug=True)
 import database_methods as daytum
 db = daytum.setup()
-print(daytum.get_document("Users","alonzo"))
+print(daytum.select_field("Users","current_coordinates","name"))
