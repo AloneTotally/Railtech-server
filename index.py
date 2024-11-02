@@ -699,8 +699,10 @@ def post_coordinates():
 
     # THIS WAS DONE USING CHATGPT
     workzone_list = [{"label": name, **attributes} for name, attributes in workzones.items()]
+    userdata_forphone = [{"name": name, **attributes} for name, attributes in received_users.items()]
     
     all_coordinates["workzones"] = workzone_list # Changing the schema to fit with kotlins type annotation
+    all_coordinates["Users"] = userdata_forphone # Changing the schema to fit with kotlins type annotation
     return jsonify(all_coordinates), 200
     # return jsonify({"status": "Trilateration data updated successfully"}), 200
 
