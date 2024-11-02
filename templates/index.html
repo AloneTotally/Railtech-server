@@ -195,7 +195,7 @@
                                 <template x-for="person in item[1]">
                                     <!-- <span x-text="user"></span> -->
 
-                                    <tbody x-data="{user: findUserIndex(receivedData.users, person)}">
+                                    <tbody x-data="{user: findUserIndex(receivedData.users_info, person)}">
                                         <tr :class="correctWorkzone != item[0] ? 'dark:bg-red-950': 'dark:bg-gray-800'"
                                             class="bg-white border-b  dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                             @click="window.location.href='/view_employee'">
