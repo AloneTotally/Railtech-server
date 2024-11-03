@@ -28,12 +28,13 @@ def calculate_distance(signal_strength, frequency):
 
 
 # Free-Space Path Loss
-FSPL = 27.55 # For now it is an approximation that mainly works with routers and access points
-n = 3  # Path loss exponent for indoor environments (FOR TESTING PURPOSES, this constant will differ for the tunnel)
+
 
 def signal_to_distance(mhz, dbm):
     # Free-Space Path Loss adapted avarage constant for home WiFI routers and following units
     # A source like does abs(dbm) to get I
+    FSPL = 27.55 # For now it is an approximation that mainly works with routers and access points
+    n = 3  # Path loss exponent for indoor environments (FOR TESTING PURPOSES, this constant will differ for the tunnel)
     m = 10 ** (( FSPL - (20 * log10(mhz)) + abs(dbm)) / (10 * n) )
    
     return m
@@ -170,8 +171,9 @@ def find_new_APs(data_variant, user_loc,db):
     # ) for i in pulledcircles 
     # }
     print(insufficient_circles,memo)
+    existance = daytum.get_collection_names("Access Points")
     for accessPoint in data:
-        if not daytum.exists("Access Points",accessPoint["bssid"]):
+        if accessPoint["bssid"] not in existance:
             daytum.add("Access Points",accessPoint["bssid"],{"coordinates":{"x":None,"y":None},"radius":None,"trilat":[],"mac":accessPoint["bssid"]})
         distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
         
