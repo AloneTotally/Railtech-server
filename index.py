@@ -612,9 +612,11 @@ def post_coordinates():
     print(filtereddata)
         
     result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
-
-    # TODO: Implement ekf here plsplsplspls
     new_coords = {'x': result.center.x, 'y': result.center.y,"radius":result.radius}
+    # The following two lines replaces the above two lines:
+    # from ekf_trilateration import trilaterate_ekf
+    # new_coords = trilaterate_ekf({"accessPoints":filtereddata}, ref_APs)
+
 
     # note that `data` is a dictionary and not the database reference
     user_name = data.get('user')

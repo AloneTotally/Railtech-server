@@ -92,6 +92,45 @@ n = 2.0  # Path loss exponent (environmental factor for signal decay)
 def signal_to_distance(mhz, dbm):
     return 10 ** ((FSPL - (20 * log10(mhz)) + abs(dbm)) / (10 * n))
 
+
+def trilaterate_ekf(data, ref_APs):
+    ekf.predict()  # Predict next state
+
+    arr = []
+    # Loop through APs
+    for accessPoint in data["accessPoints"]:
+        print(accessPoint['bssid'])
+        # If bssid of ap is in the ref ap keys
+        if accessPoint['bssid'] in list(ref_APs.keys()):
+            print(f"hi {accessPoint}")
+          
+            bssid = accessPoint['bssid']
+            coords = ref_APs[bssid]
+
+            distance = signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"])
+            arr.append(Circle(coords["x"], coords["y"], distance))
+    print(arr)
+    # trilaterate_test(arr)
+    try:
+        trilaterated_position = easy_least_squares(arr)
+        z = np.array([trilaterated_position[0].center.x, trilaterated_position[0].center.y])
+
+        H = H_jacobian(ekf.get_state(), AP_pos)  # Compute Jacobian for the current AP
+        # ekf.update(z, H, R = np.array([[5.0]]) )  # Update EKF with distance measurement and Jacobian
+        ekf.update(z, H, R = np.array([[trilaterated_position[0].radius]]) )  # Update EKF with distance measurement and Jacobian
+
+        # Get the estimated state (position and velocity)
+        estimated_state = ekf.get_state()
+        estimated_position = estimated_state[:2]
+        new_coords = {'x': estimated_position[0], 'y': estimated_position[1], 'radius': trilaterated_position[0].radius}
+
+        return new_coords
+        
+        # draw(arr)
+    except Exception as e:
+        print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
+        return []
+    
 # Positions of multiple access points (APs)
 AP_positions = [
     np.array([0, 0]),    # AP at (0, 0)
