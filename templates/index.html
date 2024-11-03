@@ -14,6 +14,7 @@
 </head>
 
 <body class="dark bg-slate-900 text-white">
+    
     <!-- <template x-for="item in Object.entries(receivedData.inWorkzones)">
         <div>
             <span x-text="item[0]"></span>
@@ -138,23 +139,32 @@
         </nav>
 
         <h1 class="mt-5">Real-Time User Coordinates</h1>
+
         <div id="coordinates"></div>
         <!-- <h1><a href="/wifiscan">Go to WiFi Scan</a></h1>
     <h1><a href="/accelerator">Go to Accelerator</a></h1> -->
         <h1>Real-time Aps Coordinates</h1>
         <div id="coordinates-ap"></div>
         <canvas id="Rectangle" width="1200" height="400" class="border border-black"></canvas>
-
+        
         <div class="mt-10" id="accordion-collapse" data-accordion="open"
-            x-data="{inWorkzones: Object.entries(receivedData.inWorkzones)}">
-            <template x-for="(item, index) in inWorkzones">
-                <div x-data="{correctWorkzone: receivedData.correctWorkzone}">
+        
+        x-data="{
+            get inWorkzonesList() {
+                return $store.receivedData.data.inWorkzones ? Object.entries($store.receivedData.data.inWorkzones) : [];
+            }
+        }">
+                
+            <template x-for="(item, index) in inWorkzonesList">
+                <div x-data="{correctWorkzone: $store.receivedData.correctWorkzone}">
                     <h2 :id="`accordion-collapse-heading-${index+1}`">
                         <button type="button" :class="index == 0 ? 'rounded-t-xl': ''"
                             class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
                             :data-accordion-target="`#accordion-collapse-body-${index+1}`" aria-expanded="true"
                             :aria-controls="`accordion-collapse-body-${index+1}`">
+                            <!-- <span x-text="JSON.stringify(item)"></span> -->
                             <span x-text="item[0]"></span>
+                            <!-- <span x-text="i"></span> -->
 
                             <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -163,9 +173,9 @@
                             </svg>
                         </button>
                     </h2>
-                    <div :id="`accordion-collapse-body-${index+1}`" class="hidden"
+                    <div :id="`accordion-collapse-body-${index+1}`" 
                         :aria-labelledby="`accordion-collapse-heading-${index+1}`">
-                        <div :class=" index+1 < inWorkzones.length ? 'border-b-0' : ''"
+                        <div :class=" index+1 < $store.receivedData.data.inWorkzones.length ? 'border-b-0' : ''"
                             class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead
@@ -194,9 +204,11 @@
                                 </thead>
                                 <template x-for="person in item[1]">
                                     <!-- <span x-text="user"></span> -->
-
-                                    <tbody x-data="{user: findUserIndex(receivedData.users_info, person)}">
-                                        <tr :class="correctWorkzone != item[0] ? 'dark:bg-red-950': 'dark:bg-gray-800'"
+                                    <tbody 
+                                        x-data="{ get user()  {
+                                            return findUserIndex($store.receivedData.data.userInfo, person)
+                                        }}">
+                                        <tr :class="$store.receivedData.data.correctWorkzone != item[0] ? 'dark:bg-red-950': 'dark:bg-gray-800'"
                                             class="bg-white border-b  dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                             @click="window.location.href='/view_employee'">
                                             <td class="w-4 p-4">
@@ -214,6 +226,8 @@
                                                     alt="Jese image">
                                                 <div class="ps-3">
                                                     <div class="text-base font-semibold" x-text="user.name"></div>
+                                                    <!-- <div class="text-base font-semibold" x-text="JSON.stringify($store.receivedData.data.userInfo)"></div>
+                                                    <div class="text-base font-semibold" x-text="JSON.stringify(findUserIndex($store.receivedData.data.userInfo, person))"></div> -->
                                                     <div class="font-normal text-gray-500" x-text="user.email"></div>
                                                 </div>
                                             </th>
@@ -252,8 +266,10 @@
     <script>
         // finds user index from the name
         function findUserIndex(users, name) {
+            console.log(users, name)
             for (let i = 0; i < users.length; i++) {
-                if (users[i].name === name) {
+                // console.log(users[i].name[0] , name)
+                if (users[i].name == name) {
                     return users[i];
                 }
             }
@@ -261,8 +277,19 @@
         }
         const receivedData = {{ data | tojson }};
         console.log(receivedData)
+        
+
+
+        let i = 0
+        for (const [key, value] of Object.entries(receivedData.inWorkzones)) {
+            console.log(`\n\n${key}: ${value},${i}`);
+            console.log("suerinfo", receivedData.userInfo);
+            
+            console.log(findUserIndex(receivedData.userInfo, value))
+            i++
+        }
         // console.log(receivedData.correctWorkzone)
-        // console.log(Object.entries(receivedData.inWorkzones))
+        console.log("inworkzonessss ",Object.entries(receivedData.inWorkzones))
         const workzones = receivedData.workzones
         // const correctWorkzone = receivedData.correctWorkzone
         // const workzones = Object.values(receivedData.workzones)
@@ -443,10 +470,17 @@
             userData = data.Users;
             apData = data.APs; // Do what u will with this ig
             receivedData.inWorkzones = data.inWorkzones
-            console.log(receivedData.inWorkzones)
-            users = data.userInfo
-            console.log("USERS is now", users)
-            console.log("userinfo is now", data.userInfo)
+            // receivedData.userInfo = data.userInfo
+            
+            // UPDATE DATAAA
+            Alpine.store('receivedData').updateData(data)
+
+            console.log(Alpine.store('receivedData').data)
+            console.log(data)
+            
+            // console.log("USERS is now", users)
+            // console.log("userinfo is now", data.userInfo)
+            // console.log("receivedDatauserinfo is now", receivedData.userInfo)
 
             const coordinatesDiv = document.getElementById('coordinates');
             const apcoordinatesDiv = document.getElementById('coordinates-ap')
@@ -504,6 +538,29 @@
 
             ctx.stroke();
         }, 1000); // Delay added to ensure the map is drawn first
+        
+        document.addEventListener('alpine:init', () => {
+            
+            Alpine.store('receivedData', {
+                data: receivedData,
+                
+                updateData(newData) {
+                    this.data.users = newData.Users
+                    this.data.workzones = newData.workzones
+                    this.data.inWorkzones = newData.inWorkzones[0]
+                    this.data.userInfo = newData.userInfo
+                    this.data.correctWorkzone = newData.correctWorkzone
+                    this.data = JSON.parse(JSON.stringify(this.data)) // Spread operator to create a new object
+                    setTimeout(() => {
+                        // This is literally here only because i hv to update data twice then everything fully updates
+                        this.data = JSON.parse(JSON.stringify(this.data)) // Spread operator to create a new object
+                    }, 1000)
+                    console.log("Updated store data is wfhurghfsjdjk", this.data)
+                }
+            })
+            console.log("Alpine sotre is:", Alpine.store('receivedData').data)
+            console.log("nested list of workzones is:", Object.entries(Alpine.store('receivedData').data.inWorkzones))
+        })
     </script>
 </body>
 

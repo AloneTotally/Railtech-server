@@ -120,14 +120,28 @@ def index():
         "Evan Brown": {"x": 14.1, "y": -3}
     }
 
+    users_info_test = []
+    for (name, coords) in user_locations.items():
+        # print(name)
+        userinfo = {
+            "name": name,
+            "current_coordinates": coords,
+            "tracking": False,
+            "job": "Signal Technician",
+            "email": "evan.brown@example.com",
+        }
+
+        print(userinfo)
+        users_info_test.append(userinfo)
     # USERRRRRRSSSS=  {'Alonzo': {'y': -0.4879266504588531, 'x': 14.750897467714106}, 'Darius': {'y': 0, 'x': 0}, 'Isaac': {'y': 0, 'x': 0}, 'Nash': {'y': 0, 'x': 0}, 'Venti': {'y': 0, 'x': 0}, 'alonzo': {'y': 0.0, 'radius': 0.0, 'x': 0.0}, 'jane': {'y': -2.718541429794193, 'x': 1.3993322251110163}}
-    
+    print("Users_info_test", users_info_test)
     data = {
         "users": users,
         "workzones": workzones,
         # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
         "inWorkzones": users_in_workzones(workzones, user_locations),
-        "correctWorkzone": "Workzone G"
+        "correctWorkzone": "Workzone A",
+        "userInfo": users_info_test
     }
 
 
@@ -663,20 +677,22 @@ def post_coordinates():
     # TEMPORARY FUNCTION JUST SO I CAN SEE IT WORKING
     users_info = []
     for (name, coords) in received_users.items():
-        userinfo = {}
-        userinfo["name"] = name,
-        userinfo["current_coordinates"] = coords,
-        userinfo["tracking"] = False,
-        userinfo["job"] = "Signal Technician",
-        userinfo["email"] = "evan.brown@example.com"
+        userinfo = {
+            "name": name,
+            "current_coordinates": coords,
+            # DUMMY DATA
+            "tracking": False,
+            "job": "Signal Technician",
+            "email": "evan.brown@example.com",
+        }
         users_info.append(userinfo)
     
     all_coordinates = {
         "Users": received_users,
         "APs": received_aps,
         "workzones": workzones,
-        "correctWorkzone": "Workzone G",
-        "userInfo": users_info
+        "correctWorkzone": "Workzone F",
+        "userInfo": users_info,
     }
     import json
     print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
