@@ -242,6 +242,15 @@ def home_page():
 
 @app.route('/view-tar')
 def view_tar():
+    # changing of data format to the below condensed format
+    # can be handled on in this function instead
+
+    # TODO: prob need a variable to see the previous state then see the changes
+    # TODO: between the two to decide whether to make a new document
+    
+    # Each document just prob has like the info of what happened
+    # (only sent if got change in workzone)
+
     activities = [
         {
             "title": "Checked in - Workzone A",
@@ -391,92 +400,50 @@ def view_employee():
     return render_template("view_employee.html", userinfo=userinfo)
 
 
+worker = [
+    {
+        "name": "alonzo",
+        "Date": "-",
+        "time": "-",
+        "status": None,
+        "job": "Electrical Engineer"
+    },
+    {
+        "name": "Bob Smith",
+        "Date": "-",
+        "time": "-",
+        "status": None,
+        "job": "Project Manager"
+    },
+    {
+        "name": "Charlie Davis",
+        "Date": "-",
+        "time": "-",
+        "status": None,
+        "job": "Software Developer"
+    },
+    {
+        "name": "Dana Lee",
+        "Date": "-",
+        "time": "-",
+        "status": None,
+        "job": "Data Analyst"
+    },
+    {
+        "name": "Evan Brown",
+        "Date": "-",
+        "time": "-",
+        "status": None,
+        "job": "Mechanical Engineer"
+    }
+]
+
 @app.route('/view-checkin')
 def checkin():
     """Render the Checkin page."""
-    worker = [
-        {
-            "name": "alonzo",
-            "Date": "-",
-            "time": "-",
-            "status": None,
-            "job": "Electrical Engineer"
-        },
-        {
-            "name": "Bob Smith",
-            "Date": "-",
-            "time": "-",
-            "status": None,
-            "job": "Project Manager"
-        },
-        {
-            "name": "Charlie Davis",
-            "Date": "-",
-            "time": "-",
-            "status": None,
-            "job": "Software Developer"
-        },
-        {
-            "name": "Dana Lee",
-            "Date": "-",
-            "time": "-",
-            "status": None,
-            "job": "Data Analyst"
-        },
-        {
-            "name": "Evan Brown",
-            "Date": "-",
-            "time": "-",
-            "status": None,
-            "job": "Mechanical Engineer"
-        }
-    ]
 
     return render_template("view_checkin.html", data=worker)
 
-
-
-
-# Route to handle POST requests for WiFi scan data
-wifi_scan_requests = []
-
-@app.route('/update_wifi_scan', methods=['POST'])
-def update_wifi_scan():
-    """Handle POST requests from Postman and store all data."""
-    global wifi_scan_requests
-    data = request.json  # Get the JSON data from the POST request
-
-    # Add the new data to the list of all requests
-    
-    # daytum.add("Users","alonzo",{"name": 1})
-    # wifi_scan_requests.append(data)
-    # Emit the updated list to all clients
-    # socketio.emit('update_wifi_scan', wifi_scan_requests)
-    
-    # Return a success response
-    return jsonify({"status": "WiFi scan data updated successfully"}), 200
-
-
-# @app.route('/update-coordinates', methods=['POST'])
-# def post_coordinates():
-#     """Function to update the coordinates of each user every 5 seconds."""
-#     global users
-#     for _ in range(3):
-#         time.sleep(5)
-#         all_coordinates = {}  # Dictionary to hold coordinates for all users
-#         for user in users.values():
-#             user.previous_coordinates = user.current_coordinates.copy()  # Store previous
-#             new_coords = {
-#                 "x": random.randint(0, 100),
-#                 "y": random.randint(0, 100)
-#             }  # Get new coordinates
-#             user.current_coordinates = new_coords  # Update current coordinates
-#             all_coordinates[user.name] = user.current_coordinates  # Store in dictionary
-        
-#         print("Updated Coordinates:", all_coordinates)  # Print all coordinates at once
-#         # Emit the updated coordinates to all connected clients
-#         socketio.emit('update_coordinates', all_coordinates)
-#     return jsonify({"status": "Trilateration data updated successfully"}), 200
 
 @app.route('/check-in', methods=['POST'])
 def post_checkin():
@@ -491,6 +458,26 @@ def post_checkin():
     print("CHECK IN DATA RECEIVED :DDDDD", data)
     # user checked in
     if data["checkIn"]:
+        username = data['user']
+
+        from datetime import datetime
+        # Find the index of the item with the matching name
+        i = next((index for index, item in enumerate(worker) if item['name'] == username), None)
+
+        if i is not None:
+            current_date = datetime.now()
+            date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
+            
+            # Split date and time
+            date, time = date_string.split(' ')
+            
+            # Update the item's properties
+            worker[i]['time'] = time
+            worker[i]['Date'] = date
+            worker[i]['status'] = True
+        else:
+            print(f"User '{username}' not found in data.")
+
         # Probably should include the session ID in here which is tied to QR code? im not so sure
         socketio.emit(f'checkInData-{data["sessionID"]}', data)
     # user checked out
