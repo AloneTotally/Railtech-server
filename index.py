@@ -68,10 +68,7 @@ workzones = {
 
 
 
-
-@app.route('/')
-def index():
-    """Render the main page with real-time updates."""
+def create_default_mapdata():
     global workzones
 
     users = [
@@ -135,18 +132,26 @@ def index():
         users_info_test.append(userinfo)
     # USERRRRRRSSSS=  {'Alonzo': {'y': -0.4879266504588531, 'x': 14.750897467714106}, 'Darius': {'y': 0, 'x': 0}, 'Isaac': {'y': 0, 'x': 0}, 'Nash': {'y': 0, 'x': 0}, 'Venti': {'y': 0, 'x': 0}, 'alonzo': {'y': 0.0, 'radius': 0.0, 'x': 0.0}, 'jane': {'y': -2.718541429794193, 'x': 1.3993322251110163}}
     print("Users_info_test", users_info_test)
-    data = {
+
+    global index_mapdata
+    index_mapdata = {
         "users": users,
         "workzones": workzones,
         # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
         "inWorkzones": users_in_workzones(workzones, user_locations),
-        "correctWorkzone": "Workzone A",
+        "correctWorkzone": ["Workzone A"],
         "userInfo": users_info_test
     }
 
 
-
-    return render_template("index.html", data=data)
+@app.route('/')
+def index():
+    """Render the main page with real-time updates."""
+    
+    # ! index_mapdata is defined at the bottom of this doc, not above this 
+    # ! function as the above default function stuff relies on another function 
+    # ! that is alot lower down in this file
+    return render_template("index.html", data=index_mapdata)
 
 @app.route('/qrcode-gen')
 def qrcode():
@@ -555,7 +560,6 @@ def users_in_workzones(workzones, users):
     return in_workzones
 
 
-
 @app.route('/update-coordinate', methods=['POST'])
 def post_coordinates():
     """Function to update the coordinate of the user specified by the api."""
@@ -649,15 +653,10 @@ def post_coordinates():
     ])
     - how many times trilaterated
     """ 
-    
-    # TODO: note that memo and insufficient_circles are to be replaced by
-    # TODO: db as they are meant to be constantly changing
 
     from trilateration import find_new_APs
     # find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
     
-    # TODO: store the location of the new APs using the trilateration.memo global var
-    # TODO: update the APs on the map or smt
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     received_users = daytum.select_field("Users","current_coordinates","name")
     received_aps = daytum.select_field("Access Points","coordinates","mac"),
@@ -680,14 +679,19 @@ def post_coordinates():
         "Users": received_users,
         "APs": received_aps,
         "workzones": workzones,
-        "correctWorkzone": "Workzone F",
+        "correctWorkzone": ["Workzone F", "Workzone E"],
+        "inWorkzones": [users_in_workzones(workzones, received_users)],
         "userInfo": users_info,
     }
+    global index_mapdata
+    import copy
+
+    index_mapdata = copy.deepcopy(all_coordinates)
     import json
     print("All INFO TO SEND TO SOCKET:",json.dumps(all_coordinates))
     print("WORKZONES:",workzones)
     print("RECEIVED USERS:",received_users)
-    all_coordinates["inWorkzones"] = users_in_workzones(workzones, received_users),
+    
 
     print("Updated Coordinates:", all_coordinates)  # Print all coordinates
 
@@ -713,6 +717,11 @@ def post_coordinates():
     all_coordinates["workzones"] = workzone_list # Changing the schema to fit with kotlins type annotation
     all_coordinates["Users"] = userdata_forphone # Changing the schema to fit with kotlins type annotation
     all_coordinates["inWorkzones"] = inworkzones_forphone # Changing the schema to fit with kotlins type annotation
+
+    # Changing the schema to fit with the initial render of the website (because i accidentally
+    #  made it a tuple and i dont want to change all code depending on it so i just put this here)
+    index_mapdata["inWorkzones"] = index_mapdata["inWorkzones"][0]
+
     return jsonify(all_coordinates), 200
     # return jsonify({"status": "Trilateration data updated successfully"}), 200
 
@@ -734,6 +743,12 @@ def get_coordinates():
             "previous": user.previous_coordinates
         } for user in users.values()
     })
+
+
+# ! SOME GLOBALS DEFINED HERE
+index_mapdata = {}
+create_default_mapdata()
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))  # Use the PORT environment variable

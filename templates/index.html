@@ -208,7 +208,7 @@
                                         x-data="{ get user()  {
                                             return findUserIndex($store.receivedData.data.userInfo, person)
                                         }}">
-                                        <tr :class="$store.receivedData.data.correctWorkzone != item[0] ? 'dark:bg-red-950': 'dark:bg-gray-800'"
+                                        <tr :class="!$store.receivedData.data.correctWorkzone.includes(item[0]) ? 'dark:bg-red-950': 'dark:bg-gray-800'"
                                             class="bg-white border-b  dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
                                             @click="window.location.href='/view_employee'">
                                             <td class="w-4 p-4">
