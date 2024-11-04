@@ -372,6 +372,13 @@ def view_tar():
         "type": 'TAR',
         "id": 'SBST123456789A',
         "status": 'Ongoing',
+        "workzones": [
+            "Workzone A",
+            "Workzone B",
+            "Workzone C",
+            "Workzone D",
+            "Workzone E",
+        ]
     }
 
     data = {
@@ -404,7 +411,7 @@ def view_employee():
        
     return render_template("view_employee.html", userinfo=userinfo)
 
-
+# ! CHECK IN GLOBAL VARIABLE
 worker = [
     {
         "name": "alonzo",
@@ -719,7 +726,7 @@ def post_coordinates():
     all_coordinates["inWorkzones"] = inworkzones_forphone # Changing the schema to fit with kotlins type annotation
 
     # Changing the schema to fit with the initial render of the website (because i accidentally
-    #  made it a tuple and i dont want to change all code depending on it so i just put this here)
+    # made it a tuple and i dont want to change all code depending on it so i just put this here)
     index_mapdata["inWorkzones"] = index_mapdata["inWorkzones"][0]
 
     return jsonify(all_coordinates), 200
@@ -747,6 +754,8 @@ def get_coordinates():
 
 # ! SOME GLOBALS DEFINED HERE
 index_mapdata = {}
+# Ensures that there is some default data before the data is overridden
+# (Can be removed ngl)
 create_default_mapdata()
 
 
