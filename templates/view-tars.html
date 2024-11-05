@@ -192,7 +192,7 @@
                     <template x-for="item in listItems">
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
-                            @click="window.location.href='/view-tar'">
+                            @click="window.location.href=`/view-tar/${item.id}`">
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
                                     <input id="checkbox-table-search-1" type="checkbox"

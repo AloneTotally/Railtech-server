@@ -217,41 +217,59 @@ def no_food_for_dayan():
     """Render an example page."""
     return render_template("railtech-web.html")
 
-
-@app.route('/home')
-def home_page():
-    data = {
-            "listItems": [
-                {
-                    "title": 'Maintanence between Bukit Panjang and Cashew',
-                    "type": 'TAR',
-                    "id": 'SBST123456789A',
-                    "status": 'Ongoing',
-                },
-                {
-                    "title": 'Not Maintanence between Bukit Panjang and Cashew',
-                    "type": 'EWR',
-                    "id": 'SBST123456789A',
-                    "status": 'Not Started',
-                },
-                {
-                    "title": 'Testing Maintanence between Bukit Panjang and Cashew',
-                    "type": 'TAR',
-                    "id": 'SBST123456789A',
-                    "status": 'Finished',
-                }
+taa_data = {
+    "listItems": [
+        {
+            "title": 'Maintanence between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST123456789A',
+            "status": 'Ongoing',
+            "workzones": [
+                "Workzone A",
+                "Workzone C",
+                "Workzone E",
+            ]
+        },
+        {
+            "title": 'Not Maintanence between Bukit Panjang and Cashew',
+            "type": 'EWR',
+            "id": 'SMRT123456789A',
+            "status": 'Not Started',
+            "workzones": [
+                "Workzone B",
+                "Workzone D",
+                "Workzone E",
+            ]
+        },
+        {
+            "title": 'Testing Maintanence between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST987654321A',
+            "status": 'Finished',
+            "workzones": [
+                "Workzone A",
+                "Workzone B",
+                "Workzone C",
+                "Workzone D",
+                "Workzone E",
             ]
         }
+    ]
+}
+@app.route('/home')
+def home_page():
+    
     """Render the main page."""
-    return render_template("view-tars.html", data=data)
+    return render_template("view-tars.html", data=taa_data)
 
-@app.route('/view-tar')
-def view_tar():
+@app.route('/view-tar/<string:taa_id>')
+def view_tar(taa_id):
     # changing of data format to the below condensed format
     # can be handled on in this function instead
 
-    # TODO: prob need a variable to see the previous state then see the changes
-    # TODO: between the two to decide whether to make a new document
+    # TODO: handle the processing of the activity log (previously an arr) and 
+    # TODO: convert to a clustered array or smt
+
     
     # Each document just prob has like the info of what happened
     # (only sent if got change in workzone)
@@ -364,22 +382,25 @@ def view_tar():
         }
     ]
 
+    item = {}
+    for taa in taa_data["listItems"]:
+        if taa["id"] == taa_id:
+            item = taa
 
-   
 
-    item = {
-        "title": 'Maintenance between Bukit Panjang and Cashew',
-        "type": 'TAR',
-        "id": 'SBST123456789A',
-        "status": 'Ongoing',
-        "workzones": [
-            "Workzone A",
-            "Workzone B",
-            "Workzone C",
-            "Workzone D",
-            "Workzone E",
-        ]
-    }
+    # item = {
+    #     "title": 'Maintenance between Bukit Panjang and Cashew',
+    #     "type": 'TAR',
+    #     "id": 'SBST123456789A',
+    #     "status": 'Ongoing',
+    #     "workzones": [
+    #         "Workzone A",
+    #         "Workzone B",
+    #         "Workzone C",
+    #         "Workzone D",
+    #         "Workzone E",
+    #     ]
+    # }
 
     data = {
         "item": item,
