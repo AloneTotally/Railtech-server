@@ -211,8 +211,9 @@ def find_new_APs(data_variant, user_loc,db):
     print(insufficient_circles)
 
     for i in insufficient_circles:
-        transaction = db.transaction()
-        daytum.transactional_update(transaction,"Access Points",i,{"trilat":insufficient_circles[i]})
+        # transaction = db.transaction()
+        # daytum.transactional_update(transaction,"Access Points",i,{"trilat":insufficient_circles[i]})
+        daytum.update_field("Access Points",i,"trilat",insufficient_circles[i])
 
 
 # from dummydata import data_variant_1, data_variant_2, data_variant_3

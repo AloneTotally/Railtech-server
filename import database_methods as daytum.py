@@ -48,10 +48,15 @@ user_loc = (90, 20)
 # print(pulledcircles)
 from trilateration import ignoremac
 ap = daytum.get_collection_names("Access Points")
-# for i in ap:
-#     if i not in ignoremac:
-#         print("delete")
-#         daytum.delete("Access Points",i)
-
-for i in mac:
-    daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
+for i in ap:
+    if i not in ignoremac:
+        print("delete")
+        daytum.delete("Access Points",i)
+# import time
+# start = time.time()
+# data = {"accessPoints":[{'ssid': 'ArthurHome', 'signalStrength': -61, 'bssid': '58:ef:68:32:a1:3b', 'frequency': 5765}, {'ssid': '', 'signalStrength': -77, 'bssid': 'e8:9c:25:ac:d2:48', 'frequency': 5745}, {'ssid': '', 'signalStrength': -90, 'bssid': '8c:3b:ad:c2:63:72', 'frequency': 5580}, {'ssid': 'ArthurHome', 'signalStrength': -51, 'bssid': '58:ef:68:32:a2:0c', 'frequency': 5200}, {'ssid': 'CKGJS_5G-1', 'signalStrength': -85, 'bssid': 'e8:9c:25:ac:d2:44', 'frequency': 5180}, {'ssid': 'ArthurHome', 'signalStrength': -59, 'bssid': '80:69:1a:87:b3:7c', 'frequency': 2472}, {'ssid': '', 'signalStrength': -85, 'bssid': 'de:ec:5e:7c:0a:b1', 'frequency': 2467}, {'ssid': '', 'signalStrength': -86, 'bssid': '72:a0:67:53:e9:8d', 'frequency': 2462}, {'ssid': '', 'signalStrength': -84, 'bssid': '7e:e9:31:02:3e:4b', 'frequency': 2457}, {'ssid': 'TP-Link_AH_Home', 'signalStrength': -83, 'bssid': '5c:e9:31:02:3e:4b', 'frequency': 2457}, {'ssid': 'ArthurHome', 'signalStrength': -42, 'bssid': '58:ef:68:32:a2:0b', 'frequency': 2452}, {'ssid': 'ArthurHome', 'signalStrength': -63, 'bssid': '58:ef:68:32:a1:39', 'frequency': 2452}, {'ssid': '', 'signalStrength': -42, 'bssid': '5e:ef:68:32:a2:0b', 'frequency': 2452}, {'ssid': 'Razarusu_Room', 'signalStrength': -75, 'bssid': '34:60:f9:d3:84:97', 'frequency': 2427}, {'ssid': 'Razarusu_Room', 'signalStrength': -60, 'bssid': '08:bf:b8:b6:13:98', 'frequency': 2427}, {'ssid': 'alone iphone', 'signalStrength': -19, 'bssid': 'e2:e2:41:3c:f6:be', 'frequency': 5745}]}
+# find_new_APs(data,(0,0),db)
+# elapsed = time.time()-start
+# print(f"elapsed: {elapsed}")
+# for i in mac:
+#     daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
