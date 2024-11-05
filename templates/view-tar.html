@@ -107,7 +107,7 @@
         </div>
     </aside>
 
-    <div class="p-8 sm:ml-64">
+    <div class="p-8 sm:ml-64" x-data="$store.data">
 
 
         <nav class="flex" aria-label="Breadcrumb">
@@ -149,7 +149,7 @@
                 {% endif %}
             </div>
 
-            <a href="qrcode-gen"
+            <a :href="`${item.id}/qrcode-gen`"
             id="qr-button"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
                 Scan QR
@@ -217,11 +217,21 @@
                     <div class="mt-6 border-t border-gray-700">
                         <dl class="divide-y divide-gray-700">
                             {% for key, value in data.item.items() %}
-                            {% if key != 'workzones' %}
+                            {% if key == 'title' or  key == 'type' or key == 'id' or key == 'status' %}
                             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                 <dt class="text-normal font-medium leading-6 text-white">{{ key[0].upper() + key[1:] if
                                     key != 'id' else 'ID' }}</dt>
-                                <dd class="mt-1 text-normal leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{{ value }}
+                                <dd class="mt-1 text-normal leading-6 text-gray-400 sm:col-span-2 sm:mt-0 flex items-center gap-2">
+                                    <p>{{ value }}</p>
+                                    {% if key == 'status'%}
+                                        {% if data.item.status == 'Not Started' %}
+                                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+                                        {% elif data.item.status == 'Ongoing' %}
+                                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+                                        {% elif data.item.status == 'Finished' %}
+                                        <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
+                                        {% endif %}
+                                    {% endif %}
                                 </dd>
                             </div>
                             {% endif %}
@@ -281,7 +291,7 @@
                 </ul>
 
             </div>
-            <div x-data="$store.data" id="right" class="w-2/3">
+            <div id="right" class="w-2/3">
                 <!-- <h4 class="text-2xl font-bold dark:text-white">Activity Log</h4> -->
                 <h3 class="text-3xl font-bold dark:text-white">Activity Log</h3>
                 <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Log of Activities detected by LTAPal.</p>

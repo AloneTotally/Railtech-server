@@ -66,7 +66,161 @@ workzones = {
     },
 }
 
+taa_data = {
+    "listItems": [
+        {
+            "title": 'Maintanence between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST123456789A',
+            "status": 'Ongoing',
+            "workzones": [
+                "Workzone A",
+                "Workzone C",
+                "Workzone E",
+            ],
+            "checkins": [
+                {
+                    "name": "alonzo",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Electrical Engineer"
+                },
+                {
+                    "name": "Bob Smith",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Project Manager"
+                },
+                {
+                    "name": "Charlie Davis",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Developer"
+                },
+                {
+                    "name": "Dana Lee",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Data Analyst"
+                },
+                {
+                    "name": "Evan Brown",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Mechanical Engineer"
+                }
+            ]
+        },
+        {
+            "title": 'Not Maintanence between Bukit Panjang and Cashew',
+            "type": 'EWR',
+            "id": 'SMRT123456789A',
+            "status": 'Not Started',
+            "workzones": [
+                "Workzone B",
+                "Workzone D",
+                "Workzone E",
+            ],
+            "checkins": [
+                {
+                    "name": "alonzo",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Electrical Engineer"
+                },
+                {
+                    "name": "Bob Smith",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Project Manager"
+                },
+                {
+                    "name": "Charlie Davis",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Developer"
+                },
+                # {
+                #     "name": "Dana Lee",
+                #     "Date": "-",
+                #     "time": "-",
+                #     "status": None,
+                #     "job": "Data Analyst"
+                # },
+                # {
+                #     "name": "Evan Brown",
+                #     "Date": "-",
+                #     "time": "-",
+                #     "status": None,
+                #     "job": "Mechanical Engineer"
+                # }
+            ]
+        },
+        {
+            "title": 'Testing Maintanence between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST987654321A',
+            "status": 'Finished',
+            "workzones": [
+                "Workzone A",
+                "Workzone B",
+                "Workzone C",
+                "Workzone D",
+                "Workzone E",
+            ],
+            "checkins": [
+                {
+                    "name": "alonzo",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Electrical Engineer"
+                },
+                {
+                    "name": "Bob Smith",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Project Manager"
+                },
+                {
+                    "name": "Charlie Davis",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Developer"
+                },
+                {
+                    "name": "Dana Lee",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Data Analyst"
+                },
+                {
+                    "name": "Evan Brown",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Mechanical Engineer"
+                }
+            ]
+        }
+    ]
+}
 
+def find_taa_from_id(taa_id):
+    for taa in taa_data["listItems"]:
+        if taa["id"] == taa_id:
+            return taa
 
 def create_default_mapdata():
     global workzones
@@ -142,7 +296,9 @@ def create_default_mapdata():
         "correctWorkzone": ["Workzone A"],
         "userInfo": users_info_test
     }
-
+# !#############################################################! #
+# !##   Route handlers below, miscellaneous functions above   ##! #
+# !#############################################################! #
 
 @app.route('/')
 def index():
@@ -153,20 +309,11 @@ def index():
     # ! that is alot lower down in this file
     return render_template("index.html", data=index_mapdata)
 
-@app.route('/qrcode-gen')
-def qrcode():
-    data = [
-        {
-            "id": 'SBST123456789A'
-        },
-        {
-            "id": 'SBST123456789A'
-        },
-        {
-            "id": 'SBST123456789A'
-        }
-    ]
-    return render_template('railtech-qr.html', data=data)
+@app.route('/<string:taa_id>/qrcode-gen')
+def qrcode(taa_id):
+    
+    taa = find_taa_from_id(taa_id)
+    return render_template('railtech-qr.html', data=taa["id"])
 
 @app.route('/employees')
 def employees():
@@ -217,52 +364,15 @@ def no_food_for_dayan():
     """Render an example page."""
     return render_template("railtech-web.html")
 
-taa_data = {
-    "listItems": [
-        {
-            "title": 'Maintanence between Bukit Panjang and Cashew',
-            "type": 'TAR',
-            "id": 'SBST123456789A',
-            "status": 'Ongoing',
-            "workzones": [
-                "Workzone A",
-                "Workzone C",
-                "Workzone E",
-            ]
-        },
-        {
-            "title": 'Not Maintanence between Bukit Panjang and Cashew',
-            "type": 'EWR',
-            "id": 'SMRT123456789A',
-            "status": 'Not Started',
-            "workzones": [
-                "Workzone B",
-                "Workzone D",
-                "Workzone E",
-            ]
-        },
-        {
-            "title": 'Testing Maintanence between Bukit Panjang and Cashew',
-            "type": 'TAR',
-            "id": 'SBST987654321A',
-            "status": 'Finished',
-            "workzones": [
-                "Workzone A",
-                "Workzone B",
-                "Workzone C",
-                "Workzone D",
-                "Workzone E",
-            ]
-        }
-    ]
-}
+
 @app.route('/home')
 def home_page():
     
     """Render the main page."""
     return render_template("view-tars.html", data=taa_data)
 
-@app.route('/view-tar/<string:taa_id>')
+
+@app.route('/<string:taa_id>')
 def view_tar(taa_id):
     # changing of data format to the below condensed format
     # can be handled on in this function instead
@@ -382,10 +492,7 @@ def view_tar(taa_id):
         }
     ]
 
-    item = {}
-    for taa in taa_data["listItems"]:
-        if taa["id"] == taa_id:
-            item = taa
+    item = find_taa_from_id(taa_id)
 
 
     # item = {
@@ -410,16 +517,6 @@ def view_tar(taa_id):
 
 wifi_scan_requests = []
 
-@app.route('/wifiscan')
-def wifiscan():
-    """Render the WiFi scan page with a black background and display all requests."""
-    return render_template('wifiscan.html')
-
-@app.route('/accelerator')
-def accelerator():
-    """Render the accelerator page."""
-    return render_template('accelerator.html')
-
 @app.route('/view_employee')
 def view_employee():
     userinfo = {
@@ -432,50 +529,14 @@ def view_employee():
        
     return render_template("view_employee.html", userinfo=userinfo)
 
-# ! CHECK IN GLOBAL VARIABLE
-worker = [
-    {
-        "name": "alonzo",
-        "Date": "-",
-        "time": "-",
-        "status": None,
-        "job": "Electrical Engineer"
-    },
-    {
-        "name": "Bob Smith",
-        "Date": "-",
-        "time": "-",
-        "status": None,
-        "job": "Project Manager"
-    },
-    {
-        "name": "Charlie Davis",
-        "Date": "-",
-        "time": "-",
-        "status": None,
-        "job": "Software Developer"
-    },
-    {
-        "name": "Dana Lee",
-        "Date": "-",
-        "time": "-",
-        "status": None,
-        "job": "Data Analyst"
-    },
-    {
-        "name": "Evan Brown",
-        "Date": "-",
-        "time": "-",
-        "status": None,
-        "job": "Mechanical Engineer"
-    }
-]
-
-@app.route('/view-checkin')
-def checkin():
+@app.route('/<string:taa_id>/view-checkin')
+def checkin(taa_id):
     """Render the Checkin page."""
 
-    return render_template("view_checkin.html", data=worker)
+    item = find_taa_from_id(taa_id)
+
+    # return render_template("view_checkin.html", data=worker)
+    return render_template("view_checkin.html", data=item)
 
 activitylog = []
 @app.route('/check-in', methods=['POST'])
@@ -489,13 +550,18 @@ def post_checkin():
     """
     data = request.json
     print("CHECK IN DATA RECEIVED :DDDDD", data)
+    
+    taa = find_taa_from_id(data["sessionID"])
+    worker = taa["checkins"]
+
+    username = data['user']
+    # Find the index of the item with the matching name
+    i = next((index for index, item in enumerate(worker) if item['name'] == username), None)
+
     # user checked in
     if data["checkIn"]:
-        username = data['user']
 
         from datetime import datetime
-        # Find the index of the item with the matching name
-        i = next((index for index, item in enumerate(worker) if item['name'] == username), None)
 
         if i is not None:
             current_date = datetime.now()
@@ -517,6 +583,7 @@ def post_checkin():
     # user checked out
     else:
         activitylog.append([worker[i],"check out"])
+        # worker[i]['status'] = False
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
 
     return jsonify({"status": "Check in data updated successfully"}), 200
