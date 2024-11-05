@@ -142,7 +142,8 @@ ignoremac = ["60:b9:c0:97:c6:ac",
              "60:b9:c0:7e:b9:ab",
              "60:b9:c0:7e:2e:4c",
              "60:b9:c0:7e:b2:6c",
-             "60:b9:c0:7e:36:ac"]
+             "60:b9:c0:7e:36:ac"
+             ,"60:b9:c0:7e:29:4c","60:b9:c0:7e:33:8c","60:b9:c0:7e:2b:0c","60:b9:c0:7e:6c:8c"]
 def find_new_APs(data_variant, user_loc,db):
     # to make data variant only top 5
     # data = array of top 5 in data_variant["accessPoints"]
