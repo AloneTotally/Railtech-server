@@ -583,7 +583,7 @@ def post_checkin():
     # user checked out
     else:
         activitylog.append([worker[i],"check out"])
-        # worker[i]['status'] = False
+        worker[i]['status'] = False
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
 
     return jsonify({"status": "Check in data updated successfully"}), 200
