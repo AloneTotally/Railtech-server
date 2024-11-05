@@ -477,7 +477,7 @@ def checkin():
 
     return render_template("view_checkin.html", data=worker)
 
-
+activitylog = []
 @app.route('/check-in', methods=['POST'])
 def post_checkin():
     """
@@ -508,6 +508,7 @@ def post_checkin():
             worker[i]['time'] = time
             worker[i]['Date'] = date
             worker[i]['status'] = True
+            activitylog.append([worker[i],"check in"])
         else:
             print(f"User '{username}' not found in data.")
 
@@ -515,6 +516,7 @@ def post_checkin():
         socketio.emit(f'checkInData-{data["sessionID"]}', data)
     # user checked out
     else:
+        activitylog.append([worker[i],"check out"])
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
 
     return jsonify({"status": "Check in data updated successfully"}), 200
