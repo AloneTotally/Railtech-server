@@ -148,6 +148,7 @@ taa_data = {
                     "status": None,
                     "job": "Software Developer"
                 },
+                
                 # {
                 #     "name": "Dana Lee",
                 #     "Date": "-",
@@ -163,6 +164,8 @@ taa_data = {
                 #     "job": "Mechanical Engineer"
                 # }
             ]
+            ,
+            "activitylog":[]
         },
         {
             "title": 'Testing Maintanence between Bukit Panjang and Cashew',
@@ -213,6 +216,8 @@ taa_data = {
                     "job": "Mechanical Engineer"
                 }
             ]
+            ,
+            "activitylog":[]
         }
     ]
 }
@@ -380,7 +385,7 @@ def view_tar(taa_id):
     # TODO: handle the processing of the activity log (previously an arr) and 
     # TODO: convert to a clustered array or smt
 
-    
+
     # Each document just prob has like the info of what happened
     # (only sent if got change in workzone)
 
@@ -538,7 +543,6 @@ def checkin(taa_id):
     # return render_template("view_checkin.html", data=worker)
     return render_template("view_checkin.html", data=item)
 
-activitylog = []
 @app.route('/check-in', methods=['POST'])
 def post_checkin():
     """
@@ -574,7 +578,16 @@ def post_checkin():
             worker[i]['time'] = time
             worker[i]['Date'] = date
             worker[i]['status'] = True
-            activitylog.append([worker[i],"check in"])
+            update = {
+            "title": "Checked in",
+            "timestamp": time,
+            "alert": False,
+            "origin": None,
+            "note": "",
+            "target": "checked in",
+            "details":[username]
+            }
+            taa["activitylog"].append(update)
         else:
             print(f"User '{username}' not found in data.")
 
@@ -582,7 +595,17 @@ def post_checkin():
         socketio.emit(f'checkInData-{data["sessionID"]}', data)
     # user checked out
     else:
-        activitylog.append([worker[i],"check out"])
+        update = {
+            "title": "Checked Out",
+            "timestamp": time,
+            "alert": False,
+            "origin": None,
+            "note": "",
+            "target": "checked Out",
+            "details":[username]
+        }
+
+        taa["activitylog"].append(update)
         worker[i]['status'] = False
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
 
@@ -780,6 +803,28 @@ def post_coordinates():
         "inWorkzones": [users_in_workzones(workzones, received_users)],
         "userInfo": users_info,
     }
+    for taa in taa_data["listItems"]:
+        breaker = False
+        print("hi")
+        for activity in taa["activitylog"]:
+            if activity["title"] == "Checked in":
+                name = activity["details"][0]
+                print(name)
+                for workzone in all_coordinates["inWorkzones"][0]:
+                    for user in all_coordinates["inWorkzones"][0][workzone]:
+                        print(user)
+                        if user == name:
+                            activity["title"] += f" {workzone}"
+                            breaker = True
+                            break
+                    if breaker:
+                        break
+            if breaker:
+                print(activity)
+                break
+    
+
+
     global index_mapdata
     import copy
 

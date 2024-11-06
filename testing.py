@@ -58,6 +58,203 @@
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
-import database_methods as daytum
-db = daytum.setup()
-print(daytum.select_field("Users","current_coordinates","name"))
+taa_data = {
+    "listItems": [
+        {
+            "title": 'Maintanence between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST123456789A',
+            "status": 'Ongoing',
+            "workzones": [
+                "Workzone A",
+                "Workzone C",
+                "Workzone E",
+            ],
+            "checkins": [
+                {
+                    "name": "alonzo",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Electrical Engineer"
+                },
+                {
+                    "name": "Bob Smith",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Project Manager"
+                },
+                {
+                    "name": "Charlie Davis",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Developer"
+                },
+                {
+                    "name": "Dana Lee",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Data Analyst"
+                },
+                {
+                    "name": "Evan Brown",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Mechanical Engineer"
+                }
+            ]
+             ,
+            "activitylog":[]
+        },
+        {
+            "title": 'Not Maintanence between Bukit Panjang and Cashew',
+            "type": 'EWR',
+            "id": 'SMRT123456789A',
+            "status": 'Not Started',
+            "workzones": [
+                "Workzone B",
+                "Workzone D",
+                "Workzone E",
+            ],
+            "checkins": [
+                {
+                    "name": "alonzo",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Electrical Engineer"
+                },
+                {
+                    "name": "Bob Smith",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Project Manager"
+                },
+                {
+                    "name": "Charlie Davis",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Developer"
+                },
+                
+                # {
+                #     "name": "Dana Lee",
+                #     "Date": "-",
+                #     "time": "-",
+                #     "status": None,
+                #     "job": "Data Analyst"
+                # },
+                # {
+                #     "name": "Evan Brown",
+                #     "Date": "-",
+                #     "time": "-",
+                #     "status": None,
+                #     "job": "Mechanical Engineer"
+                # }
+            ]
+            ,
+            "activitylog":[{
+            "title": "Checked in",
+            "timestamp": "1.30pm",
+            "alert": False,
+            "origin": None,
+            "note": "",
+            "target": "checked in",
+            "details":["alonzo"]
+            }]
+        },
+        {
+            "title": 'Testing Maintanence between Bukit Panjang and Cashew',
+            "type": 'TAR',
+            "id": 'SBST987654321A',
+            "status": 'Finished',
+            "workzones": [
+                "Workzone A",
+                "Workzone B",
+                "Workzone C",
+                "Workzone D",
+                "Workzone E",
+            ],
+            "checkins": [
+                {
+                    "name": "alonzo",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Electrical Engineer"
+                },
+                {
+                    "name": "Bob Smith",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Project Manager"
+                },
+                {
+                    "name": "Charlie Davis",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Developer"
+                },
+                {
+                    "name": "Dana Lee",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Data Analyst"
+                },
+                {
+                    "name": "Evan Brown",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Mechanical Engineer"
+                }
+            ]
+            ,
+            "activitylog":[{
+            "title": "Checked in",
+            "timestamp": "1.30pm",
+            "alert": False,
+            "origin": None,
+            "note": "",
+            "target": "checked in",
+            "details":["darius"]
+            }]
+        }
+    ]
+}
+all_coordinates = {
+        "inWorkzones": [{"workzone A":["alonzo"],"workzone B":["darius"]}]
+    }
+for taa in taa_data["listItems"]:
+    breaker = False
+    print("hi")
+    for activity in taa["activitylog"]:
+        if activity["title"] == "Checked in":
+            name = activity["details"][0]
+            print(name)
+            for workzone in all_coordinates["inWorkzones"][0]:
+                for user in all_coordinates["inWorkzones"][0][workzone]:
+                    print(user)
+                    if user == name:
+                        activity["title"] += f" {workzone}"
+                        breaker = True
+                        break
+                if breaker:
+                    break
+        if breaker:
+            print(activity)
+            break
+    
+
+
+
+                
