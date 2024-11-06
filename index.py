@@ -756,7 +756,7 @@ def post_coordinates():
     
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     received_users = daytum.select_field("Users","current_coordinates","name")
-    received_aps = daytum.select_field("Access Points","coordinates","mac"),
+    received_aps = daytum.select_field("Access Points","coordinates","mac")
     global workzones
 
     # TEMPORARY FUNCTION JUST SO I CAN SEE IT WORKING
