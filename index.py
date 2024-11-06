@@ -775,7 +775,7 @@ def post_coordinates():
     """ 
 
     from trilateration import find_new_APs
-    # find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
+    find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
     
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     received_users = daytum.select_field("Users","current_coordinates","name")
