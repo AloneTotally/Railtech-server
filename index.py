@@ -587,7 +587,7 @@ def post_checkin():
             "target": "checked in",
             "details":[username]
             }
-            taa["activitylog"].append(update)
+            # taa["activitylog"].append(update)
         else:
             print(f"User '{username}' not found in data.")
 
@@ -605,7 +605,7 @@ def post_checkin():
             "details":[username]
         }
 
-        taa["activitylog"].append(update)
+        # taa["activitylog"].append(update)
         worker[i]['status'] = False
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
 
@@ -803,25 +803,25 @@ def post_coordinates():
         "inWorkzones": [users_in_workzones(workzones, received_users)],
         "userInfo": users_info,
     }
-    for taa in taa_data["listItems"]:
-        breaker = False
-        print("hi")
-        for activity in taa["activitylog"]:
-            if activity["title"] == "Checked in":
-                name = activity["details"][0]
-                print(name)
-                for workzone in all_coordinates["inWorkzones"][0]:
-                    for user in all_coordinates["inWorkzones"][0][workzone]:
-                        print(user)
-                        if user == name:
-                            activity["title"] += f" {workzone}"
-                            breaker = True
-                            break
-                    if breaker:
-                        break
-            if breaker:
-                print(activity)
-                break
+    # for taa in taa_data["listItems"]:
+    #     breaker = False
+    #     print("hi")
+    #     for activity in taa["activitylog"]:
+    #         if activity["title"] == "Checked in":
+    #             name = activity["details"][0]
+    #             print(name)
+    #             for workzone in all_coordinates["inWorkzones"][0]:
+    #                 for user in all_coordinates["inWorkzones"][0][workzone]:
+    #                     print(user)
+    #                     if user == name:
+    #                         activity["title"] += f" {workzone}"
+    #                         breaker = True
+    #                         break
+    #                 if breaker:
+    #                     break
+    #         if breaker:
+    #             print(activity)
+    #             break
     
 
 
