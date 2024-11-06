@@ -696,7 +696,7 @@ def post_coordinates():
     if len(filtereddata)<3:
         x = trilateratedata
         x.sort(key=lambda accessPoint: signal_to_distance(accessPoint["frequency"], accessPoint["signalStrength"]))
-        filtereddata = x[:5] if len(x) > 5 else x
+        filtereddata = x[:3] if len(x) > 3 else x
     print(filtereddata)
         
     result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
