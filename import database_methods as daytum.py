@@ -44,8 +44,8 @@ mac = ["60:b9:c0:7e:29:43"]
 user_loc = (90, 20)
 # pulledcircles = daytum.select_field("Access Point     s","trilat","mac")  
 # print(pulledcircles)
-from trilateration import ignoremac
-ap = daytum.get_collection_names("Access Points")
+# from trilateration import ignoremac
+# ap = daytum.get_collection_names("Access Points")
 # for i in ap:
 #     if i not in ignoremac:
 #         print("delete")
@@ -56,5 +56,7 @@ ap = daytum.get_collection_names("Access Points")
 # find_new_APs(data,(0,0),db)
 # elapsed = time.time()-start
 # print(f"elapsed: {elapsed}")
-for i in mac:
-    daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
+# for i in mac:
+#     daytum.add("Access Points",i.lower(), {"coordinates":{"x":None, "y":None},"mac":i.lower(),"radius":0,"trilat":[]})
+from trilateration import find_new_APs
+find_new_APs({"accessPoints":[{"bssid":"test","signalStrength":-82,"frequency":2400}]},[29.05,26.29],db)

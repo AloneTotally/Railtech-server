@@ -189,16 +189,18 @@ def find_new_APs(data_variant, user_loc,db):
             # This is done in a way where this will always trilaterate as long as there is 
             # 3 or more, it will not delete the element from the circleInfo array
             if len(insufficient_circles[accessPoint["bssid"]]) >= 3:
-
+                
                 try:
-                    data,_ = easy_least_squares(insufficient_circles[accessPoint["bssid"]])
-                    memo[accessPoint["bssid"]] = Circle(user_loc[0], user_loc[1], distance)
-                    ignore = True if data.radius<=5 else False
-                    # if not ignore:
-                    daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
-                    # create_circle(memo[accessPoint["bssid"]][0], target=True)
-                    # TODO: UNCOMMENT ME FOR TESTING
-                    # draw(insufficient_circles[accessPoint["bssid"]])
+                    data,check = easy_least_squares(insufficient_circles[accessPoint["bssid"]])# need change initial guess too if possible for future me
+                    if data.radius >0 and data.radius<=10:# i need to see if smt like this will work
+                        memo[accessPoint["bssid"]] = Circle(user_loc[0], user_loc[1], distance)
+                        # if not ignore:
+                        daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
+                        # create_circle(memo[accessPoint["bssid"]][0], target=True)
+                        # TODO: UNCOMMENT ME FOR TESTING
+                        # draw(insufficient_circles[accessPoint["bssid"]])
+                    else:
+                        insufficient_circles[accessPoint["bssid"]].pop()
 
                 except Exception as e:
                     print(f"Trilateration failed for AP {accessPoint['bssid']} due to: {e}")
