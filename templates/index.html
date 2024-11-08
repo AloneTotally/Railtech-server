@@ -262,9 +262,11 @@
         }
         const receivedData = {{ data | tojson }};
         console.log(receivedData)
+        // if inworkzones has a length
+        if (receivedData.inWorkzones.length) {
+            receivedData.inWorkzones = receivedData.inWorkzones[0]
+        }
         
-
-
         let i = 0
         for (const [key, value] of Object.entries(receivedData.inWorkzones)) {
             console.log(`\n\n${key}: ${value},${i}`);
@@ -449,6 +451,40 @@
             ctx.fillText(text, plotX + 10, plotY - 10);
         }
 
+        function plotPoints(received, coordinatesDiv, apcoordinatesDiv, ctx) {
+            console.log(received)
+            userData = received.Users;
+            apData = received.APs; // Do what u will with this ig
+
+            Object.entries(userData).forEach(([name, coords], index) => {
+                coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}, Radius: ${coords.radius}</p>`;
+
+                // Choose a different color for each user
+                const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+                const userColor = colors[index % colors.length]; // Cycle through colors
+
+                plot(name, coords.x, coords.y, userColor); // Plot user's position
+                // if (name == 'alonzo') {
+                //     ctx.beginPath();
+                //     ctx.arc(toCanvasX(coords.x), toCanvasY(coords.y), toCanvasX(data.radius - 5), 0, 2 * Math.PI);
+                //     ctx.stroke();
+                // }
+            });
+
+            // Plot each user's coordinates
+            if (apData != undefined) {
+                Object.entries(apData).forEach(([mac, coords], index) => {
+                    apcoordinatesDiv.innerHTML += `<p>${mac}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
+                    console.log([mac, coords]);
+                    // Choose a different color for each user
+                    const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+                    const userColor = colors[index % colors.length]; // Cycle through colors
+    
+                    plot(mac, coords.x, coords.y, 'white'); // Plot user's position
+                });
+            }
+        }
+
         // Handle real-time coordinate updates
         socket.on('update_coordinates', function (data) {
             console.log(data);
@@ -467,8 +503,8 @@
             // console.log("userinfo is now", data.userInfo)
             // console.log("receivedDatauserinfo is now", receivedData.userInfo)
 
-            const coordinatesDiv = document.getElementById('coordinates');
-            const apcoordinatesDiv = document.getElementById('coordinates-ap')
+            // const coordinatesDiv = document.getElementById('coordinates');
+            // const apcoordinatesDiv = document.getElementById('coordinates-ap')
             coordinatesDiv.innerHTML = ''; // Clear previous coordinates
             apcoordinatesDiv.innerHTML = ''; // Clear previous coordinates
 
@@ -476,52 +512,34 @@
             // Clear canvas and redraw default map
             DefaultMap(data.workzones);
 
-            // Plot each user's coordinates
-            Object.entries(userData).forEach(([name, coords], index) => {
-                coordinatesDiv.innerHTML += `<p>${name}: Current X: ${coords.x}, Current Y: ${coords.y}, Radius: ${coords.radius}</p>`;
-
-                // Choose a different color for each user
-                const colors = ['red', 'green', 'blue', 'orange', 'purple'];
-                const userColor = colors[index % colors.length]; // Cycle through colors
-
-                plot(name, coords.x, coords.y, userColor); // Plot user's position
-                if (name == 'alonzo') {
-                    ctx.beginPath();
-                    ctx.arc(toCanvasX(coords.x), toCanvasY(coords.y), toCanvasX(data.radius - 5), 0, 2 * Math.PI);
-                    ctx.stroke();
-                }
-            });
 
             // Plot each user's coordinates
-            Object.entries(apData).forEach(([mac, coords], index) => {
-                apcoordinatesDiv.innerHTML += `<p>${mac}: Current X: ${coords.x}, Current Y: ${coords.y}</p>`;
-                console.log([mac, coords]);
-                // Choose a different color for each user
-                const colors = ['red', 'green', 'blue', 'orange', 'purple'];
-                const userColor = colors[index % colors.length]; // Cycle through colors
-
-                plot(mac, coords.x, coords.y, 'white'); // Plot user's position
-            });
+            plotPoints(data, document.getElementById('coordinates'), document.getElementById('coordinates-ap'))
         });
 
         // For testing, you can manually plot coordinates
         setTimeout(() => {
-            for (let i = 0; i < users.length; i++) {
-                const user = users[i]
-                const coords = user["current_coordinates"]
-                console.log(user.name, coords.x, coords.y, "white")
-                plot(user.name, coords.x, coords.y, "white");
-            }
-
-            // Ensure the x, y coordinates scale to canvas dimensions
-            const plotX = toCanvasX(10);
-            const plotY = toCanvasY(0);
-
-            // Plot circle at user coordinates
-            ctx.beginPath();
-            ctx.arc(plotX, plotY, toCanvasX(28 - 5), 0, 2 * Math.PI);
-
-            ctx.stroke();
+            // if (users) {
+// 
+            //     for (let i = 0; i < users.length; i++) {
+            //         const user = users[i]
+            //         const coords = user["current_coordinates"]
+            //         console.log(user.name, coords.x, coords.y, "white")
+            //         plot(user.name, coords.x, coords.y, "white");
+            //     }
+            //     
+            //     // Ensure the x, y coordinates scale to canvas dimensions
+            //     const plotX = toCanvasX(10);
+            //     const plotY = toCanvasY(0);
+// 
+            //     // Plot circle at user coordinates
+            //     ctx.beginPath();
+            //     ctx.arc(plotX, plotY, toCanvasX(28 - 5), 0, 2 * Math.PI);
+// 
+            //     ctx.stroke();
+            //     
+            // }
+            plotPoints(receivedData, document.getElementById('coordinates'), document.getElementById('coordinates-ap'), ctx)
         }, 1000); // Delay added to ensure the map is drawn first
         
         document.addEventListener('alpine:init', () => {

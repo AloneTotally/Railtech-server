@@ -79,7 +79,10 @@ R = np.array([[1.0, 0],
 
 # Initial state estimate and covariance
 x0 = np.array([0, 0, 0, 0])  # Initial position and velocity (at origin with zero velocity)
-P0 = np.eye(state_dim) * 100  # Initial uncertainty (identity matrix)
+# P0 = np.eye(state_dim) * 100  # Initial uncertainty (identity matrix)
+
+# ChatGPTed initial covariance state
+P0 = np.diag([2000, 2000, 4, 4])  # Assuming high uncertainty for position and lower uncertainty for velocity
 
 # Create EKF object with initial parameters
 ekf = EKF(dt, state_dim, meas_dim, F, Q, R, x0, P0)

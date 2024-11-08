@@ -294,13 +294,14 @@ def create_default_mapdata():
 
     global index_mapdata
     index_mapdata = {
-        "users": users,
+        "Users": users,
         "workzones": workzones,
         # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
         "inWorkzones": users_in_workzones(workzones, user_locations),
-        "correctWorkzone": ["Workzone A"],
+        "correctWorkzone": ["Workzone A", "Workzone E"],
         "userInfo": users_info_test
     }
+
 # !#############################################################! #
 # !##   Route handlers below, miscellaneous functions above   ##! #
 # !#############################################################! #
@@ -312,6 +313,8 @@ def index():
     # ! index_mapdata is defined at the bottom of this doc, not above this 
     # ! function as the above default function stuff relies on another function 
     # ! that is alot lower down in this file
+
+    # return render_template("index.html")
     return render_template("index.html", data=index_mapdata)
 
 @app.route('/<string:taa_id>/qrcode-gen')
@@ -562,17 +565,17 @@ def post_checkin():
     # Find the index of the item with the matching name
     i = next((index for index, item in enumerate(worker) if item['name'] == username), None)
 
+    from datetime import datetime
+    current_date = datetime.now()
+    date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
+    
+    # Split date and time
+    date, time = date_string.split(' ')
+
     # user checked in
     if data["checkIn"]:
 
-        from datetime import datetime
-
         if i is not None:
-            current_date = datetime.now()
-            date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
-            
-            # Split date and time
-            date, time = date_string.split(' ')
             
             # Update the item's properties
             worker[i]['time'] = time
