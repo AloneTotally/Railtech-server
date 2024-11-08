@@ -561,7 +561,7 @@ def view_employee_updated(employee_name):
     
 
     for element in employee_names:
-        if element["name"].lower() == "alonzo":
+        if element["name"].lower() == employee_name:
             return render_template("view_employee.html", userinfo=element)
 
 @app.route('/<string:taa_id>/view-checkin')
@@ -752,11 +752,11 @@ def post_coordinates():
         filtereddata = x[:3] if len(x) > 3 else x
     print(filtereddata)
         
-    result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
-    new_coords = {'x': result.center.x, 'y': result.center.y,"radius":result.radius}
+    # result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
+    # new_coords = {'x': result.center.x, 'y': result.center.y,"radius":result.radius}
     # The following two lines replaces the above two lines:
-    # from ekf_trilateration import trilaterate_ekf
-    # new_coords = trilaterate_ekf({"accessPoints":filtereddata}, ref_APs)
+    from ekf_trilateration import trilaterate_ekf
+    new_coords = trilaterate_ekf({"accessPoints":filtereddata}, ref_APs)
 
 
     # note that `data` is a dictionary and not the database reference
@@ -804,12 +804,12 @@ def post_coordinates():
     - how many times trilaterated
     """ 
 
-    from trilateration import find_new_APs
-    for i in data["accessPoints"]:
-        if i["bssid"] == "60:b9:c0:7e:93:8b":
-            data = {"accessPoints":[i]}
-            break
-    find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
+    # from trilateration import find_new_APs
+    # for i in data["accessPoints"]:
+    #     if i["bssid"] == "60:b9:c0:7e:93:8b":
+    #         data = {"accessPoints":[i]}
+    #         break
+    # find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
     
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     received_users = daytum.select_field("Users","current_coordinates","name")
