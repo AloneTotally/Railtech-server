@@ -312,7 +312,7 @@ def create_default_mapdata():
         "workzones": workzones,
         # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
         "inWorkzones": users_in_workzones(workzones, user_locations),
-        "correctWorkzone": ["Workzone A", "Workzone B"],
+        "correctWorkzone": ["Workzone A"],
         "userInfo": users_info_test
     }
 
