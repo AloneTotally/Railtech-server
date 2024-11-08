@@ -28,42 +28,56 @@ class User:
 users = daytum.get_collection_names("Users")
 
 workzones = {
-    "Workzone A": {
-        "rectLeftX": 20,
-        "rectBottomY": -4,
-        "rectWidth": 10,
-        "rectHeight": 8
+     "Workzone A": {
+        # "name": "Workzone A",
+        "rectLeftX": 0,
+        "rectBottomY": -15,
+        "rectWidth": 7,
+        "rectHeight": 30
     },
     "Workzone B": {
-        "rectLeftX": 10,
-        "rectBottomY": -4,
-        "rectWidth": 2,
-        "rectHeight": 1
+        # "name": "Workzone B",
+        "rectLeftX": 7,  # Touching Workzone A
+        "rectBottomY": -15,
+        "rectWidth": 7,
+        "rectHeight": 30
     },
-    "Workzone C": {
-        "rectLeftX": 30,
-        "rectBottomY": -4,
-        "rectWidth": 14,
-        "rectHeight": 8
-    },
-    "Workzone D": {
-        "rectLeftX": 0,
-        "rectBottomY": -4,
-        "rectWidth": 1,
-        "rectHeight": 4
-    },
-    "Workzone E": {
-        "rectLeftX": 0,
-        "rectBottomY": 0,
-        "rectWidth": 1,
-        "rectHeight": 4
-    },
-    "Workzone F": {
-        "rectLeftX": 3,
-        "rectBottomY": 0,
-        "rectWidth": 4,
-        "rectHeight": 4
-    },
+    # "Workzone A": {
+    #     "rectLeftX": 20,
+    #     "rectBottomY": -4,
+    #     "rectWidth": 10,
+    #     "rectHeight": 8
+    # },
+    # "Workzone B": {
+    #     "rectLeftX": 10,
+    #     "rectBottomY": -4,
+    #     "rectWidth": 2,
+    #     "rectHeight": 1
+    # },
+    # "Workzone C": {
+    #     "rectLeftX": 30,
+    #     "rectBottomY": -4,
+    #     "rectWidth": 14,
+    #     "rectHeight": 8
+    # },
+    # "Workzone D": {
+    #     "rectLeftX": 0,
+    #     "rectBottomY": -4,
+    #     "rectWidth": 1,
+    #     "rectHeight": 4
+    # },
+    # "Workzone E": {
+    #     "rectLeftX": 0,
+    #     "rectBottomY": 0,
+    #     "rectWidth": 1,
+    #     "rectHeight": 4
+    # },
+    # "Workzone F": {
+    #     "rectLeftX": 3,
+    #     "rectBottomY": 0,
+    #     "rectWidth": 4,
+    #     "rectHeight": 4
+    # },
 }
 
 taa_data = {
@@ -755,8 +769,8 @@ def post_coordinates():
     # result, meta = trilaterate_actual({"accessPoints":filtereddata}, ref_APs)
     # new_coords = {'x': result.center.x, 'y': result.center.y,"radius":result.radius}
     # The following two lines replaces the above two lines:
-    from ekf_trilateration import trilaterate_ekf
-    new_coords = trilaterate_ekf({"accessPoints":filtereddata}, ref_APs)
+    # from ekf_trilateration import trilaterate_ekf
+    # new_coords = trilaterate_ekf({"accessPoints":filtereddata}, ref_APs)
 
 
     # note that `data` is a dictionary and not the database reference
