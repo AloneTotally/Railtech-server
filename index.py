@@ -804,8 +804,12 @@ def post_coordinates():
     - how many times trilaterated
     """ 
 
-    # from trilateration import find_new_APs
-    # find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
+    from trilateration import find_new_APs
+    for i in data["accessPoints"]:
+        if i["bssid"] == "60:b9:c0:7e:93:8b":
+            data = {"accessPoints":[i]}
+            break
+    find_new_APs(data, (new_coords["x"], new_coords["y"]),db) 
     
     # all_coordinates = {u.name: u.current_coordinates for u in users.values()}
     received_users = daytum.select_field("Users","current_coordinates","name")
