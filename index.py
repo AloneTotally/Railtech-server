@@ -537,6 +537,33 @@ def view_employee():
        
     return render_template("view_employee.html", userinfo=userinfo)
 
+
+@app.route('/employees/<string:employee_name>')
+def view_employee_updated(employee_name):
+
+    employee_names = [
+        {"name": "Alonzo", "job": "Project Manager", "email": "alonzo.manager@example.com", "contact_number": "+1111111111"},
+        {"name": "Darius", "job": "Software Engineer", "email": "darius.dev@example.com", "contact_number": "+2222222222"},
+        {"name": "Isaac", "job": "Data Analyst", "email": "isaac.data@example.com", "contact_number": "+3333333333"},
+        {"name": "Nash", "job": "Quality Assurance", "email": "nash.qa@example.com", "contact_number": "+4444444444"},
+        {"name": "Venti", "job": "UX Designer", "email": "venti.design@example.com", "contact_number": "+5555555555"},
+        {"name": "alonzo", "job": "Operations Lead", "email": "alonzo.ops@example.com", "contact_number": "+6666666666"},
+        {"name": "jane", "job": "Marketing Specialist", "email": "jane.marketing@example.com", "contact_number": "+7777777777"}
+    ]
+    
+    userinfo = {
+        "Name": 'Alice Johnson',
+        "Age": '20',
+        "Email": 'AliceJohnson@gmail.com',
+        "Contact number": '91234567',
+        'Job Role': 'Train expert'
+    }
+    
+
+    for element in employee_names:
+        if element["name"].lower() == "alonzo":
+            return render_template("view_employee.html", userinfo=element)
+
 @app.route('/<string:taa_id>/view-checkin')
 def checkin(taa_id):
     """Render the Checkin page."""
