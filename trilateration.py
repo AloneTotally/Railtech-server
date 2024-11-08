@@ -192,7 +192,7 @@ def find_new_APs(data_variant, user_loc,db):
                 
                 try:
                     data,check = easy_least_squares(insufficient_circles[accessPoint["bssid"]])# need change initial guess too if possible for future me
-                    if data.radius >0 and data.radius<=10:# i need to see if smt like this will work
+                    if data.radius>=-10 and data.radius<=10:# i need to see if smt like this will work
                         memo[accessPoint["bssid"]] = Circle(user_loc[0], user_loc[1], distance)
                         # if not ignore:
                         daytum.update("Access Points",accessPoint["bssid"],{"coordinates":{"x":data.center.x,"y":data.center.y},"radius":data.radius})
