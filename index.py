@@ -98,35 +98,35 @@ taa_data = {
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Electrical Engineer"
+                    "job": "Operations Lead"
                 },
                 {
-                    "name": "Bob Smith",
-                    "Date": "-",
-                    "time": "-",
-                    "status": None,
-                    "job": "Project Manager"
-                },
-                {
-                    "name": "Charlie Davis",
-                    "Date": "-",
-                    "time": "-",
-                    "status": None,
-                    "job": "Software Developer"
-                },
-                {
-                    "name": "Dana Lee",
+                    "name": "Isaac",
                     "Date": "-",
                     "time": "-",
                     "status": None,
                     "job": "Data Analyst"
                 },
                 {
-                    "name": "Evan Brown",
+                    "name": "Venti",
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Mechanical Engineer"
+                    "job": "UX Designer"
+                },
+                {
+                    "name": "Darius",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Software Engineer"
+                },
+                {
+                    "name": "Nash",
+                    "Date": "-",
+                    "time": "-",
+                    "status": None,
+                    "job": "Quality Assurance"
                 }
             ]
         },
@@ -146,37 +146,23 @@ taa_data = {
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Electrical Engineer"
+                    "job": "Operations Lead",
                 },
                 {
-                    "name": "Bob Smith",
+                    "name": "Isaac",
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Project Manager"
+                    "job": "Data Analyst"
                 },
                 {
-                    "name": "Charlie Davis",
+                    "name": "Venti",
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Software Developer"
+                    "job": "UX Designer"
                 },
-                
-                # {
-                #     "name": "Dana Lee",
-                #     "Date": "-",
-                #     "time": "-",
-                #     "status": None,
-                #     "job": "Data Analyst"
-                # },
-                # {
-                #     "name": "Evan Brown",
-                #     "Date": "-",
-                #     "time": "-",
-                #     "status": None,
-                #     "job": "Mechanical Engineer"
-                # }
+
             ]
             ,
             "activitylog":[]
@@ -195,39 +181,25 @@ taa_data = {
             ],
             "checkins": [
                 {
-                    "name": "alonzo",
+                    "name": "jane",
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Electrical Engineer"
+                    "job": "Marketing Specialist"
                 },
                 {
-                    "name": "Bob Smith",
-                    "Date": "-",
-                    "time": "-",
-                    "status": None,
-                    "job": "Project Manager"
-                },
-                {
-                    "name": "Charlie Davis",
-                    "Date": "-",
-                    "time": "-",
-                    "status": None,
-                    "job": "Software Developer"
-                },
-                {
-                    "name": "Dana Lee",
+                    "name": "Isaac",
                     "Date": "-",
                     "time": "-",
                     "status": None,
                     "job": "Data Analyst"
                 },
                 {
-                    "name": "Evan Brown",
+                    "name": "Nash",
                     "Date": "-",
                     "time": "-",
                     "status": None,
-                    "job": "Mechanical Engineer"
+                    "job": "Quality Assurance"
                 }
             ]
             ,
@@ -243,77 +215,52 @@ def find_taa_from_id(taa_id):
 
 def create_default_mapdata():
     global workzones
+    global employee_names
 
-    users = [
-        {
-            "name": "Alice Johnson",
-            "current_coordinates": {"x": 26, "y": 0},
-            "tracking": True,
-            "job": "Track Inspector",
-            "email": "alice.johnson@example.com"
-        },
-        {
-            "name": "Bob Smith",
-            "current_coordinates": {"x": 14, "y": 1.3},
-            "tracking": False,
-            "job": "Maintenance Worker",
-            "email": "bob.smith@example.com"
-        },
-        {
-            "name": "Charlie Davis",
-            "current_coordinates": {"x": 12.7, "y": -1.9},
-            "tracking": True,
-            "job": "Construction Foreman",
-            "email": "charlie.davis@example.com"
-        },
-        {
-            "name": "Dana Lee",
-            "current_coordinates": {"x": 9.2, "y": 3},
-            "tracking": True,
-            "job": "Safety Officer",
-            "email": "dana.lee@example.com"
-        },
-        {
-            "name": "Evan Brown",
-            "current_coordinates": {"x": 14.1, "y": -3},
-            "tracking": False,
-            "job": "Signal Technician",
-            "email": "evan.brown@example.com"
-        }
-    ]
+    user_info = employee_names
+
+    # user_locations = {
+    #     "Alice Johnson": {"x": 26, "y": 0},
+    #     "Bob Smith": {"x": 14, "y": 1.3},
+    #     "Charlie Davis": {"x": 12.7, "y": -1.9},
+    #     "Dana Lee": {"x": 9.2, "y": 3},
+    #     "Evan Brown": {"x": 14.1, "y": -3}
+    # }
 
     user_locations = {
-        "Alice Johnson": {"x": 26, "y": 0},
-        "Bob Smith": {"x": 14, "y": 1.3},
-        "Charlie Davis": {"x": 12.7, "y": -1.9},
-        "Dana Lee": {"x": 9.2, "y": 3},
-        "Evan Brown": {"x": 14.1, "y": -3}
+        "Alonzo": {"x": 10, "y": 5},
+        "Darius": {"x": 12, "y": -3.5},
+        "Isaac": {"x": 8, "y": 2.1},
+        "Nash": {"x": 15, "y": -1.2},
+        "Venti": {"x": 20, "y": 4.4},
+        "alonzo": {"x": 18, "y": 0.7},
+        "jane": {"x": 11, "y": -4.3}
     }
 
-    users_info_test = []
-    for (name, coords) in user_locations.items():
-        # print(name)
-        userinfo = {
-            "name": name,
-            "current_coordinates": coords,
-            "tracking": False,
-            "job": "Signal Technician",
-            "email": "evan.brown@example.com",
-        }
+    # users_info_test = []
+    # for (name, coords) in user_locations.items():
+    #     # print(name)
+    #     userinfo = {
+    #         "name": name,
+    #         "current_coordinates": coords,
+    #         "tracking": False,
+    #         "job": "Signal Technician",
+    #         "email": "evan.brown@example.com",
+    #     }
 
-        print(userinfo)
-        users_info_test.append(userinfo)
-    # USERRRRRRSSSS=  {'Alonzo': {'y': -0.4879266504588531, 'x': 14.750897467714106}, 'Darius': {'y': 0, 'x': 0}, 'Isaac': {'y': 0, 'x': 0}, 'Nash': {'y': 0, 'x': 0}, 'Venti': {'y': 0, 'x': 0}, 'alonzo': {'y': 0.0, 'radius': 0.0, 'x': 0.0}, 'jane': {'y': -2.718541429794193, 'x': 1.3993322251110163}}
-    print("Users_info_test", users_info_test)
+    #     print(userinfo)
+    #     users_info_test.append(userinfo)
+    # # USERRRRRRSSSS=  {'Alonzo': {'y': -0.4879266504588531, 'x': 14.750897467714106}, 'Darius': {'y': 0, 'x': 0}, 'Isaac': {'y': 0, 'x': 0}, 'Nash': {'y': 0, 'x': 0}, 'Venti': {'y': 0, 'x': 0}, 'alonzo': {'y': 0.0, 'radius': 0.0, 'x': 0.0}, 'jane': {'y': -2.718541429794193, 'x': 1.3993322251110163}}
+    # print("Users_info_test", users_info_test)
 
     global index_mapdata
     index_mapdata = {
-        "Users": users,
+        "Users": user_locations,
         "workzones": workzones,
         # MIGHT COMMENT OUT BECAUSE OF THE ACTUAL DATA BEING DIFF
         "inWorkzones": users_in_workzones(workzones, user_locations),
         "correctWorkzone": ["Workzone B"],
-        "userInfo": users_info_test
+        "userInfo": user_info
     }
 
 # !#############################################################! #
@@ -336,55 +283,6 @@ def qrcode(taa_id):
     
     taa = find_taa_from_id(taa_id)
     return render_template('railtech-qr.html', data=taa["id"])
-
-@app.route('/employees')
-def employees():
-    """Render the employees page."""
-    workers = [
-        {
-            "name": "Alice Johnson",
-            "current_coordinates": {"x": 10.5, "y": 20.3},
-            "tracking": True,
-            "job": "Track Inspector",
-            "email": "alice.johnson@example.com"
-        },
-        {
-            "name": "Bob Smith",
-            "current_coordinates": {"x": 15.0, "y": 25.6},
-            "tracking": False,
-            "job": "Maintenance Worker",
-            "email": "bob.smith@example.com"
-        },
-        {
-            "name": "Charlie Davis",
-            "current_coordinates": {"x": 12.7, "y": 18.9},
-            "tracking": True,
-            "job": "Construction Foreman",
-            "email": "charlie.davis@example.com"
-        },
-        {
-            "name": "Dana Lee",
-            "current_coordinates": {"x": 9.2, "y": 22.5},
-            "tracking": True,
-            "job": "Safety Officer",
-            "email": "dana.lee@example.com"
-        },
-        {
-            "name": "Evan Brown",
-            "current_coordinates": {"x": 14.1, "y": 19.0},
-            "tracking": False,
-            "job": "Signal Technician",
-            "email": "evan.brown@example.com"
-        }
-    ]
-
-
-    return render_template("employees.html",  data=workers)
-
-@app.route('/no-food-for-dayan')
-def no_food_for_dayan():
-    """Render an example page."""
-    return render_template("railtech-web.html")
 
 
 @app.route('/home')
@@ -517,65 +415,28 @@ def view_tar(taa_id):
     item = find_taa_from_id(taa_id)
 
 
-    # item = {
-    #     "title": 'Maintenance between Bukit Panjang and Cashew',
-    #     "type": 'TAR',
-    #     "id": 'SBST123456789A',
-    #     "status": 'Ongoing',
-    #     "workzones": [
-    #         "Workzone A",
-    #         "Workzone B",
-    #         "Workzone C",
-    #         "Workzone D",
-    #         "Workzone E",
-    #     ]
-    # }
-
     data = {
         "item": item,
         "activities": activities
     }
     return render_template("view-tar.html", data=data)
 
-wifi_scan_requests = []
+# ! employee_names variable is located at the bottom
 
-@app.route('/view_employee')
-def view_employee():
-    userinfo = {
-        "Name": 'Alice Johnson',
-        "Age": '20',
-        "Email": 'AliceJohnson@gmail.com',
-        "Contact number": '91234567',
-        'Job Role': 'Train expert'
-    }
-       
-    return render_template("view_employee.html", userinfo=userinfo)
+@app.route('/employees')
+def employees():
+    """Render the employees page."""
+
+
+    return render_template("employees.html",  data=employee_names)
 
 
 @app.route('/employees/<string:employee_name>')
 def view_employee_updated(employee_name):
 
-    employee_names = [
-        {"name": "Alonzo", "job": "Project Manager", "email": "alonzo.manager@example.com", "contact_number": "+1111111111"},
-        {"name": "Darius", "job": "Software Engineer", "email": "darius.dev@example.com", "contact_number": "+2222222222"},
-        {"name": "Isaac", "job": "Data Analyst", "email": "isaac.data@example.com", "contact_number": "+3333333333"},
-        {"name": "Nash", "job": "Quality Assurance", "email": "nash.qa@example.com", "contact_number": "+4444444444"},
-        {"name": "Venti", "job": "UX Designer", "email": "venti.design@example.com", "contact_number": "+5555555555"},
-        {"name": "alonzo", "job": "Operations Lead", "email": "alonzo.ops@example.com", "contact_number": "+6666666666"},
-        {"name": "jane", "job": "Marketing Specialist", "email": "jane.marketing@example.com", "contact_number": "+7777777777"}
-    ]
-    
-    userinfo = {
-        "Name": 'Alice Johnson',
-        "Age": '20',
-        "Email": 'AliceJohnson@gmail.com',
-        "Contact number": '91234567',
-        'Job Role': 'Train expert'
-    }
-    
-
     for element in employee_names:
-        if element["name"].lower() == employee_name:
+        if element["name"] == employee_name:
+            element = {key.replace('_', ' ').capitalize(): value for key, value in element.items()}
             return render_template("view_employee.html", userinfo=element)
 
 @app.route('/<string:taa_id>/view-checkin')
@@ -830,18 +691,6 @@ def post_coordinates():
     received_aps = daytum.select_field("Access Points","coordinates","mac")
     global workzones
 
-    # TEMPORARY FUNCTION JUST SO I CAN SEE IT WORKING
-    users_info = []
-    for (name, coords) in received_users.items():
-        userinfo = {
-            "name": name,
-            "current_coordinates": coords,
-            # DUMMY DATA
-            "tracking": False,
-            "job": "Signal Technician",
-            "email": "evan.brown@example.com",
-        }
-        users_info.append(userinfo)
     
     all_coordinates = {
         "Users": received_users,
@@ -849,7 +698,7 @@ def post_coordinates():
         "workzones": workzones,
         "correctWorkzone": ["Workzone B"],
         "inWorkzones": [users_in_workzones(workzones, received_users)],
-        "userInfo": users_info,
+        "userInfo": employee_names,
     }
     # for taa in taa_data["listItems"]:
     #     breaker = False
@@ -939,6 +788,15 @@ def get_coordinates():
 index_mapdata = {}
 # Ensures that there is some default data before the data is overridden
 # (Can be removed ngl)
+employee_names = [
+    {"name": "Alonzo", "job": "Project Manager", "email": "alonzo.manager@example.com", "contact_number": "+1111111111", "tracking": False},
+    {"name": "Darius", "job": "Software Engineer", "email": "darius.dev@example.com", "contact_number": "+2222222222", "tracking": False},
+    {"name": "Isaac", "job": "Data Analyst", "email": "isaac.data@example.com", "contact_number": "+3333333333", "tracking": False},
+    {"name": "Nash", "job": "Quality Assurance", "email": "nash.qa@example.com", "contact_number": "+4444444444", "tracking": False},
+    {"name": "Venti", "job": "UX Designer", "email": "venti.design@example.com", "contact_number": "+5555555555", "tracking": False},
+    {"name": "alonzo", "job": "Operations Lead", "email": "alonzo.ops@example.com", "contact_number": "+6666666666", "tracking": False},
+    {"name": "jane", "job": "Marketing Specialist", "email": "jane.marketing@example.com", "contact_number": "+7777777777", "tracking": False}
+]
 create_default_mapdata()
 
 
