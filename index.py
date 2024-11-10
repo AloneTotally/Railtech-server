@@ -129,6 +129,8 @@ taa_data = {
                     "job": "Quality Assurance"
                 }
             ]
+            ,
+            "activitylog":[]
         },
         {
             "title": 'Not Maintanence between Bukit Panjang and Cashew',
@@ -461,6 +463,7 @@ def post_checkin():
     print("CHECK IN DATA RECEIVED :DDDDD", data)
     
     taa = find_taa_from_id(data["sessionID"])
+    print(taa)
     worker = taa["checkins"]
 
     username = data['user']
@@ -492,7 +495,7 @@ def post_checkin():
             "target": "checked in",
             "details":[username]
             }
-            # taa["activitylog"].append(update)
+            taa["activitylog"].append(update)
         else:
             print(f"User '{username}' not found in data.")
 
@@ -510,10 +513,10 @@ def post_checkin():
             "details":[username]
         }
 
-        # taa["activitylog"].append(update)
+        taa["activitylog"].append(update)
         worker[i]['status'] = False
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
-
+    print(taa["activitylog"])
     return jsonify({"status": "Check in data updated successfully"}), 200
 
 user_position = []
