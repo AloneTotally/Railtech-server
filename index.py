@@ -305,114 +305,114 @@ def view_tar(taa_id):
 
     # Each document just prob has like the info of what happened
     # (only sent if got change in workzone)
-
-    activities = [
-        {
-            "title": "Checked in - Workzone A",
-            "timestamp": "1:30 AM",
-            "alert": False,
-            "origin": None,
-            "note": "",
-            "target": "checked in",
-            "details": [
-                {
-                    "name": "Alonzo",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-                    "timestamp": "1:30 AM"
-                },
-                {
-                    "name": "Darius",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-                    "timestamp": "1:30 AM"
-                },
-                {
-                    "name": "Isaac",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-                    "timestamp": "1:30 AM"
-                },
-                {
-                    "name": "Venti",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-                    "timestamp": "1:30 AM"
-                }
-            ]
-        },
-        {
-            "title": "Workzone A - Workzone B",
-            "timestamp": "1:30 AM",
-            "alert": False,
-            "origin": "Workzone A",
-            "target": "Workzone B",
-            "note": "Alonzo, Isaac, Darius",
-            "details": [
-                {
-                    "name": "Alonzo",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-                    "timestamp": "1:30 AM"
-                },
-                {
-                    "name": "Isaac",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-                    "timestamp": "1:30 AM"
-                },
-                {
-                    "name": "Darius",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-                    "timestamp": "1:30 AM"
-                }
-            ]
-        },
-        {
-            "title": "Workzone B - Workzone C",
-            "timestamp": "1:30 AM",
-            "alert": True,
-            "origin": "Workzone B",
-            "target": "Workzone C",
-            "note": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, provident!",
-            "details": [
-                {
-                    "name": "Alonzo",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-                    "timestamp": "1:30 AM"
-                }
-            ]
-        },
-        {
-            "title": "Workzone B - Workzone D",
-            "timestamp": "2:00 AM",
-            "alert": False,
-            "origin": "Workzone B",
-            "target": "Workzone D",
-            "note": "Alonzo, Isaac",
-            "details": [
-                {
-                    "name": "Alonzo",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-                    "timestamp": "2:00 AM"
-                },
-                {
-                    "name": "Isaac",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-                    "timestamp": "2:00 AM"
-                }
-            ]
-        },
-        {
-            "title": "Workzone D - Workzone E",
-            "timestamp": "2:30 AM",
-            "alert": True,
-            "origin": "Workzone D",
-            "target": "Workzone E",
-            "note": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla, modi!",
-            "details": [
-                {
-                    "name": "Isaac",
-                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-                    "timestamp": "2:30 AM"
-                }
-            ]
-        }
-    ]
+    activities = find_taa_from_id(taa_id)["activitylog"]
+    # activities = [
+    #     {
+    #         "title": "Checked in - Workzone A",
+    #         "timestamp": "1:30 AM",
+    #         "alert": False,
+    #         "origin": None,
+    #         "note": "",
+    #         "target": "checked in",
+    #         "details": [
+    #             {
+    #                 "name": "Alonzo",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             },
+    #             {
+    #                 "name": "Darius",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             },
+    #             {
+    #                 "name": "Isaac",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             },
+    #             {
+    #                 "name": "Venti",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         "title": "Workzone A - Workzone B",
+    #         "timestamp": "1:30 AM",
+    #         "alert": False,
+    #         "origin": "Workzone A",
+    #         "target": "Workzone B",
+    #         "note": "Alonzo, Isaac, Darius",
+    #         "details": [
+    #             {
+    #                 "name": "Alonzo",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             },
+    #             {
+    #                 "name": "Isaac",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             },
+    #             {
+    #                 "name": "Darius",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         "title": "Workzone B - Workzone C",
+    #         "timestamp": "1:30 AM",
+    #         "alert": True,
+    #         "origin": "Workzone B",
+    #         "target": "Workzone C",
+    #         "note": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, provident!",
+    #         "details": [
+    #             {
+    #                 "name": "Alonzo",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+    #                 "timestamp": "1:30 AM"
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         "title": "Workzone B - Workzone D",
+    #         "timestamp": "2:00 AM",
+    #         "alert": False,
+    #         "origin": "Workzone B",
+    #         "target": "Workzone D",
+    #         "note": "Alonzo, Isaac",
+    #         "details": [
+    #             {
+    #                 "name": "Alonzo",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+    #                 "timestamp": "2:00 AM"
+    #             },
+    #             {
+    #                 "name": "Isaac",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+    #                 "timestamp": "2:00 AM"
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         "title": "Workzone D - Workzone E",
+    #         "timestamp": "2:30 AM",
+    #         "alert": True,
+    #         "origin": "Workzone D",
+    #         "target": "Workzone E",
+    #         "note": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla, modi!",
+    #         "details": [
+    #             {
+    #                 "name": "Isaac",
+    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+    #                 "timestamp": "2:30 AM"
+    #             }
+    #         ]
+    #     }
+    # ]
 
     item = find_taa_from_id(taa_id)
 
@@ -493,7 +493,7 @@ def post_checkin():
             "origin": None,
             "note": "",
             "target": "checked in",
-            "details":[username]
+            "details":[{"name": username}]
             }
             taa["activitylog"].append(update)
         else:
@@ -510,7 +510,7 @@ def post_checkin():
             "origin": None,
             "note": "",
             "target": "checked Out",
-            "details":[username]
+            "details":[{"name": username}]
         }
 
         taa["activitylog"].append(update)
@@ -703,28 +703,64 @@ def post_coordinates():
         "inWorkzones": [users_in_workzones(workzones, received_users)],
         "userInfo": employee_names,
     }
-    # for taa in taa_data["listItems"]:
-    #     breaker = False
-    #     print("hi")
-    #     for activity in taa["activitylog"]:
-    #         if activity["title"] == "Checked in":
-    #             name = activity["details"][0]
-    #             print(name)
-    #             for workzone in all_coordinates["inWorkzones"][0]:
-    #                 for user in all_coordinates["inWorkzones"][0][workzone]:
-    #                     print(user)
-    #                     if user == name:
-    #                         activity["title"] += f" {workzone}"
-    #                         breaker = True
-    #                         break
-    #                 if breaker:
-    #                     break
-    #         if breaker:
-    #             print(activity)
-    #             break
-    
-
-
+    for taa in taa_data["listItems"]:
+        breaker = False
+        print("hi")
+        for activity in taa["activitylog"]:
+            if activity["title"] == "Checked in":
+                name = activity["details"][0]
+                print(name)
+                for workzone in all_coordinates["inWorkzones"][0]:
+                    for user in all_coordinates["inWorkzones"][0][workzone]:
+                        print(user)
+                        if user == name:
+                            activity["title"] += f" {workzone}"
+                            breaker = True
+                            break
+                    if breaker:
+                        break
+            if breaker:
+                print(activity)
+                break
+    def find_workzone(workzones,user):
+        check = workzones.keys()
+        count = 0
+        for i in workzone.values():
+            for a in i:
+                if a == user:
+                    return check[count]
+            count += 1
+        return "error"
+    def find_taa_by_name(name):
+        for taa in taa_data:
+            for taauser in taa["checkins"]:
+                if name == taauser["name"]:
+                    return taa
+        return ValueError()
+    prev  = users_in_workzones(workzones, {user_name:user["previous_coordinates"]})
+    current = users_in_workzones(workzones, {user_name:user["current_coordinates"]})
+    if prev!= current:
+        origin,target = find_workzone(prev,user_name),find_workzone(current,user_name)
+        title = f'Moved from {origin} to {target}'
+        try:
+            from datetime import datetime
+            current_date = datetime.now()
+            date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
+            # Split date and time
+            date, time = date_string.split(' ')
+            taa = find_taa_by_name(user_name)
+            update = {
+            "title": title,
+            "timestamp": time,
+            "alert": False,
+            "origin": origin,
+            "note": "",
+            "target": target,
+            "details":[{"name": user_name}]
+            }
+            taa["activitylog"].append(update)
+        except:
+            print("user is not in any taa")
     global index_mapdata
     import copy
 
