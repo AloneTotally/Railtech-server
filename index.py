@@ -305,114 +305,115 @@ def view_tar(taa_id):
 
     # Each document just prob has like the info of what happened
     # (only sent if got change in workzone)
-    activities = find_taa_from_id(taa_id)["activitylog"]
-    # activities = [
-    #     {
-    #         "title": "Checked in - Workzone A",
-    #         "timestamp": "1:30 AM",
-    #         "alert": False,
-    #         "origin": None,
-    #         "note": "",
-    #         "target": "checked in",
-    #         "details": [
-    #             {
-    #                 "name": "Alonzo",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             },
-    #             {
-    #                 "name": "Darius",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             },
-    #             {
-    #                 "name": "Isaac",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             },
-    #             {
-    #                 "name": "Venti",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             }
-    #         ]
-    #     },
-    #     {
-    #         "title": "Workzone A - Workzone B",
-    #         "timestamp": "1:30 AM",
-    #         "alert": False,
-    #         "origin": "Workzone A",
-    #         "target": "Workzone B",
-    #         "note": "Alonzo, Isaac, Darius",
-    #         "details": [
-    #             {
-    #                 "name": "Alonzo",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             },
-    #             {
-    #                 "name": "Isaac",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             },
-    #             {
-    #                 "name": "Darius",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             }
-    #         ]
-    #     },
-    #     {
-    #         "title": "Workzone B - Workzone C",
-    #         "timestamp": "1:30 AM",
-    #         "alert": True,
-    #         "origin": "Workzone B",
-    #         "target": "Workzone C",
-    #         "note": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, provident!",
-    #         "details": [
-    #             {
-    #                 "name": "Alonzo",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-    #                 "timestamp": "1:30 AM"
-    #             }
-    #         ]
-    #     },
-    #     {
-    #         "title": "Workzone B - Workzone D",
-    #         "timestamp": "2:00 AM",
-    #         "alert": False,
-    #         "origin": "Workzone B",
-    #         "target": "Workzone D",
-    #         "note": "Alonzo, Isaac",
-    #         "details": [
-    #             {
-    #                 "name": "Alonzo",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-    #                 "timestamp": "2:00 AM"
-    #             },
-    #             {
-    #                 "name": "Isaac",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-    #                 "timestamp": "2:00 AM"
-    #             }
-    #         ]
-    #     },
-    #     {
-    #         "title": "Workzone D - Workzone E",
-    #         "timestamp": "2:30 AM",
-    #         "alert": True,
-    #         "origin": "Workzone D",
-    #         "target": "Workzone E",
-    #         "note": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla, modi!",
-    #         "details": [
-    #             {
-    #                 "name": "Isaac",
-    #                 "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-    #                 "timestamp": "2:30 AM"
-    #             }
-    #         ]
-    #     }
-    # ]
+    # activities = []
+    #find_taa_from_id(taa_id)["activitylog"]
+    activities = [
+        {
+            "title": "Checked in - Workzone A",
+            "timestamp": "1:30 AM",
+            "alert": False,
+            "origin": None,
+            "note": "",
+            "target": "checked in",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Darius",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Venti",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+                    "timestamp": "1:30 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone A - Workzone B",
+            "timestamp": "1:30 AM",
+            "alert": False,
+            "origin": "Workzone A",
+            "target": "Workzone B",
+            "note": "Alonzo, Isaac, Darius",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+                    "timestamp": "1:30 AM"
+                },
+                {
+                    "name": "Darius",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+                    "timestamp": "1:30 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone B - Workzone C",
+            "timestamp": "1:30 AM",
+            "alert": True,
+            "origin": "Workzone B",
+            "target": "Workzone C",
+            "note": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, provident!",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+                    "timestamp": "1:30 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone B - Workzone D",
+            "timestamp": "2:00 AM",
+            "alert": False,
+            "origin": "Workzone B",
+            "target": "Workzone D",
+            "note": "Alonzo, Isaac",
+            "details": [
+                {
+                    "name": "Alonzo",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+                    "timestamp": "2:00 AM"
+                },
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+                    "timestamp": "2:00 AM"
+                }
+            ]
+        },
+        {
+            "title": "Workzone D - Workzone E",
+            "timestamp": "2:30 AM",
+            "alert": True,
+            "origin": "Workzone D",
+            "target": "Workzone E",
+            "note": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla, modi!",
+            "details": [
+                {
+                    "name": "Isaac",
+                    "profile_image": "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+                    "timestamp": "2:30 AM"
+                }
+            ]
+        }
+    ]
 
     item = find_taa_from_id(taa_id)
 
@@ -732,7 +733,7 @@ def post_coordinates():
             count += 1
         return "error"
     def find_taa_by_name(name):
-        for taa in taa_data:
+        for taa in taa_data["listItems"]:
             for taauser in taa["checkins"]:
                 if name == taauser["name"]:
                     return taa
@@ -759,6 +760,7 @@ def post_coordinates():
             "details":[{"name": user_name}]
             }
             taa["activitylog"].append(update)
+            print(taa["activitylog"])
         except:
             print("user is not in any taa")
     global index_mapdata
