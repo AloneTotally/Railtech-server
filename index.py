@@ -738,31 +738,31 @@ def post_coordinates():
                 if name == taauser["name"]:
                     return taa
         return ValueError()
-    prev  = users_in_workzones(workzones, {user_name:user["previous_coordinates"]})
-    current = users_in_workzones(workzones, {user_name:user["current_coordinates"]})
-    if prev!= current:
-        origin,target = find_workzone(prev,user_name),find_workzone(current,user_name)
-        title = f'Moved from {origin} to {target}'
-        try:
-            from datetime import datetime
-            current_date = datetime.now()
-            date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
-            # Split date and time
-            date, time = date_string.split(' ')
-            taa = find_taa_by_name(user_name)
-            update = {
-            "title": title,
-            "timestamp": time,
-            "alert": False,
-            "origin": origin,
-            "note": "",
-            "target": target,
-            "details":[{"name": user_name}]
-            }
-            taa["activitylog"].append(update)
-            print(taa["activitylog"])
-        except:
-            print("user is not in any taa")
+    # prev  = users_in_workzones(workzones, {user_name:user["previous_coordinates"]})
+    # current = users_in_workzones(workzones, {user_name:user["current_coordinates"]})
+    # if prev!= current:
+    #     origin,target = find_workzone(prev,user_name),find_workzone(current,user_name)
+    #     title = f'Moved from {origin} to {target}'
+    #     try:
+    #         from datetime import datetime
+    #         current_date = datetime.now()
+    #         date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
+    #         # Split date and time
+    #         date, time = date_string.split(' ')
+    #         taa = find_taa_by_name(user_name)
+    #         update = {
+    #         "title": title,
+    #         "timestamp": time,
+    #         "alert": False,
+    #         "origin": origin,
+    #         "note": "",
+    #         "target": target,
+    #         "details":[{"name": user_name}]
+    #         }
+    #         taa["activitylog"].append(update)
+    #         print(taa["activitylog"])
+    #     except:
+    #         print("user is not in any taa")
     global index_mapdata
     import copy
 
