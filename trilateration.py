@@ -95,6 +95,78 @@ trilaterate_test([
 #     'bssid2': (10, 9),    
 #     'bssid3': (1, 10)
 # }
+
+# import numpy as np
+
+# class EKF:
+#     def __init__(self, initial_state, initial_covariance, process_noise, measurement_noise, access_points):
+#         self.state = np.array(initial_state)  # Initial state [x, y]
+#         self.covariance = np.array(initial_covariance)  # Initial covariance matrix
+#         self.Q = np.array(process_noise)  # Process noise covariance matrix
+#         self.R = np.array(measurement_noise)  # Measurement noise covariance matrix
+#         self.access_points = np.array(access_points)  # Known APs [[x1, y1], [x2, y2], ...]
+
+#     def predict(self, u, dt):
+#         """
+#         Predict step: Updates the state based on the motion model (e.g., assuming simple motion)
+#         u: Control input (e.g., velocity vector [vx, vy])
+#         dt: Time delta
+#         """
+#         # Simple motion model: x' = x + vx * dt, y' = y + vy * dt
+#         F = np.array([[1, 0], [0, 1]])  # State transition matrix (identity for simplicity)
+#         self.state = np.dot(F, self.state) + u * dt
+#         self.covariance = np.dot(np.dot(F, self.covariance), F.T) + self.Q
+
+#     def update(self, rssi_readings):
+#         """
+#         Update step: Updates the state based on the RSSI measurements
+#         rssi_readings: List of RSSI measurements corresponding to known APs
+#         """
+#         H = []  # Jacobian matrix of partial derivatives of h(x) w.r.t state
+#         z = []  # Measurement vector
+
+#         for i, rssi in enumerate(rssi_readings):
+#             # Calculate expected distance based on current state and AP location
+#             dx = self.state[0] - self.access_points[i][0]
+#             dy = self.state[1] - self.access_points[i][1]
+#             expected_distance = np.sqrt(dx**2 + dy**2)
+            
+#             # Measurement model h(x): distance = sqrt((x - AP_x)^2 + (y - AP_y)^2)
+#             H_i = np.array([dx / (expected_distance + 1e-6), dy / (expected_distance + 1e-6)])  # Avoid division by zero
+#             H.append(H_i)
+
+#             # Convert RSSI to distance (assuming a path-loss model for simplicity)
+#             z_i = self.rssi_to_distance(rssi)
+#             z.append(z_i)
+
+#         H = np.array(H)
+#         z = np.array(z)
+
+#         # Predicted measurement
+#         h_x = np.array([np.sqrt((self.state[0] - ap[0])**2 + (self.state[1] - ap[1])**2) for ap in self.access_points])
+
+#         # Calculate Kalman gain
+#         S = np.dot(np.dot(H, self.covariance), H.T) + self.R
+#         K = np.dot(np.dot(self.covariance, H.T), np.linalg.inv(S))
+
+#         # Update state and covariance
+#         y = z - h_x  # Innovation (measurement residual)
+#         self.state = self.state + np.dot(K, y)
+#         I = np.eye(len(self.state))
+#         self.covariance = np.dot(I - np.dot(K, H), self.covariance)
+
+# # Example usage
+# initial_state = [0, 0]  # Initial position
+# initial_covariance = [[1, 0], [0, 1]]  # Initial covariance matrix
+# measurement_noise = [[10]]  # Example variance for RSSI, assuming a single AP (adjust based on measurements)
+# process_noise = [[0.05, 0], [0, 0.05]]  # Variance for state transition (position components in x and y directions)
+
+# ekf = EKF(initial_state, initial_covariance, process_noise, measurement_noise, access_points)
+# ekf.predict(u=np.array([1, 1]), dt=1)  # Predict step with some control input
+# ekf.update([-70, -65, -80])  # Update step with RSSI readings
+# print("Estimated state:", ekf.state)
+
+
 def trilaterate_actual(data, ref_APs):
     arr = []
     for accessPoint in data["accessPoints"]:

@@ -762,7 +762,7 @@ def post_coordinates():
                 "origin": origin,
                 "note": "",
                 "target": target,
-                "details":[{"name": user_name}]
+                "details":[{"name": user_name, "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg"}]
                 }
                 taa["activitylog"].append(update)
                 print(taa["activitylog"])
