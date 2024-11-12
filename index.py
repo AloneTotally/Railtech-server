@@ -305,7 +305,8 @@ def view_tar(taa_id):
 
     # Each document just prob has like the info of what happened
     # (only sent if got change in workzone)
-    activities = find_taa_from_id(taa_id)["activitylog"]
+    try:
+        activities = find_taa_from_id(taa_id)["activitylog"]
     # activities = [
     #     {
     #         "title": "Checked in - Workzone A",
@@ -414,14 +415,16 @@ def view_tar(taa_id):
     #     }
     # ]
 
-    item = find_taa_from_id(taa_id)
+        item = find_taa_from_id(taa_id)
 
 
-    data = {
-        "item": item,
-        "activities": activities
-    }
-    return render_template("view-tar.html", data=data)
+        data = {
+            "item": item,
+            "activities": activities
+        }
+        return render_template("view-tar.html", data=data)
+    except:
+        return "error"
 
 # ! employee_names variable is located at the bottom
 
