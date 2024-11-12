@@ -742,7 +742,7 @@ def post_coordinates():
                 if name == taauser["name"]:
                     return taa
         return ValueError()
-    if not skip:
+    if skip:
         prev  = users_in_workzones(workzones, {user_name:userx["previous_coordinates"]})
         current = users_in_workzones(workzones, {user_name:userx["current_coordinates"]})
         if prev!= current:
