@@ -733,7 +733,7 @@ def post_coordinates():
         for i in workzones.values():
             for a in i:
                 if a == user:
-                    return check[count]
+                    return list(check)[count]
             count += 1
         return "error"
     def find_taa_by_name(name):
