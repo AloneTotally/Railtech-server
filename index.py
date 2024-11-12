@@ -658,13 +658,15 @@ def post_coordinates():
         user = daytum.get_document("Users",user_name)
         updatingdata = {"previous_coordinates":user["current_coordinates"],"current_coordinates":new_coords,"rssi":data["accessPoints"]}
         daytum.update("Users",user_name,updatingdata)
-        users = daytum.get_document("Users",user_name)
+        userx = daytum.get_document("Users",user_name)
+        skip = True
         
     else:
+        skip = False
         # TODO: Darius urm try not to change the schema of a variable instead create a new variable (u previously named it data)
         user_data = {"current_coordinates": new_coords,"previous_coordinates":{"x":None,"y":None},"tracking":True,"rssi":data["accessPoints"],"name":user_name}
         daytum.add("Users",user_name, user_data)
-        users = daytum.get_document("Users",user_name)
+        userx = daytum.get_document("Users",user_name)
         # Create a new user if they don't exist
         # users[user_name] = User(name=user_name, current_coordinates=new_coords)
             # "name": user_name,
@@ -731,7 +733,7 @@ def post_coordinates():
         for i in workzones.values():
             for a in i:
                 if a == user:
-                    return check[count]
+                    return list(check)[count]
             count += 1
         return "error"
     def find_taa_by_name(name):
@@ -740,32 +742,32 @@ def post_coordinates():
                 if name == taauser["name"]:
                     return taa
         return ValueError()
-    
-    prev  = users_in_workzones(workzones, {user_name:users["previous_coordinates"]})
-    current = users_in_workzones(workzones, {user_name:users["current_coordinates"]})
-    if prev!= current:
-        origin,target = find_workzone(prev,user_name),find_workzone(current,user_name)
-        title = f'Moved from {origin} to {target}'
-        try:
-            from datetime import datetime
-            current_date = datetime.now()
-            date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
-            # Split date and time
-            date, time = date_string.split(' ')
-            taa = find_taa_by_name(user_name)
-            update = {
-            "title": title,
-            "timestamp": time,
-            "alert": False,
-            "origin": origin,
-            "note": "",
-            "target": target,
-            "details":[{"name": user_name}]
-            }
-            taa["activitylog"].append(update)
-            print(taa["activitylog"])
-        except:
-            print("user is not in any taa")
+    if skip:
+        prev  = users_in_workzones(workzones, {user_name:userx["previous_coordinates"]})
+        current = users_in_workzones(workzones, {user_name:userx["current_coordinates"]})
+        if prev!= current:
+            origin,target = find_workzone(prev,user_name),find_workzone(current,user_name)
+            title = f'Moved from {origin} to {target}'
+            try:
+                from datetime import datetime
+                current_date = datetime.now()
+                date_string = current_date.strftime("%Y-%m-%d %H:%M:%S")  # Format as 'YYYY-MM-DD HH:MM:SS'
+                # Split date and time
+                date, time = date_string.split(' ')
+                taa = find_taa_by_name(user_name)
+                update = {
+                "title": title,
+                "timestamp": time,
+                "alert": False,
+                "origin": origin,
+                "note": "",
+                "target": target,
+                "details":[{"name": user_name}]
+                }
+                taa["activitylog"].append(update)
+                print(taa["activitylog"])
+            except:
+                print("user is not in any taa")
     global index_mapdata
     import copy
 
