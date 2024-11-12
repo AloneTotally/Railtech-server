@@ -86,7 +86,7 @@ taa_data = {
             "title": 'Maintanence between Bukit Panjang and Cashew',
             "type": 'TAR',
             "id": 'SBST123456789A',
-            "status": 'Ongoing',
+            "status": 'Not Started',
             "workzones": [
                 "Workzone A",
                 "Workzone C",
@@ -173,7 +173,7 @@ taa_data = {
             "title": 'Testing Maintanence between Bukit Panjang and Cashew',
             "type": 'TAR',
             "id": 'SBST987654321A',
-            "status": 'Finished',
+            "status": 'Not Started',
             "workzones": [
                 "Workzone A",
                 "Workzone B",

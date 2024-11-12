@@ -125,7 +125,7 @@
 
         <div class="flex flex-row gap-5 items-center mt-7 justify-between">
             <div class="flex flex-row items-center gap-4">
-                <h2 class="text-3xl font-bold dark:text-white">{{ data.item.title }}</h2>
+                <h2 class="text-3xl font-bold dark:text-white max-w-3xl">{{ data.item.title }}</h2>
                 {% if data.item.status == 'Not Started' %}
                 <div class="h-4 w-4 rounded-full bg-red-500 me-2"></div>
                 {% elif data.item.status == 'Ongoing' %}
@@ -138,7 +138,7 @@
             <a :href="`${item.id}/qrcode-gen`"
             id="qr-button"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
-                Scan QR
+                Show QR
                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 14 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -148,40 +148,47 @@
         </div>
         <div class="flex flex-row items-center gap-3 mt-3">
             <!-- <div class="font-normal">SBST123456789A</div> -->
-            <div class="flex -space-x-3 rtl:space-x-reverse">
-                <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="">
-                <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="">
-                <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="">
-                <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800"
-                    href="#">+3</a>
-            </div>
-            <div class="text-white flex flex-row items-center gap-1">
-                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                    Isaac
-                </p>
-                <p class="text-gray-400">&#x2022;</p>
-                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                    Venti
-                </p>
-                <p class="text-gray-400">&#x2022;</p>
-                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                    Nash
-                </p>
-                <p class="text-gray-400">&#x2022;</p>
-                <p class="text-sm text-gray-500 truncate dark:text-gray-400 font-bold">
-                    +3 more
-                </p>
-            </div>
+            <a href="#users" class="flex flex-row gap-3">
+
+                 <div class="flex -space-x-3 rtl:space-x-reverse">
+                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
+                         src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="">
+                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
+                         src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="">
+                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
+                         src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="">
+                     <template x-if="item.checkins.length - 3 > 0">
+                         <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800"
+                         href="#" x-text="`+${item.checkins.length - 3}`"></a>
+                     </template>
+                 </div>
+                 <div class="text-white flex flex-row items-center gap-1">
+                     <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="item.checkins[0].name">
+                         Isaac
+                     </p>
+                     <p class="text-gray-400">&#x2022;</p>
+                     <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="item.checkins[1].name">
+                         Venti
+                     </p>
+                     <p class="text-gray-400">&#x2022;</p>
+                     <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="item.checkins[2].name">
+                         Nash
+                     </p>
+                     <template x-if="item.checkins.length - 3 > 0">
+                     <p class="text-gray-400">&#x2022;</p>
+                         <p class="text-sm text-gray-500 truncate dark:text-gray-400 font-bold" x-text="`+${item.checkins.length - 3} more`">
+                     </template>
+                         
+                     </p>
+                 </div>
+            </a>
             {% if data.item.type == 'TAR' %}
             <span
                 class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">TAR</span>
             {% elif data.item.type == 'EWR' %}
             <span
                 class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">EWR</span>
-            {% endif %}
+            {% endif %}                
         </div>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
         <div id="leftright-container" class="flex flex-row justify-between gap-10">
@@ -208,15 +215,19 @@
                                 <dt class="text-normal font-medium leading-6 text-white">{{ key[0].upper() + key[1:] if
                                     key != 'id' else 'ID' }}</dt>
                                 <dd class="mt-1 text-normal leading-6 text-gray-400 sm:col-span-2 sm:mt-0 flex items-center gap-2">
-                                    <p>{{ value }}</p>
                                     {% if key == 'status'%}
                                         {% if data.item.status == 'Not Started' %}
+                                        <p class="text-red-500">{{ value }}</p>
                                         <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                         {% elif data.item.status == 'Ongoing' %}
+                                        <p class="text-green-500">{{ value }}</p>
                                         <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                         {% elif data.item.status == 'Finished' %}
+                                        <p class="text-cyan-500">{{ value }}</p>
                                         <div class="h-2.5 w-2.5 rounded-full bg-cyan-500 me-2"></div>
                                         {% endif %}
+                                    {% else %}
+                                    <p>{{ value }}</p>
                                     {% endif %}
                                 </dd>
                             </div>
@@ -248,6 +259,8 @@
 
 
                 <h3 class="text-3xl font-bold dark:text-white mt-10">Workzones</h3>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">The workzones included in this TAA.</p>
+
 
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-5">
                     {% for workzone in data.item.workzones %}
@@ -276,11 +289,48 @@
                     {% endfor %}
                 </ul>
 
+                <h3 id="users" class="text-3xl font-bold dark:text-white mt-10">Workers</h3>
+                <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">The workers that will check-in to this TAA.</p>
+
+                <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-5">
+                    {% for users in data.item.checkins %}
+                    <!-- <template x-for="workzone in data.item.workzones"> -->
+                        <li class="pb-3 sm:pb-4">
+                            <div class="flex items-center space-x-4 rtl:space-x-reverse mt-3">
+                                <div class="flex-shrink-0">
+                                    <img class="w-8 h-8 rounded-full"
+                                        src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                                        alt="Neil image">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        {{users.name}}
+                                    </p>
+                                    <!-- <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        example info 1
+                                    </p> -->
+                                </div>
+                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                    <!-- $320 -->
+                                </div>
+                            </div>
+                        </li>
+                    <!-- </template> -->
+                    {% endfor %}
+                </ul>
+
             </div>
             <div id="right" class="w-2/3">
                 <!-- <h4 class="text-2xl font-bold dark:text-white">Activity Log</h4> -->
                 <h3 class="text-3xl font-bold dark:text-white">Activity Log</h3>
                 <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Log of Activities detected by LTAPal.</p>
+                <template x-if="activities.length == 0">
+                    <div
+                        class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 mt-4 dark:bg-gray-800 dark:border-gray-700 text-white"
+                         >
+                        There are no activities at the moment.
+                    </div>
+                </template>
                 <template x-for="activity in activities">
                     <div
                         class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 mt-4"
@@ -320,6 +370,7 @@
                         </ol>
                     </div>
                 </template>
+                
             </div>
         </div>
     </div>
@@ -329,9 +380,8 @@
 
 <script>
     let original = {{ data | tojson }};
-
+    console.log(original)
     document.addEventListener('alpine:init', () => {
         Alpine.store('data', original)
     })
-
 </script>
