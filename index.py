@@ -183,13 +183,6 @@ taa_data = {
             ],
             "checkins": [
                 {
-                    "name": "jane",
-                    "Date": "-",
-                    "time": "-",
-                    "status": None,
-                    "job": "Marketing Specialist"
-                },
-                {
                     "name": "Isaac",
                     "Date": "-",
                     "time": "-",
@@ -466,7 +459,10 @@ def post_checkin():
     print("CHECK IN DATA RECEIVED :DDDDD", data)
     
     taa = find_taa_from_id(data["sessionID"])
+    taa["status"] = "Ongoing"
     print(taa)
+
+
     worker = taa["checkins"]
 
     username = data['user']
@@ -496,7 +492,7 @@ def post_checkin():
             "origin": None,
             "note": "",
             "target": "checked in",
-            "details":[{"name": username}]
+            "details":[{"name": username, "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg"}]
             }
             taa["activitylog"].append(update)
         else:
@@ -513,12 +509,23 @@ def post_checkin():
             "origin": None,
             "note": "",
             "target": "checked Out",
-            "details":[{"name": username}]
+            "details":[{"name": username, "profile_image": "https://flowbite.com/docs/images/people/profile-picture-1.jpg"}]
         }
 
         taa["activitylog"].append(update)
         worker[i]['status'] = False
         socketio.emit(f'checkOutData-{data["sessionID"]}', data)
+    
+    # Check if everyone checked out
+    checked_out = True
+    for checkin in taa["checkins"]:
+        print("checkins:", checkin)
+        if checkin["status"] != False:
+            checked_out = False
+
+    if checked_out:
+        taa["status"] = "Finished"
+    
     print(taa["activitylog"])
     return jsonify({"status": "Check in data updated successfully"}), 200
 

@@ -41,7 +41,7 @@
                 
                 <li>
                     <a
-              window.location.href="railtech-homepg.html"
+              href="/"
               class="flex ms-2 md:me-24 pb-8"
             >
               <img
@@ -151,33 +151,31 @@
             <a href="#users" class="flex flex-row gap-3">
 
                  <div class="flex -space-x-3 rtl:space-x-reverse">
-                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                         src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="">
-                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                         src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="">
-                     <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800"
-                         src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="">
+                    <template x-for="item in item.checkins.slice(0, 3)">
+                        <img class="w-8 h-8 border-2 border-white rounded-full dark:border-gray-800" src="https://flowbite.com/docs/images/people/profile-picture-1.jpg" alt="" />
+                    </template>
                      <template x-if="item.checkins.length - 3 > 0">
                          <a class="flex items-center justify-center w-8 h-8 text-xs font-medium text-white bg-gray-400 border-2 border-white rounded-full hover:bg-gray-500 dark:border-gray-800"
                          href="#" x-text="`+${item.checkins.length - 3}`"></a>
                      </template>
-                 </div>
-                 <div class="text-white flex flex-row items-center gap-1">
-                     <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="item.checkins[0].name">
-                         Isaac
-                     </p>
-                     <p class="text-gray-400">&#x2022;</p>
-                     <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="item.checkins[1].name">
-                         Venti
-                     </p>
-                     <p class="text-gray-400">&#x2022;</p>
-                     <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="item.checkins[2].name">
-                         Nash
-                     </p>
-                     <template x-if="item.checkins.length - 3 > 0">
-                     <p class="text-gray-400">&#x2022;</p>
-                         <p class="text-sm text-gray-500 truncate dark:text-gray-400 font-bold" x-text="`+${item.checkins.length - 3} more`">
-                     </template>
+                </div>
+                <div class="text-white flex flex-row items-center gap-1">
+                    <template x-for="(user, id) in item.checkins.slice(0, 3)">
+                        <div class="flex flex-row items-center gap-1">
+                            <p class="text-sm text-gray-500 truncate dark:text-gray-400" x-text="user.name">
+                                Isaac
+                            </p>
+                            <template x-if="id < item.checkins.length - 1">
+                                <p class="text-gray-400">&#x2022;</p>
+                            </template>
+                        </div>
+                    </template>
+                    
+                    <template x-if="item.checkins.length > 3">
+                        <div class="text-white flex flex-row items-center gap-1">
+                            <p class="text-sm text-gray-500 truncate dark:text-gray-400 font-bold" x-text="`+${item.checkins.length - 3} more`">
+                        </div>
+                    </template>
                          
                      </p>
                  </div>
@@ -338,7 +336,7 @@
                         <div id="row" class="flex w-full justify-between items-center">
                             <div class="text-lg font-bold text-gray-900 dark:text-white w-5/6">
                                 <span x-text="activity.title"></span>
-                                <span x-text="`(${activity.details.length}/4)`"></span>
+                                <!-- <span x-text="`(${activity.details.length}/${item.checkins.length})`"></span> -->
                             </div>
                             <span x-text="activity.timestamp"  class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
                             </span>
