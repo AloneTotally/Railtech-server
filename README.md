@@ -1,4 +1,10 @@
 # Railtech-server
+
+This is the server for the android app as listed here: https://github.com/Scxr-ch/Realtech
+## What is this prototype about?
+This is the server for an Android app that utilises Received Signal Strength Indicator (RSSI) to estimate the distance from an Access Point (AP), followed by trilateration between three Wi-Fi Access Points with known coordinates to determine the precise location of workers on the tracks. This leverages on existing infrastructure instead of a solution that requires the setting of one’s own anchor points. This is more focused on underground systems as above ground systems would use GPS.
+
+All the calculation has been done in here, all the android app does is to send the data from the Wi-Fi scan.
 ## Setup instructions (windows)
 ### 1. Create virtual environment
 To config this, you have to create the virtual env first using
