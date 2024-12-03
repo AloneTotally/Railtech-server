@@ -3,6 +3,7 @@
 This is the server for the android app as listed here: https://github.com/Scxr-ch/Realtech
 ## What is this prototype about?
 This prototype was made for a competition called: Singapore RailTech Grand Challenge (SGRTGC) 2024 - Open Innovation Challenge
+
 This competition is where participants develop innovative ideas and solutions to tackle real-world rail engineering problems faced during day-to-day operations and maintenance in the railway industry. The objective of the challenge is to find solutions to improve productivity, safety and/or enhance environmental sustainability, with incorporation of digitalisation where possible.
 The problem statement for this year’s Open Innovation Challenge is “How might we monitor the movement of working personnel in the rail track system in real-time?”
 
