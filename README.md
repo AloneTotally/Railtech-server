@@ -1,13 +1,13 @@
 # Railtech-server
 
-This is the server for the android app as listed here: https://github.com/Scxr-ch/Realtech
+This is the server for the android app as listed here: https://github.com/Scxr-ch/Realtech (Note that the server might not load as render takes a while to load the website if you access it for the first time in a long time)
 ## What is this prototype about?
 This prototype was made for a competition called: **Singapore RailTech Grand Challenge (SGRTGC) 2024 - Open Innovation Challenge**
 
 This competition is where participants develop innovative ideas and solutions to tackle real-world rail engineering problems faced during day-to-day operations and maintenance in the railway industry. The objective of the challenge is to find solutions to improve productivity, safety and/or enhance environmental sustainability, with incorporation of digitalisation where possible.
 The problem statement for this year’s Open Innovation Challenge is “How might we monitor the movement of working personnel in the rail track system in real-time?”
 
-As a group, our solution was to developan Android app that utilises Received Signal Strength Indicator (RSSI) to estimate the distance from an Access Point (AP), followed by trilateration between three Wi-Fi Access Points with known coordinates to determine the precise location of workers on the tracks. This leverages on existing infrastructure instead of a solution that requires the setting of one’s own anchor points. This is more focused on underground systems as above ground systems would use GPS.
+As a group, our solution was to develop an Android app that utilises Received Signal Strength Indicator (RSSI) to estimate the distance from an Access Point (AP), followed by trilateration between three Wi-Fi Access Points with known coordinates to determine the precise location of workers on the tracks. This leverages on existing infrastructure instead of a solution that requires the setting of one’s own anchor points. This is more focused on underground systems as above ground systems would use GPS.
 
 All the calculation has been done in here, all the android app does is to send the data from the Wi-Fi scan.
 ## Setup instructions (windows)
