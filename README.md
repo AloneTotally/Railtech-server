@@ -1,6 +1,9 @@
 # Railtech-server
 
-This is the server for the android app as listed here: https://github.com/Scxr-ch/Realtech (Note that the server might not load as render takes a while to load the website if you access it for the first time in a long time)
+This is the server for the android app as listed here: https://github.com/Scxr-ch/Realtech
+
+Note: that the server might not load as render takes a while to load the website if you access it for the first time in a long time)
+
 ## What is this prototype about?
 This prototype was made for a competition called: **Singapore RailTech Grand Challenge (SGRTGC) 2024 - Open Innovation Challenge**
 
